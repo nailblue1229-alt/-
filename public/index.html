@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TTS 생성하기 — 감정 보이스 스튜디오</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="page-header">
+      <h1>🎙 TTS 생성하기</h1>
+      <button id="apiKeyBtn" class="ghost-btn">API 키 설정</button>
+    </header>
+
+    <section class="card">
+      <h2>1단계 — 대본 입력</h2>
+      <p class="hint">언어·보이스를 고르고 대본을 입력한 뒤 [TTS 생성하기]를 누르면 음성이 만들어집니다.</p>
+
+      <div class="voice-row">
+        <label class="lang-check">
+          <input type="checkbox" checked disabled /> 한국어
+        </label>
+        <select id="voiceSelect"><option value="">API 키를 먼저 설정하세요</option></select>
+      </div>
+      <div class="voice-id-row">
+        <span>Voice ID</span>
+        <input id="voiceIdDisplay" type="text" readonly placeholder="-" />
+      </div>
+
+      <textarea id="scriptInput" placeholder="한국어 대본을 붙여넣으세요"></textarea>
+
+      <div class="controls-row">
+        <div class="stability-group">
+          <span class="label">stability</span>
+          <div class="segmented" id="stabilityGroup">
+            <button type="button" data-value="0.25" class="seg-btn">감정 풍부</button>
+            <button type="button" data-value="0.5" class="seg-btn active">자연</button>
+            <button type="button" data-value="0.85" class="seg-btn">안정</button>
+          </div>
+        </div>
+        <div class="lang-select">
+          <span class="label">언어</span>
+          <select disabled><option>한국어</option></select>
+        </div>
+        <button type="button" id="emotionTagBtn" class="link-btn">🏷 감정태그 모범사례</button>
+      </div>
+
+      <div id="emotionPanel" class="emotion-panel hidden">
+        <p class="hint">커서 위치에 감정 태그를 삽입합니다 (eleven_v3 계열 모델에서 지원):</p>
+        <div class="tag-list">
+          <button type="button" data-tag="[happy]">happy</button>
+          <button type="button" data-tag="[sad]">sad</button>
+          <button type="button" data-tag="[angry]">angry</button>
+          <button type="button" data-tag="[excited]">excited</button>
+          <button type="button" data-tag="[whispers]">whispers</button>
+          <button type="button" data-tag="[laughs]">laughs</button>
+          <button type="button" data-tag="[sighs]">sighs</button>
+          <button type="button" data-tag="[nervous]">nervous</button>
+        </div>
+      </div>
+
+      <div class="actions-row">
+        <button type="button" id="emotionAdjustBtn" class="secondary-btn">감정조절</button>
+        <button type="button" id="generateBtn" class="primary-btn">TTS 생성하기</button>
+      </div>
+
+      <div id="status" class="status"></div>
+      <div id="resultArea" class="result-area hidden">
+        <audio id="audioPlayer" controls></audio>
+        <a id="downloadLink" download="tts.mp3" class="ghost-btn">다운로드</a>
+      </div>
+    </section>
+  </div>
+
+  <dialog id="apiKeyDialog">
+    <form method="dialog" id="apiKeyForm">
+      <h3>ElevenLabs API 키</h3>
+      <p class="hint">이 브라우저에만 저장되며, 요청할 때만 서버로 전달됩니다.</p>
+      <input id="apiKeyInput" type="password" placeholder="ElevenLabs API 키" autocomplete="off" />
+      <div class="dialog-actions">
+        <button value="cancel" class="ghost-btn">취소</button>
+        <button value="save" class="primary-btn">저장</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>

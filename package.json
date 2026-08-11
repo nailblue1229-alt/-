@@ -1,0 +1,16 @@
+{
+  "name": "tts-emotion-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "대본을 입력하면 ElevenLabs 보이스로 감정 TTS를 생성하는 웹앱",
+  "main": "server.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
