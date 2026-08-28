@@ -43,9 +43,27 @@
     return restMon > 0 ? `${y}년 ${restMon}개월 전` : `${y}년 전`;
   }
 
-  /** 설정(dateFormat, showTime)에 맞춘 날짜 문자열 */
+/**
+   * 작은 썸네일용 짧은 날짜.
+   * 올해 것은 08.28, 지난 해 것은 25.08.28 처럼 연도를 붙인다.
+   */
+  function short(ts, now = Date.now()) {
+    const d = new Date(ts * 1000);
+    const md = `${pad(d.getMonth() + 1)}.${pad(d.getDate())}`;
+    const thisYear = new Date(now).getFullYear();
+    return d.getFullYear() === thisYear ? md : `${String(d.getFullYear()).slice(2)}.${md}`;
+  }
+
+  /**
+   * 설정(dateFormat, showTime)에 맞춘 날짜 문자열.
+   * opts.compact 이면 좁은 썸네일에 맞춰 짧은 형태로 줄인다.
+   */
   function date(ts, opts = {}, now = Date.now()) {
     const showTime = opts.showTime !== false;
+    if (opts.compact) {
+      // 상대 표기를 고른 사람에게는 좁은 자리에서도 상대 표기를 유지한다
+      return opts.dateFormat === 'relative' ? relative(ts, now) : short(ts, now);
+    }
     if (opts.dateFormat === 'relative') return relative(ts, now);
     if (opts.dateFormat === 'absolute') return absolute(ts, showTime);
     return `${absolute(ts, showTime)} · ${relative(ts, now)}`;
@@ -60,7 +78,7 @@
     return `${trim(n / 100000000)}억`;
   }
 
-  const api = { absolute, full, relative, date, count };
+  const api = { absolute, full, relative, short, date, count };
 
   root.IGPDFormat = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

@@ -9,6 +9,7 @@
 
   const CHANNEL = 'IGPD::media';
   const CACHE_KEY = 'igpd_cache';
+  const NARROW_PX = 220; // 이보다 좁은 썸네일에서는 날짜를 짧게 줄인다
   const CACHE_MAX = 3000;
   const CACHE_TTL = 1000 * 60 * 60 * 24 * 14; // 14일
 
@@ -21,7 +22,7 @@
     showLikes: false,
     dateFormat: 'both',      // 'absolute' | 'relative' | 'both'
     showTime: true,
-    position: 'bottom-left', // 'bottom-left' | 'bottom-right' | 'top-left' | 'top-right'
+    position: 'bottom-right', // 'bottom-left' | 'bottom-right' | 'top-left' | 'top-right'
     fontSize: 11,
     numberStyle: 'compact',  // 'compact' | 'full'
     inlineDate: true,        // 게시물 상세 페이지의 "3일 전" 옆에 정확한 날짜 붙이기
@@ -43,7 +44,7 @@
 
   const formatAbsolute = (ts) => F.absolute(ts, settings.showTime);
   const formatFull = (ts) => F.full(ts);
-  const formatDate = (ts) => F.date(ts, settings);
+  const formatDate = (ts, compact) => F.date(ts, compact ? { ...settings, compact: true } : settings);
   const formatNumber = (n) => F.count(n, settings.numberStyle);
 
   /* =====================================================================
@@ -214,10 +215,10 @@
 
   const isVideo = (data) => data.type === 'video' || data.type === 'reel';
 
-  function badgeHtmlParts(data) {
+  function badgeHtmlParts(data, compact) {
     const parts = [];
     if (settings.showDate && data.ts) {
-      parts.push({ cls: 'igpd-date', icon: '📅', text: formatDate(data.ts), title: formatFull(data.ts) });
+      parts.push({ cls: 'igpd-date', icon: '📅', text: formatDate(data.ts, compact), title: formatFull(data.ts) });
     }
     if (settings.showViews && typeof data.views === 'number') {
       parts.push({ cls: 'igpd-views', icon: '▶', text: formatNumber(data.views), title: `조회수 ${data.views.toLocaleString('ko-KR')}회` });
@@ -235,8 +236,8 @@
     return parts;
   }
 
-  function buildBadge(data) {
-    const parts = badgeHtmlParts(data);
+  function buildBadge(data, compact) {
+    const parts = badgeHtmlParts(data, compact);
     if (!parts.length) return null;
 
     const box = document.createElement('div');
@@ -263,8 +264,9 @@
     return box;
   }
 
-  function signatureOf(data) {
+  function signatureOf(data, compact) {
     return [
+      compact ? 'c' : 'w',
       settings.position, settings.fontSize, settings.dateFormat, settings.showTime,
       settings.numberStyle, settings.showDate, settings.showViews,
       settings.showUnknownViews, settings.showComments, settings.showLikes,
@@ -294,13 +296,14 @@
       return;
     }
 
-    const sig = signatureOf(data);
+    const compact = rect.width < NARROW_PX;
+    const sig = signatureOf(data, compact);
     if (anchor.dataset.igpdSig === sig) return;
 
     const old = anchor.querySelector(':scope > .igpd-badge');
     if (old) old.remove();
 
-    const badge = buildBadge(data);
+    const badge = buildBadge(data, compact);
     if (!badge) {
       delete anchor.dataset.igpdSig;
       anchor.classList.remove('igpd-host', 'igpd-relative');

@@ -8,7 +8,7 @@ const DEFAULTS = {
   showLikes: false,
   dateFormat: 'both',
   showTime: true,
-  position: 'bottom-left',
+  position: 'bottom-right',
   fontSize: 11,
   numberStyle: 'compact',
   inlineDate: true,

@@ -51,3 +51,20 @@ test('count', () => {
   assert.equal(F.count(null), '');
   assert.equal(F.count(undefined), '');
 });
+
+test('short — 좁은 썸네일용 짧은 날짜', () => {
+  const now = Date.parse('2026-08-28T06:24:00Z');
+  assert.equal(F.short(TS, now), '08.28', '올해 것은 월.일만');
+  const lastYear = Math.floor(Date.parse('2025-03-05T01:00:00Z') / 1000);
+  assert.equal(F.short(lastYear, now), '25.03.05', '지난 해 것은 연도까지');
+});
+
+test('compact 일 때 날짜가 짧아진다', () => {
+  const now = Date.parse('2026-08-28T06:24:00Z') + 86400 * 3 * 1000;
+  assert.equal(F.date(TS, { dateFormat: 'both', compact: true }, now), '08.28');
+  assert.equal(F.date(TS, { dateFormat: 'absolute', compact: true }, now), '08.28');
+  // 상대 표기를 고른 사람은 좁은 자리에서도 상대 표기를 유지한다
+  assert.equal(F.date(TS, { dateFormat: 'relative', compact: true }, now), '3일 전');
+  // compact 가 아니면 기존 그대로
+  assert.equal(F.date(TS, { dateFormat: 'both' }, now), '2026.08.28 15:24 · 3일 전');
+});
