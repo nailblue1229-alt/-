@@ -64,7 +64,9 @@ async function refreshDiag() {
       return;
     }
 
+    const dom = r.dom || { all: 0, posts: 0, samples: [], chains: [] };
     const lines = [
+      `버전 ${r.version || '?'}`,
       r.enabled ? '✓ 확장 실행 중' : '⚠ 실행 중이지만 [표시 켜기] 가 꺼져 있음',
       r.formatLoaded ? '✓ 표시 모듈 정상' : '✗ 표시 모듈 로드 실패',
       '',
@@ -72,12 +74,16 @@ async function refreshDiag() {
       `받은 게시물  ${r.net.media}개 (메시지 ${r.messages}회)`,
       `저장된 정보  ${r.stored}개 · 날짜 ${r.withDate} · 조회수 ${r.withViews}`,
       '',
+      `페이지의 <a>  ${dom.all}개 중 게시물 링크 ${dom.posts}개`,
       `화면의 링크  ${r.anchors}개 → 썸네일 판정 ${r.thumbs}개`,
       `배지 그림    ${r.drawn}개 · 정보 없어 건너뜀 ${r.noData}개`,
       `보충 조회    성공 ${r.embedOk} · 실패 ${r.embedFail}${r.autoFetch ? '' : ' (꺼짐)'}`,
       '',
       `마지막 오류  ${r.lastError || '없음'}`
     ];
+    if (dom.samples.length) lines.push('', `링크 예시: ${dom.samples.join(' , ')}`);
+    if (dom.chains.length) lines.push('', '이미지 감싼 구조:', ...dom.chains.map((c) => `  ${c}`));
+    lines.push('', `주소: ${(r.url || '').slice(0, 90)}`);
     el.textContent = lines.join('\n');
   });
 }
@@ -98,6 +104,17 @@ async function init() {
   $('fontSizeOut').textContent = String(settings.fontSize);
 
   $('refreshDiag').addEventListener('click', refreshDiag);
+
+  $('copyDiag').addEventListener('click', async () => {
+    const btn = $('copyDiag');
+    try {
+      await navigator.clipboard.writeText($('diag').textContent);
+      btn.textContent = '복사됨';
+    } catch (_) {
+      btn.textContent = '복사 실패';
+    }
+    setTimeout(() => { btn.textContent = '복사'; }, 1500);
+  });
 
   $('clearCache').addEventListener('click', async () => {
     await chrome.storage.local.remove(CACHE_KEY);

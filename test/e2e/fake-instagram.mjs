@@ -143,16 +143,47 @@ try {
   // 좁은 썸네일(180px)이라 날짜가 짧은 형태여야 한다
   check('좁은 썸네일에서는 짧은 날짜', first && !/\d{4}\./.test(first.date || ''), first && first.date);
 
+  // 팝업이 쓰는 것과 같은 경로(chrome.tabs.sendMessage)로 진단을 실제로 물어본다
+  const [existing] = ctx.serviceWorkers();
+  const sw = existing || await ctx.waitForEvent('serviceworker', { timeout: 5000 }).catch(() => null);
+  check('서비스 워커가 뜬다', Boolean(sw), sw ? new URL(sw.url()).host : 'none');
+
+  const askDiag = () => sw.evaluate(async () => {
+    const tabs = await chrome.tabs.query({ url: 'https://www.instagram.com/*' });
+    if (!tabs.length) return null;
+    return new Promise((resolve) => {
+      chrome.tabs.sendMessage(tabs[0].id, { type: 'IGPD_DIAG' }, (r) =>
+        resolve(chrome.runtime.lastError ? { error: chrome.runtime.lastError.message } : r));
+    });
+  }).catch((e) => ({ error: String(e) }));
+
+  // 통계는 500ms 간격으로 넘어오므로, 도착할 때까지 잠깐 기다린다
+  let diag = null;
+  if (sw) {
+    const deadline = Date.now() + 5000;
+    do {
+      diag = await askDiag();
+      if (diag && !diag.error && diag.net && diag.net.parsed >= 1) break;
+      await new Promise((r) => setTimeout(r, 200));
+    } while (Date.now() < deadline);
+  }
+
+  check('진단 질의에 응답한다', Boolean(diag && !diag.error), diag && diag.error);
+  if (diag && !diag.error) {
+    check('진단: 확장 실행 중으로 보고', diag.enabled === true && diag.formatLoaded === true);
+    check('진단: 게시물 링크를 찾았다고 보고', diag.dom.posts === 3, `posts=${diag.dom.posts}`);
+    check('진단: 배지를 그렸다고 보고', diag.drawn === 3, `drawn=${diag.drawn}, noData=${diag.noData}`);
+    check('진단: 가로챈 응답이 잡혔다고 보고', diag.net.parsed >= 1, JSON.stringify(diag.net));
+    check('진단: 오류 없음', diag.lastError === null, String(diag.lastError));
+    check('진단: 버전을 보고한다', diag.version === '1.1.0', diag.version);
+  }
+
   const shotDir = path.join(ROOT, 'docs');
   fs.mkdirSync(shotDir, { recursive: true });
   await page.screenshot({ path: path.join(shotDir, 'screenshot-grid.png'), clip: { x: 0, y: 0, width: 592, height: 290 } });
 
   // 팝업 페이지가 오류 없이 뜨는지 확인
-  const [background] = ctx.serviceWorkers();
-  const sw = background || await ctx.waitForEvent('serviceworker', { timeout: 5000 }).catch(() => null);
   const extId = sw ? new URL(sw.url()).host : null;
-  check('서비스 워커가 뜬다', Boolean(extId), String(extId));
-
   if (extId) {
     const popup = await ctx.newPage();
     const errors = [];
@@ -163,7 +194,8 @@ try {
 
     const controls = await popup.evaluate(() =>
       ['enabled', 'showDate', 'showViews', 'showComments', 'showLikes', 'dateFormat',
-       'position', 'fontSize', 'autoFetch', 'diag'].filter((id) => !document.getElementById(id)));
+       'position', 'fontSize', 'autoFetch', 'diag', 'copyDiag', 'refreshDiag']
+        .filter((id) => !document.getElementById(id)));
     check('팝업 컨트롤이 모두 있다', controls.length === 0, controls.join(','));
 
     await popup.setViewportSize({ width: 340, height: 900 });

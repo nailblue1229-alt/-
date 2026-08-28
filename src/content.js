@@ -458,6 +458,35 @@
     requestRender();
   }
 
+  /**
+   * 실제 페이지의 DOM 이 예상과 같은지 살펴본다.
+   * 썸네일을 못 찾을 때, 인스타가 어떤 구조로 그리고 있는지 알아내기 위한 것.
+   */
+  function domProbe() {
+    const all = document.querySelectorAll('a').length;
+    const posts = document.querySelectorAll('a[href*="/p/"], a[href*="/reel/"], a[href*="/tv/"]');
+    const samples = [...posts].slice(0, 3).map((a) => a.getAttribute('href'));
+
+    // 게시물 링크가 하나도 없다면, 큰 이미지의 조상 구조를 훑어 무엇으로 감싸였는지 본다
+    let chains = [];
+    if (posts.length === 0) {
+      const imgs = [...document.querySelectorAll('img')]
+        .filter((i) => i.clientWidth >= 100 && i.clientHeight >= 100)
+        .slice(0, 2);
+      chains = imgs.map((img) => {
+        const parts = [];
+        let el = img.parentElement;
+        for (let i = 0; el && i < 6; i++, el = el.parentElement) {
+          const role = el.getAttribute('role');
+          const href = el.tagName === 'A' ? el.getAttribute('href') : null;
+          parts.push(el.tagName.toLowerCase() + (role ? `[${role}]` : '') + (href ? `(${href})` : ''));
+        }
+        return parts.join(' < ');
+      });
+    }
+    return { all, posts: posts.length, samples, chains };
+  }
+
   // 팝업의 "진단" 버튼이 물어보면 현재 상태를 그대로 돌려준다
   chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
     if (!msg || msg.type !== 'IGPD_DIAG') return false;
@@ -470,6 +499,8 @@
       stored: values.length,
       withViews: values.filter((e) => typeof e.views === 'number').length,
       withDate: values.filter((e) => typeof e.ts === 'number').length,
+      version: chrome.runtime.getManifest().version,
+      dom: domProbe(),
       url: location.href
     });
     return false;

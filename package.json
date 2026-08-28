@@ -1,6 +1,6 @@
 {
   "name": "instagram-post-info",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "description": "인스타그램 게시물의 업로드 날짜·조회수·댓글수를 보여주는 크롬 확장 프로그램",
   "scripts": {
