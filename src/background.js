@@ -3,6 +3,7 @@ const DEFAULTS = {
   enabled: true,
   showDate: true,
   showViews: true,
+  showUnknownViews: true,
   showComments: true,
   showLikes: false,
   dateFormat: 'both',

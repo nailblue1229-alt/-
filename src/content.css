@@ -50,6 +50,7 @@
   text-overflow: ellipsis;
 }
 
+.igpd-unknown { opacity: 0.55; }
 .igpd-date { color: #ffffff; }
 .igpd-views { color: #9fe3ff; }
 .igpd-comments { color: #ffe6a3; }

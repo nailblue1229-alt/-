@@ -16,6 +16,7 @@
     enabled: true,
     showDate: true,
     showViews: true,
+    showUnknownViews: true,   // 동영상인데 조회수를 못 받았으면 '–' 로 표시
     showComments: true,
     showLikes: false,
     dateFormat: 'both',      // 'absolute' | 'relative' | 'both'
@@ -174,8 +175,10 @@
 
     const mc = html.match(/"edge_media_to_(?:parent_)?comment"\s*:\s*\{\s*"count"\s*:\s*(\d+)/)
       || html.match(/"comment_count"\s*:\s*(\d+)/);
-    const mv = html.match(/"video_view_count"\s*:\s*(\d+)/)
-      || html.match(/"play_count"\s*:\s*(\d+)/);
+    const mv = html.match(/"play_count"\s*:\s*(\d+)/)
+      || html.match(/"video_view_count"\s*:\s*(\d+)/)
+      || html.match(/"ig_play_count"\s*:\s*(\d+)/)
+      || html.match(/"view_count"\s*:\s*(\d+)/);
     const ml = html.match(/"edge_media_preview_like"\s*:\s*\{\s*"count"\s*:\s*(\d+)/)
       || html.match(/"like_count"\s*:\s*(\d+)/);
 
@@ -186,7 +189,7 @@
       views: mv ? Number(mv[1]) : null,
       comments: mc ? Number(mc[1]) : null,
       likes: ml ? Number(ml[1]) : null,
-      type: mv ? 'video' : 'image',
+      type: (mv || /"is_video"\s*:\s*true/.test(html) || html.includes('<video')) ? 'video' : 'image',
       username: null,
       seen: Date.now()
     };
@@ -209,6 +212,8 @@
     return m ? m[1] : null;
   }
 
+  const isVideo = (data) => data.type === 'video' || data.type === 'reel';
+
   function badgeHtmlParts(data) {
     const parts = [];
     if (settings.showDate && data.ts) {
@@ -216,6 +221,10 @@
     }
     if (settings.showViews && typeof data.views === 'number') {
       parts.push({ cls: 'igpd-views', icon: '▶', text: formatNumber(data.views), title: `조회수 ${data.views.toLocaleString('ko-KR')}회` });
+    } else if (settings.showViews && settings.showUnknownViews && isVideo(data)) {
+      // 동영상·릴스인데 아직 숫자를 못 받은 경우. 사진 게시물은 조회수 지표
+      // 자체가 없으므로 아무것도 띄우지 않는다.
+      parts.push({ cls: 'igpd-views igpd-unknown', icon: '▶', text: '–', title: '조회수 정보를 아직 받지 못했습니다' });
     }
     if (settings.showComments && typeof data.comments === 'number') {
       parts.push({ cls: 'igpd-comments', icon: '💬', text: formatNumber(data.comments), title: `댓글 ${data.comments.toLocaleString('ko-KR')}개` });
@@ -258,8 +267,8 @@
     return [
       settings.position, settings.fontSize, settings.dateFormat, settings.showTime,
       settings.numberStyle, settings.showDate, settings.showViews,
-      settings.showComments, settings.showLikes,
-      data.ts, data.views, data.comments, data.likes
+      settings.showUnknownViews, settings.showComments, settings.showLikes,
+      data.ts, data.views, data.comments, data.likes, data.type
     ].join('|');
   }
 

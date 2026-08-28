@@ -198,3 +198,94 @@ test('JSON 이 아니어도 죽지 않는다', async () => {
   await flush();
   assert.equal(messages.length, 0);
 });
+
+test('릴스의 ig_play_count 도 조회수로 읽는다', async () => {
+  const { sandbox, messages } = boot();
+  sandbox.__nextBody = JSON.stringify({
+    items: [{ code: 'IgPlayCnt1', taken_at: 1700000000, ig_play_count: 88123, product_type: 'clips' }]
+  });
+  await sandbox.window.fetch('https://www.instagram.com/api/v1/clips/home/');
+  await flush();
+  assert.equal(collect(messages).get('IgPlayCnt1').views, 88123);
+});
+
+test('캐러셀은 동영상 자식의 조회수를 끌어온다', async () => {
+  const { sandbox, messages } = boot();
+  sandbox.__nextBody = JSON.stringify({
+    items: [{
+      code: 'Carousel001',
+      taken_at: 1700000000,
+      media_type: 8,
+      comment_count: 20,
+      carousel_media: [
+        { media_type: 1 },
+        { media_type: 2, play_count: 4500 },
+        { media_type: 2, play_count: 7200 }
+      ]
+    }]
+  });
+  await sandbox.window.fetch('https://www.instagram.com/api/v1/feed/timeline/');
+  await flush();
+
+  const item = collect(messages).get('Carousel001');
+  assert.equal(item.views, 7200, '자식 중 가장 큰 조회수를 쓴다');
+  assert.equal(item.type, 'sidecar');
+});
+
+test('구형 캐러셀(edge_sidecar_to_children)도 마찬가지', async () => {
+  const { sandbox, messages } = boot();
+  sandbox.__nextBody = JSON.stringify({
+    data: {
+      shortcode_media: {
+        shortcode: 'OldCarousel',
+        taken_at_timestamp: 1700000000,
+        __typename: 'GraphSidecar',
+        edge_sidecar_to_children: {
+          edges: [{ node: { is_video: true, video_view_count: 3300 } }]
+        }
+      }
+    }
+  });
+  await sandbox.window.fetch('https://www.instagram.com/graphql/query');
+  await flush();
+  assert.equal(collect(messages).get('OldCarousel').views, 3300);
+});
+
+test('한 겹 감싸인 play_count_info 도 읽는다', async () => {
+  const { sandbox, messages } = boot();
+  sandbox.__nextBody = JSON.stringify({
+    items: [{ code: 'WrappedCnt', taken_at: 1700000000, play_count_info: { play_count: 12000 } }]
+  });
+  await sandbox.window.fetch('https://www.instagram.com/api/v1/x/');
+  await flush();
+  assert.equal(collect(messages).get('WrappedCnt').views, 12000);
+});
+
+test('노출수·도달수를 조회수로 착각하지 않는다', async () => {
+  const { sandbox, messages } = boot();
+  sandbox.__nextBody = JSON.stringify({
+    items: [{
+      code: 'ImpressOnly',
+      taken_at: 1700000000,
+      comment_count: 4,
+      insights: { impression_count: 99999, reach_count: 88888 }
+    }]
+  });
+  await sandbox.window.fetch('https://www.instagram.com/api/v1/x/');
+  await flush();
+  assert.equal(collect(messages).get('ImpressOnly').views, null);
+});
+
+test('사진 게시물에는 조회수가 없다', async () => {
+  const { sandbox, messages } = boot();
+  sandbox.__nextBody = JSON.stringify({
+    items: [{ code: 'PhotoOnly1', taken_at: 1700000000, media_type: 1, comment_count: 8, like_count: 300 }]
+  });
+  await sandbox.window.fetch('https://www.instagram.com/api/v1/x/');
+  await flush();
+
+  const item = collect(messages).get('PhotoOnly1');
+  assert.equal(item.views, null);
+  assert.equal(item.type, 'image');
+  assert.equal(item.comments, 8);
+});

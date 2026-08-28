@@ -35,15 +35,53 @@
     return null;
   }
 
+  /** 캐러셀(여러 장 게시물)의 자식 미디어 목록 */
+  function childrenOf(node) {
+    if (Array.isArray(node.carousel_media)) return node.carousel_media;
+    const edges = node.edge_sidecar_to_children && node.edge_sidecar_to_children.edges;
+    if (Array.isArray(edges)) return edges.map((e) => e && e.node).filter(Boolean);
+    return [];
+  }
+
+  /**
+   * insights / play_count_info 처럼 한 겹 감싸인 곳의 조회수.
+   * 노출수(impression)·도달수(reach)는 조회수와 다른 지표라 쓰지 않는다.
+   */
+  function wrappedViews(node) {
+    for (const key of ['insights', 'media_insights', 'play_count_info', 'video_view_count_info']) {
+      const o = node[key];
+      if (!o || typeof o !== 'object') continue;
+      const v = num(o.play_count) ?? num(o.video_views) ?? num(o.view_count) ?? num(o.count);
+      if (v !== null) return v;
+    }
+    return null;
+  }
+
   function viewsOf(node) {
-    return (
+    const own =
       num(node.play_count) ??
       num(node.video_view_count) ??
       num(node.view_count) ??
       num(node.ig_play_count) ??
+      num(node.reel_play_count) ??
+      num(node.video_play_count) ??
       countOf(node.video_play_count) ??
-      null
-    );
+      wrappedViews(node);
+    if (own !== null) return own;
+
+    // 캐러셀은 부모에 조회수가 없고 동영상 자식에만 붙어 오는 경우가 있다
+    let best = null;
+    for (const child of childrenOf(node)) {
+      if (!child || typeof child !== 'object') continue;
+      const v =
+        num(child.play_count) ??
+        num(child.video_view_count) ??
+        num(child.view_count) ??
+        num(child.ig_play_count) ??
+        wrappedViews(child);
+      if (v !== null) best = best === null ? v : Math.max(best, v);
+    }
+    return best;
   }
 
   function commentsOf(node) {

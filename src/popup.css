@@ -95,3 +95,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
   font-size: 11px;
   color: var(--muted);
 }
+
+.row.sub { padding-left: 22px; font-size: 12px; color: var(--muted); }
+.row.sub b { color: inherit; }
+.dim { color: var(--muted); font-size: 11px; }

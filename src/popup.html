@@ -23,6 +23,7 @@
     <h2>무엇을 보여줄까요</h2>
     <label class="row"><input type="checkbox" id="showDate"><span>📅 업로드 날짜</span></label>
     <label class="row"><input type="checkbox" id="showViews"><span>▶ 조회수 (동영상·릴스)</span></label>
+    <label class="row sub"><input type="checkbox" id="showUnknownViews"><span>조회수를 못 받은 동영상은 <b>–</b> 로 표시</span></label>
     <label class="row"><input type="checkbox" id="showComments"><span>💬 댓글 개수</span></label>
     <label class="row"><input type="checkbox" id="showLikes"><span>♥ 좋아요 개수</span></label>
   </section>
@@ -70,7 +71,10 @@
     <h2>데이터</h2>
     <label class="row"><input type="checkbox" id="autoFetch"><span>정보가 없으면 공개 embed 페이지로 보충</span></label>
     <div class="row cache-row">
-      <span>저장된 게시물 <b id="cacheCount">0</b>개</span>
+      <span>저장된 게시물 <b id="cacheCount">0</b>개 · 조회수 있음 <b id="viewsCount">0</b>개</span>
+    </div>
+    <div class="row cache-row">
+      <span class="dim">사진 게시물에는 조회수 지표가 없습니다</span>
       <button id="clearCache" type="button">캐시 비우기</button>
     </div>
   </section>

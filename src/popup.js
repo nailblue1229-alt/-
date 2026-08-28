@@ -4,6 +4,7 @@ const DEFAULTS = {
   enabled: true,
   showDate: true,
   showViews: true,
+  showUnknownViews: true,
   showComments: true,
   showLikes: false,
   dateFormat: 'both',
@@ -31,8 +32,10 @@ function writeControl(el, value) {
 
 async function refreshCacheCount() {
   const got = await chrome.storage.local.get(CACHE_KEY);
-  const n = got[CACHE_KEY] ? Object.keys(got[CACHE_KEY]).length : 0;
-  $('cacheCount').textContent = n.toLocaleString('ko-KR');
+  const entries = got[CACHE_KEY] ? Object.values(got[CACHE_KEY]) : [];
+  const withViews = entries.filter((e) => typeof e.views === 'number').length;
+  $('cacheCount').textContent = entries.length.toLocaleString('ko-KR');
+  $('viewsCount').textContent = withViews.toLocaleString('ko-KR');
 }
 
 async function init() {
