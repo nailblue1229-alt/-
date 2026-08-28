@@ -38,6 +38,14 @@ test('format.js 가 content.js 보다 먼저 로드된다', () => {
   assert.deepEqual(iso.js, ['src/format.js', 'src/content.js']);
 });
 
+test('world:MAIN 을 쓰므로 최소 크로미움 버전을 선언한다', () => {
+  const usesMainWorld = manifest.content_scripts.some((cs) => cs.world === 'MAIN');
+  if (usesMainWorld) {
+    assert.ok(Number(manifest.minimum_chrome_version) >= 111,
+      'world:"MAIN" 콘텐츠 스크립트는 크로미움 111 이상이 필요하다');
+  }
+});
+
 test('필요한 권한만 요청한다', () => {
   assert.deepEqual(manifest.permissions, ['storage']);
 });

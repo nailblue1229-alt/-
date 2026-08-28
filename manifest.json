@@ -3,6 +3,7 @@
   "name": "인스타 게시일 표시기 (IG Post Info)",
   "version": "1.0.0",
   "description": "인스타그램 게시물의 업로드 날짜·조회수·댓글수·좋아요수를 썸네일과 상세 페이지에 바로 표시합니다.",
+  "minimum_chrome_version": "111",
   "permissions": [
     "storage"
   ],
