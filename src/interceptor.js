@@ -15,6 +15,20 @@
   const MAX_DEPTH = 14;
   const CODE_RE = /^[A-Za-z0-9_-]{5,30}$/;
 
+  // 진단용 카운터. 어디까지 진행됐는지 팝업에서 확인할 수 있게 콘텐츠 스크립트로 넘긴다.
+  const stats = { targets: 0, parsed: 0, media: 0 };
+  let statTimer = null;
+
+  function reportStats() {
+    if (statTimer) return;
+    statTimer = setTimeout(() => {
+      statTimer = null;
+      try {
+        window.postMessage({ channel: 'IGPD::stat', stats: { ...stats } }, window.location.origin);
+      } catch (_) { /* 무시 */ }
+    }, 500);
+  }
+
   /* ---------- 값 추출 ---------- */
 
   const num = (v) => {
@@ -164,6 +178,8 @@
   }
 
   function publish(items) {
+    stats.media += items.length;
+    reportStats();
     if (!items.length) return;
     // 같은 응답에 중복 등장하는 코드는 마지막 값만 남긴다
     const byCode = new Map();
@@ -174,6 +190,8 @@
   }
 
   function consume(text) {
+    stats.targets++;
+    reportStats();
     if (!text || text.length > MAX_BODY) return;
     // 인스타 API 응답만 대상으로 하기 위한 가벼운 사전 필터
     if (text.indexOf('"code"') === -1 && text.indexOf('"shortcode"') === -1) return;
@@ -183,6 +201,7 @@
     } catch (_) {
       return;
     }
+    stats.parsed++;
     try {
       publish(harvest(data));
     } catch (_) { /* 무시 */ }

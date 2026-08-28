@@ -8,7 +8,8 @@
     "storage"
   ],
   "host_permissions": [
-    "https://www.instagram.com/*"
+    "https://www.instagram.com/*",
+    "https://instagram.com/*"
   ],
   "action": {
     "default_title": "인스타 게시일 표시기",
@@ -32,7 +33,8 @@
   "content_scripts": [
     {
       "matches": [
-        "https://www.instagram.com/*"
+        "https://www.instagram.com/*",
+        "https://instagram.com/*"
       ],
       "js": [
         "src/interceptor.js"
@@ -43,7 +45,8 @@
     },
     {
       "matches": [
-        "https://www.instagram.com/*"
+        "https://www.instagram.com/*",
+        "https://instagram.com/*"
       ],
       "js": [
         "src/format.js",

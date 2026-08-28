@@ -36,6 +36,25 @@
   /** 보충 조회 결과가 없었던 코드 (재시도 억제) */
   const missed = new Map();
 
+  /** 팝업의 "진단" 패널에 그대로 보여줄 상태값 */
+  const diag = {
+    formatLoaded: false,
+    messages: 0,     // 인터셉터에서 받은 메시지 수
+    mediaSeen: 0,    // 그 안에 들어 있던 게시물 항목 수
+    net: { targets: 0, parsed: 0, media: 0 },
+    anchors: 0,      // 마지막 렌더에서 훑은 링크 수
+    thumbs: 0,       // 그중 썸네일로 판정한 수
+    drawn: 0,        // 배지를 그린 수
+    noData: 0,       // 썸네일이지만 정보가 없어 건너뛴 수
+    embedOk: 0,
+    embedFail: 0,
+    lastError: null
+  };
+
+  function noteError(where, err) {
+    diag.lastError = `${where}: ${(err && err.message) || err}`;
+  }
+
   /* =====================================================================
    * 포맷터 (src/format.js 의 순수 함수를 설정과 함께 감싼다)
    * ===================================================================== */
@@ -139,14 +158,22 @@
       active++;
       fetchEmbed(code)
         .then((item) => {
-          if (item && merge(item)) {
-            scheduleSave();
-            requestRender();
-          } else if (!item) {
+          if (item) {
+            diag.embedOk++;
+            if (merge(item)) {
+              scheduleSave();
+              requestRender();
+            }
+          } else {
+            diag.embedFail++;
             missed.set(code, Date.now());
           }
         })
-        .catch(() => missed.set(code, Date.now()))
+        .catch((err) => {
+          diag.embedFail++;
+          noteError('embed', err);
+          missed.set(code, Date.now());
+        })
         .finally(() => {
           queued.delete(code);
           active--;
@@ -281,20 +308,25 @@
    */
   function isThumbnail(anchor, rect) {
     if (rect.width < 80 || rect.height < 80) return false;
-    if (anchor.querySelector('time')) return false;
-    return anchor.querySelector('img, video, canvas') !== null;
+    if (anchor.querySelector('time')) return false;               // 피드의 시각 링크
+    if (anchor.querySelector('img, video, canvas')) return true;  // 흔한 형태
+    // 이미지가 배경으로 깔려 있는 형태도 있어, 충분히 큰 링크는 썸네일로 본다
+    return rect.width >= 120 && rect.height >= 120;
   }
 
   function decorate(anchor, rect) {
     const code = codeOf(anchor);
     if (!code) return;
     if (!isThumbnail(anchor, rect)) return;
+    diag.thumbs++;
 
     const data = store.get(code);
     if (!data) {
+      diag.noData++;
       enqueue(code);
       return;
     }
+    diag.drawn++;
 
     const compact = rect.width < NARROW_PX;
     const sig = signatureOf(data, compact);
@@ -369,13 +401,21 @@
     renderPending = true;
     requestAnimationFrame(() => {
       renderPending = false;
-      render();
+      try {
+        render();
+      } catch (err) {
+        noteError('render', err);
+      }
     });
   }
 
   function render() {
     if (!settings.enabled) return;
     const anchors = document.querySelectorAll('a[href*="/p/"], a[href*="/reel/"], a[href*="/tv/"]');
+    diag.anchors = anchors.length;
+    diag.thumbs = 0;
+    diag.drawn = 0;
+    diag.noData = 0;
     for (const a of anchors) {
       // 화면 밖으로 한참 벗어난 항목은 건너뛴다
       const r = a.getBoundingClientRect();
@@ -393,7 +433,13 @@
   window.addEventListener('message', (ev) => {
     if (ev.source !== window) return;
     const d = ev.data;
+    if (d && d.channel === 'IGPD::stat' && d.stats) {
+      diag.net = d.stats;
+      return;
+    }
     if (!d || d.channel !== CHANNEL || !Array.isArray(d.items)) return;
+    diag.messages++;
+    diag.mediaSeen += d.items.length;
     let changed = false;
     for (const item of d.items) changed = merge(item) || changed;
     if (changed) {
@@ -411,6 +457,23 @@
     setInterval(requestRender, 2000);
     requestRender();
   }
+
+  // 팝업의 "진단" 버튼이 물어보면 현재 상태를 그대로 돌려준다
+  chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
+    if (!msg || msg.type !== 'IGPD_DIAG') return false;
+    const values = [...store.values()];
+    sendResponse({
+      ...diag,
+      formatLoaded: !!F,
+      enabled: settings.enabled,
+      autoFetch: settings.autoFetch,
+      stored: values.length,
+      withViews: values.filter((e) => typeof e.views === 'number').length,
+      withDate: values.filter((e) => typeof e.ts === 'number').length,
+      url: location.href
+    });
+    return false;
+  });
 
   chrome.storage.onChanged.addListener((changes, area) => {
     if (area !== 'sync') return;

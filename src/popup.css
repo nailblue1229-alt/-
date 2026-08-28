@@ -99,3 +99,18 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 .row.sub { padding-left: 22px; font-size: 12px; color: var(--muted); }
 .row.sub b { color: inherit; }
 .dim { color: var(--muted); font-size: 11px; }
+
+.diag {
+  margin: 0 0 6px;
+  padding: 8px 9px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--chip);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 190px;
+  overflow-y: auto;
+}

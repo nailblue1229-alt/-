@@ -6,6 +6,11 @@
   "scripts": {
     "test": "TZ=Asia/Seoul node --test test/*.cjs",
     "lint": "node --check src/format.js && node --check src/content.js && node --check src/interceptor.js && node --check src/background.js && node --check src/popup.js",
-    "zip": "rm -f instagram-post-info.zip && zip -r instagram-post-info.zip manifest.json src icons -x '*.DS_Store'"
+    "zip": "rm -f instagram-post-info.zip && zip -r instagram-post-info.zip manifest.json src icons -x '*.DS_Store'",
+    "test:e2e": "node test/e2e/fake-instagram.mjs",
+    "test:all": "npm test && npm run test:e2e"
+  },
+  "devDependencies": {
+    "playwright": "^1.62.1"
   }
 }

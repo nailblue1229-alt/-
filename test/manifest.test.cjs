@@ -30,7 +30,9 @@ test('인스타그램 외 사이트에는 붙지 않는다', () => {
     ...manifest.host_permissions,
     ...manifest.content_scripts.flatMap((cs) => cs.matches)
   ];
-  for (const p of patterns) assert.match(p, /^https:\/\/www\.instagram\.com\//, `${p} 범위가 너무 넓다`);
+  for (const p of patterns) {
+    assert.match(p, /^https:\/\/(www\.)?instagram\.com\//, `${p} 범위가 너무 넓다`);
+  }
 });
 
 test('format.js 가 content.js 보다 먼저 로드된다', () => {
@@ -47,5 +49,7 @@ test('world:MAIN 을 쓰므로 최소 크로미움 버전을 선언한다', () =
 });
 
 test('필요한 권한만 요청한다', () => {
+  // 진단 패널이 tabs.query 를 쓰지만, 인스타그램 host_permissions 만으로 충분하다.
+  // "방문 기록 읽기" 경고가 뜨는 tabs 권한은 요청하지 않는다.
   assert.deepEqual(manifest.permissions, ['storage']);
 });
