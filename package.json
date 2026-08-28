@@ -1,0 +1,11 @@
+{
+  "name": "instagram-post-info",
+  "version": "1.0.0",
+  "private": true,
+  "description": "인스타그램 게시물의 업로드 날짜·조회수·댓글수를 보여주는 크롬 확장 프로그램",
+  "scripts": {
+    "test": "TZ=Asia/Seoul node --test test/*.cjs",
+    "lint": "node --check src/format.js && node --check src/content.js && node --check src/interceptor.js && node --check src/background.js && node --check src/popup.js",
+    "zip": "rm -f instagram-post-info.zip && zip -r instagram-post-info.zip manifest.json src icons -x '*.DS_Store'"
+  }
+}

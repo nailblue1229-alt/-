@@ -1,0 +1,69 @@
+/* 인스타 게시일 표시기 — 썸네일 위 배지 스타일 */
+
+.igpd-relative {
+  position: relative;
+}
+
+.igpd-badge {
+  position: absolute;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: calc(100% - 12px);
+  padding: 4px 6px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.72);
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic",
+    "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.igpd-bottom-left  { bottom: 6px; left: 6px; }
+.igpd-bottom-right { bottom: 6px; right: 6px; align-items: flex-end; }
+.igpd-top-left     { top: 6px; left: 6px; }
+.igpd-top-right    { top: 6px; right: 6px; align-items: flex-end; }
+
+.igpd-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.igpd-icon {
+  flex: none;
+  font-size: 0.9em;
+  opacity: 0.9;
+}
+
+.igpd-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.igpd-date { color: #ffffff; }
+.igpd-views { color: #9fe3ff; }
+.igpd-comments { color: #ffe6a3; }
+.igpd-likes { color: #ffb3c7; }
+
+/* 게시물 상세 페이지에서 "3일 전" 옆에 붙는 정확한 날짜 */
+.igpd-inline {
+  margin-left: 2px;
+  color: inherit;
+  opacity: 0.85;
+  font-size: 0.95em;
+  font-weight: 500;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .igpd-badge { backdrop-filter: none; -webkit-backdrop-filter: none; }
+}

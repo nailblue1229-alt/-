@@ -1,0 +1,97 @@
+:root {
+  --bg: #ffffff;
+  --fg: #14181f;
+  --muted: #6b7280;
+  --line: #e6e8ec;
+  --accent: #c9358f;
+  --chip: #f6f7f9;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #16181c;
+    --fg: #f1f3f5;
+    --muted: #9aa1ab;
+    --line: #2a2e35;
+    --accent: #ff6ab8;
+    --chip: #1e2127;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  width: 320px;
+  margin: 0;
+  padding: 14px;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic",
+    "Segoe UI", Roboto, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.head { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; }
+
+.logo {
+  flex: none;
+  width: 34px; height: 34px;
+  display: grid; place-items: center;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #f9ce34, #ee2a7b 45%, #6228d7);
+  color: #fff; font-weight: 800; font-size: 13px;
+}
+
+.head-text h1 { margin: 0; font-size: 14px; font-weight: 700; }
+.head-text p { margin: 1px 0 0; font-size: 11px; color: var(--muted); }
+
+.master {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 9px 11px; margin-bottom: 12px;
+  border: 1px solid var(--line); border-radius: 10px;
+  background: var(--chip);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.group { border-top: 1px solid var(--line); padding-top: 10px; margin-bottom: 10px; }
+.group h2 { margin: 0 0 6px; font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: 0.02em; }
+
+.row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 4px 0;
+  cursor: pointer;
+}
+
+.row span { flex: 1; }
+
+.select-row select,
+.cache-row button {
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--bg);
+  color: var(--fg);
+  padding: 4px 7px;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.range-row input[type="range"] { flex: 1; accent-color: var(--accent); }
+.range-row output { width: 22px; text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.cache-row { justify-content: space-between; cursor: default; }
+.cache-row b { font-variant-numeric: tabular-nums; }
+.cache-row button:hover { border-color: var(--accent); color: var(--accent); }
+
+input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px; flex: none; }
+.switch { width: 17px; height: 17px; }
+
+.hint {
+  margin: 8px 0 0;
+  padding-top: 9px;
+  border-top: 1px solid var(--line);
+  font-size: 11px;
+  color: var(--muted);
+}

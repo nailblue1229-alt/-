@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>인스타 게시일 표시기</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="head">
+    <div class="logo">IG</div>
+    <div class="head-text">
+      <h1>인스타 게시일 표시기</h1>
+      <p>썸네일 위에 업로드 날짜·조회수·댓글수를 표시합니다.</p>
+    </div>
+  </header>
+
+  <label class="master">
+    <span>표시 켜기</span>
+    <input type="checkbox" id="enabled" class="switch">
+  </label>
+
+  <section class="group">
+    <h2>무엇을 보여줄까요</h2>
+    <label class="row"><input type="checkbox" id="showDate"><span>📅 업로드 날짜</span></label>
+    <label class="row"><input type="checkbox" id="showViews"><span>▶ 조회수 (동영상·릴스)</span></label>
+    <label class="row"><input type="checkbox" id="showComments"><span>💬 댓글 개수</span></label>
+    <label class="row"><input type="checkbox" id="showLikes"><span>♥ 좋아요 개수</span></label>
+  </section>
+
+  <section class="group">
+    <h2>날짜 표시 방식</h2>
+    <label class="row select-row">
+      <span>형식</span>
+      <select id="dateFormat">
+        <option value="absolute">2026.08.28 15:24</option>
+        <option value="relative">3개월 전</option>
+        <option value="both">둘 다 표시</option>
+      </select>
+    </label>
+    <label class="row"><input type="checkbox" id="showTime"><span>시:분까지 표시</span></label>
+    <label class="row"><input type="checkbox" id="inlineDate"><span>게시물 상세에서 "3일 전" 옆에 정확한 날짜 붙이기</span></label>
+  </section>
+
+  <section class="group">
+    <h2>배지 모양</h2>
+    <label class="row select-row">
+      <span>위치</span>
+      <select id="position">
+        <option value="bottom-left">왼쪽 아래</option>
+        <option value="bottom-right">오른쪽 아래</option>
+        <option value="top-left">왼쪽 위</option>
+        <option value="top-right">오른쪽 위</option>
+      </select>
+    </label>
+    <label class="row select-row">
+      <span>숫자</span>
+      <select id="numberStyle">
+        <option value="compact">1.2만</option>
+        <option value="full">12,345</option>
+      </select>
+    </label>
+    <label class="row range-row">
+      <span>글자 크기</span>
+      <input type="range" id="fontSize" min="9" max="16" step="1">
+      <output id="fontSizeOut">11</output>
+    </label>
+  </section>
+
+  <section class="group">
+    <h2>데이터</h2>
+    <label class="row"><input type="checkbox" id="autoFetch"><span>정보가 없으면 공개 embed 페이지로 보충</span></label>
+    <div class="row cache-row">
+      <span>저장된 게시물 <b id="cacheCount">0</b>개</span>
+      <button id="clearCache" type="button">캐시 비우기</button>
+    </div>
+  </section>
+
+  <p class="hint">설정을 바꾸면 열려 있는 인스타그램 탭에 바로 적용됩니다. 화면이 그대로면 새로고침(F5) 해 주세요.</p>
+
+  <script src="popup.js"></script>
+</body>
+</html>
