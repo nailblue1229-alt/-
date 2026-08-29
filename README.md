@@ -12,12 +12,48 @@
 
 ---
 
-## 1. 준비
+## ⭐ 파이썬 설치 없이 쓰기 (가장 쉬운 방법)
+
+GitHub가 대신 빌드해 둔 **완성된 실행 파일**을 받아 바로 쓰면 됩니다.
+
+1. 저장소의 **Releases → `app-latest`** 로 들어갑니다
+   → https://github.com/nailblue1229-alt/-/releases/tag/app-latest
+2. 내 컴퓨터에 맞는 파일을 받습니다
+
+   | 운영체제 | 받을 파일 | 실행 방법 |
+   | --- | --- | --- |
+   | 윈도우 | `XHS-Downloader.exe` | 더블클릭 (설치 과정 없음) |
+   | 맥 | `XHS-Downloader-mac.zip` | 압축 풀고 앱을 **우클릭 → 열기** |
+
+3. 창이 뜨면 링크를 붙여넣고 **다운로드 시작**
+
+처음 실행할 때 나오는 보안 경고는 서명을 하지 않은 개인 빌드라서 나오는 것입니다.
+
+- **윈도우**: `Windows에서 PC를 보호했습니다` → **추가 정보** → **실행**
+- **맥**: 그냥 더블클릭하면 열리지 않습니다. 반드시 **우클릭 → 열기 → 열기**.
+  그래도 `손상되었습니다` 라고 나오면 터미널에서 한 번만
+  `xattr -dr com.apple.quarantine /경로/XHS-Downloader.app` 을 실행하세요.
+
+> 새 빌드는 코드를 고쳐 올릴 때마다 **Actions** 탭에서 자동으로 만들어지고,
+> `app-latest` 릴리스가 최신 파일로 교체됩니다.
+
+### 직접 빌드하고 싶다면
+
+```bash
+pip install pyinstaller
+python build_app.py     # dist/ 안에 실행 파일이 생깁니다
+```
+
+---
+
+## 파이썬으로 실행하기 (개발자용)
+
+### 준비
 
 - 파이썬 3.9 이상 (윈도우/맥은 https://python.org 설치본에 GUI용 tkinter가 포함되어 있습니다)
 - 리눅스에서 GUI를 쓰려면: `sudo apt install python3-tk`
 
-## 2. 실행 방법
+### 실행 방법
 
 ### GUI (권장)
 
