@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
-"""PyInstaller로 파이썬 없이 실행되는 앱을 만듭니다.
+"""PyInstaller build script: makes an app that runs without Python installed.
 
-윈도우/리눅스: dist/XHS-Downloader(.exe) 단일 파일
-맥:            dist/XHS-Downloader.app 앱 번들
+Windows/Linux: dist/XHS-Downloader(.exe)  - single file
+macOS:         dist/XHS-Downloader.app    - app bundle
+
+Messages here are ASCII only: the Windows CI console uses cp1252 and
+would raise UnicodeEncodeError on non-ASCII output.
 """
 
 from __future__ import annotations
@@ -20,7 +23,7 @@ def build() -> int:
     try:
         import PyInstaller  # noqa: F401
     except ImportError:
-        print("PyInstaller가 없습니다.  pip install pyinstaller  후 다시 실행하세요.")
+        print("PyInstaller not found. Run: pip install pyinstaller")
         return 1
 
     for folder in ("build", "dist"):
@@ -34,27 +37,32 @@ def build() -> int:
         "--clean",
         "--name",
         APP_NAME,
-        "--windowed",  # 콘솔 창 없이 GUI만 띄웁니다.
+        "--windowed",  # no console window, GUI only
         "--collect-submodules",
-        "xhs_dl",  # 동적으로 불러오는 하위 모듈까지 포함
+        "xhs_dl",  # include submodules imported lazily
         "--paths",
         str(ROOT),
     ]
     if sys.platform != "darwin":
-        # 맥은 .app 번들(onedir)이 안정적이라 onefile을 쓰지 않습니다.
+        # macOS is more reliable as a onedir .app bundle.
         command.append("--onefile")
     command.append(str(ROOT / "run_gui.py"))
 
-    print("실행:", " ".join(command))
+    print("running:", " ".join(command))
     result = subprocess.run(command, cwd=ROOT)
     if result.returncode != 0:
         return result.returncode
 
-    print("\n빌드 완료. dist 폴더 내용:")
+    print("\nbuild finished. dist contents:")
     for item in sorted((ROOT / "dist").iterdir()):
         print("  -", item.name)
     return 0
 
 
 if __name__ == "__main__":
+    if sys.stdout is not None:
+        try:
+            sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        except (AttributeError, OSError):
+            pass
     raise SystemExit(build())

@@ -11,18 +11,8 @@ permissions:
 
 jobs:
   build:
-    name: ${{ matrix.label }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: windows-latest
-            label: Windows
-            artifact: XHS-Downloader-Windows
-          - os: macos-latest
-            label: macOS
-            artifact: XHS-Downloader-macOS
+    name: Windows
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -37,58 +27,31 @@ jobs:
         run: python -m unittest discover -s tests -v
 
       - name: Build app
+        env:
+          PYTHONIOENCODING: utf-8
         run: python build_app.py
 
-      - name: Package (Windows)
-        if: runner.os == 'Windows'
+      - name: Package
         shell: bash
         run: |
-          mkdir -p out
-          cp dist/XHS-Downloader.exe out/
-          cp README.md out/사용법.md
-
-      - name: Package (macOS)
-        if: runner.os == 'macOS'
-        run: |
-          mkdir -p out
-          ditto -c -k --sequesterRsrc --keepParent \
-            dist/XHS-Downloader.app out/XHS-Downloader-mac.zip
-          cp README.md out/사용법.md
+          mkdir -p release
+          cp dist/XHS-Downloader.exe release/
+          ls -la release
 
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.artifact }}
-          path: out/
+          name: XHS-Downloader-Windows
+          path: release/
           if-no-files-found: error
-
-  release:
-    name: Publish release
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/download-artifact@v4
-        with:
-          path: artifacts
-
-      - name: Collect files
-        run: |
-          mkdir -p release
-          cp artifacts/XHS-Downloader-Windows/XHS-Downloader.exe release/ || true
-          cp artifacts/XHS-Downloader-macOS/XHS-Downloader-mac.zip release/ || true
-          ls -la release
 
       - name: Publish "app-latest" release
         env:
           GH_TOKEN: ${{ github.token }}
+        shell: bash
         run: |
           gh release delete app-latest --yes --cleanup-tag || true
-          gh release create app-latest release/* \
+          gh release create app-latest release/XHS-Downloader.exe \
             --target "${{ github.sha }}" \
-            --title "샤오홍슈 일괄 다운로더 (최신 빌드)" \
-            --notes "윈도우: XHS-Downloader.exe 를 받아 더블클릭하세요.
-          맥: XHS-Downloader-mac.zip 을 풀고 앱을 우클릭 → 열기 하세요.
-          파이썬 설치는 필요 없습니다."
+            --title "샤오홍슈 일괄 다운로더 (윈도우)" \
+            --notes "XHS-Downloader.exe 를 받아서 더블클릭하세요. 파이썬 설치는 필요 없습니다.
+          처음 실행할 때 'Windows에서 PC를 보호했습니다' 창이 뜨면 추가 정보 -> 실행 을 누르세요."
