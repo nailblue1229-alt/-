@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "xhs-dl"
+version = "1.0.0"
+description = "샤오홍슈(小红书) 링크를 한꺼번에 붙여넣어 영상·이미지를 내려받는 도구"
+requires-python = ">=3.9"
+dependencies = []
+
+[project.scripts]
+xhs-dl = "xhs_dl.cli:main"
+
+[tool.setuptools]
+packages = ["xhs_dl"]
