@@ -35,8 +35,14 @@ jobs:
         shell: bash
         run: |
           mkdir -p release
-          cp dist/XHS-Downloader.exe release/
-          ls -la release
+          cp README.md dist/XHS-Downloader/README.md
+          cd dist && 7z a -tzip ../release/XHS-Downloader-Windows.zip XHS-Downloader
+          cd .. && ls -la release
+
+      - name: Record checksum
+        shell: bash
+        run: |
+          sha256sum release/XHS-Downloader-Windows.zip | tee release/SHA256.txt
 
       - uses: actions/upload-artifact@v4
         with:
@@ -49,9 +55,16 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
+          SUM=$(cut -d' ' -f1 release/SHA256.txt)
           gh release delete app-latest --yes --cleanup-tag || true
-          gh release create app-latest release/XHS-Downloader.exe \
+          gh release create app-latest release/XHS-Downloader-Windows.zip \
             --target "${{ github.sha }}" \
             --title "샤오홍슈 일괄 다운로더 (윈도우)" \
-            --notes "XHS-Downloader.exe 를 받아서 더블클릭하세요. 파이썬 설치는 필요 없습니다.
-          처음 실행할 때 'Windows에서 PC를 보호했습니다' 창이 뜨면 추가 정보 -> 실행 을 누르세요."
+            --notes "zip을 풀고 폴더 안의 XHS-Downloader.exe 를 실행하세요. 파이썬 설치는 필요 없습니다.
+
+          커밋: ${{ github.sha }}
+          빌드 로그: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          zip SHA256: \`$SUM\`
+
+          내려받은 파일이 위 해시와 같은지 확인하려면 PowerShell에서:
+          \`Get-FileHash .\\XHS-Downloader-Windows.zip -Algorithm SHA256\`"

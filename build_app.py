@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """PyInstaller build script: makes an app that runs without Python installed.
 
-Windows/Linux: dist/XHS-Downloader(.exe)  - single file
-macOS:         dist/XHS-Downloader.app    - app bundle
+Windows/Linux: dist/XHS-Downloader/  - folder with the launcher inside
+macOS:         dist/XHS-Downloader.app - app bundle
+
+The build is intentionally onedir, not onefile: a self-extracting onefile
+exe is a common antivirus false-positive trigger.
 
 Messages here are ASCII only: the Windows CI console uses cp1252 and
 would raise UnicodeEncodeError on non-ASCII output.
@@ -43,9 +46,9 @@ def build() -> int:
         "--paths",
         str(ROOT),
     ]
-    if sys.platform != "darwin":
-        # macOS is more reliable as a onedir .app bundle.
-        command.append("--onefile")
+    # Always onedir. A onefile exe unpacks itself into %TEMP% at startup,
+    # which antivirus heuristics (ALYac, V3, Defender) routinely flag as
+    # malware. A plain folder build avoids that behaviour entirely.
     command.append(str(ROOT / "run_gui.py"))
 
     print("running:", " ".join(command))
