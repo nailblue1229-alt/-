@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "샤오홍슈 일괄 다운로더",
-  "version": "1.0.0",
-  "description": "노트 페이지의 저장 버튼으로 바로 받거나, 링크를 붙여넣어 한꺼번에 받습니다.",
+  "version": "1.1.0",
+  "description": "목록 카드의 ⬇ 버튼으로 하나씩 받거나, 노트를 열어 받습니다. (v1.1 카드 버튼)",
   "permissions": [
     "tabs",
     "downloads",

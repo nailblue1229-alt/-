@@ -115,10 +115,30 @@ function say(text) {
   if (statusLabel) statusLabel.textContent = text || "";
 }
 
+function cardsFound() {
+  return typeof cardCount === "function" ? cardCount() : 0;
+}
+
 function refreshButton() {
   var host = document.getElementById("xhsdl-button-host");
+
   if (!isNotePage()) {
-    if (host) host.style.display = "none";
+    // 목록에서는 버튼 대신, 확장이 살아 있고 카드를 몇 개 인식했는지 알립니다.
+    // 이게 안 보이면 확장이 그 탭에 안 들어간 것입니다 (F5 필요).
+    var found = cardsFound();
+    if (found === 0) {
+      if (host) host.style.display = "none";
+      return;
+    }
+    if (!host) {
+      button = null;
+      if (!makeButton()) return;
+      host = document.getElementById("xhsdl-button-host");
+    }
+    host.style.display = "";
+    button.disabled = true;
+    button.textContent = "카드 " + found + "개 · ⬇ 눌러 저장";
+    button.title = "각 카드 왼쪽 위의 ⬇ 를 누르세요";
     return;
   }
   // 페이지가 화면을 갈아끼우면서 버튼이 사라지는 일이 있어, 없으면 다시 만듭니다.

@@ -11,6 +11,11 @@ var MARK = "xhsdlCard";
 var queue = [];
 var working = false;
 
+/** content.js 가 "카드 N개 인식됨" 표시에 씁니다. 화면에서 직접 셉니다. */
+function cardCount() {
+  return document.querySelectorAll("[data-xhsdl-note]").length;
+}
+
 function cardNoteId(href) {
   var match = /(?:explore|item)\/([0-9a-f]{24})/i.exec(href || "");
   return match ? match[1].toLowerCase() : "";
@@ -58,6 +63,8 @@ function decorateCards() {
 
     var container = containerFor(anchor);
     if (container.dataset[MARK]) continue;
+    // 표지와 제목이 각각 링크인 카드가 있어, 같은 노트에 두 번 붙지 않게 합니다.
+    if (container.querySelector('[data-xhsdl-note="' + noteId + '"]')) continue;
     // 노트를 연 화면(팝업) 안의 링크에는 붙이지 않습니다. 거기엔 큰 버튼이 있습니다.
     if (container.closest("#noteContainer, .note-detail-mask")) continue;
 
