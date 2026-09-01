@@ -18,6 +18,7 @@ OG_TITLE_RE = re.compile(
     re.IGNORECASE,
 )
 CDN_VIDEO_RE = re.compile(r'"(https?://sns-video[^"]+?\.(?:mp4|m3u8)[^"]*)"')
+LOGGED_OUT_RE = re.compile(r'"loggedIn"\s*:\s*false')
 LOGIN_HINTS = (
     "登录后查看",
     "扫码登录",
@@ -211,10 +212,23 @@ def _diagnose(page: str, url: str, state_found: bool, payload_found: bool) -> Ex
     """
     size = f"응답 {len(page):,}자"
 
-    if "/login" in url or any(hint in page for hint in LOGIN_HINTS):
+    if "/login" in url:
         return ExtractError(
-            "로그인 벽에 막혔습니다. 쿠키를 넣어야 합니다. "
+            "샤오홍슈가 로그인 페이지로 돌려보냈습니다. 쿠키가 없거나 "
+            f"서버에서 거부된 상태입니다. ({size})",
+            reason="login",
+        )
+
+    if LOGGED_OUT_RE.search(page):
+        return ExtractError(
+            "로그인되지 않은 상태로 처리됐습니다. 쿠키가 없거나 만료되었습니다. "
             f"({size})",
+            reason="login",
+        )
+
+    if any(hint in page for hint in LOGIN_HINTS):
+        return ExtractError(
+            f"로그인 벽에 막혔습니다. 쿠키를 넣어야 합니다. ({size})",
             reason="login",
         )
 

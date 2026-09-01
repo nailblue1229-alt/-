@@ -12,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from xhs_dl import core, extract  # noqa: E402
 from xhs_dl.core import media_extension, safe_filename  # noqa: E402
 from xhs_dl.extract import ExtractError, parse_note  # noqa: E402
+from xhs_dl import links  # noqa: E402
 from xhs_dl.links import extract_links  # noqa: E402
 
 SHARE_TEXT = """87 [饭盒优等生，分格设计自带刀叉 - 一碗小面面| rednote - 나만의 라이프스타일] jfHaah6nCCkXNqn https://www.xiaohongshu.com/discovery/item/69c27850000000001a02d12f?source=webshare&xhsshare=pc_web&xsec_token=AByJqmwMy_9mmoSa=&xsec_source=pc_share
@@ -163,7 +164,7 @@ class FailureAdviceTests(unittest.TestCase):
 
     def test_all_login_failures_with_cookie_suggest_refresh(self):
         advice = core.failure_advice([self._failed("login")], cookie="a=b")
-        self.assertIn("다시 복사", advice)
+        self.assertIn("새로 복사", advice)
 
     def test_all_empty_failures_suggest_reshare(self):
         advice = core.failure_advice([self._failed("empty")], cookie="")
@@ -171,3 +172,24 @@ class FailureAdviceTests(unittest.TestCase):
 
     def test_success_only_has_no_advice(self):
         self.assertEqual(core.failure_advice([core.Result(index=1, url="u", status="ok")]), "")
+
+
+class ExploreUrlTests(unittest.TestCase):
+    def test_discovery_path_becomes_explore_keeping_query(self):
+        url = (
+            "https://www.xiaohongshu.com/discovery/item/6a03cd76000000003501fda7"
+            "?source=webshare&xsec_token=ABvAyu=&xsec_source=pc_share"
+        )
+        self.assertEqual(
+            links.explore_url(url),
+            "https://www.xiaohongshu.com/explore/6a03cd76000000003501fda7"
+            "?source=webshare&xsec_token=ABvAyu=&xsec_source=pc_share",
+        )
+
+    def test_non_xiaohongshu_host_is_left_alone(self):
+        url = "http://127.0.0.1:8000/note"
+        self.assertEqual(links.explore_url(url, "6a03cd76000000003501fda7"), url)
+
+    def test_url_without_note_id_is_left_alone(self):
+        url = "https://www.xiaohongshu.com/explore"
+        self.assertEqual(links.explore_url(url), url)

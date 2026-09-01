@@ -13,7 +13,7 @@ from typing import Callable, Sequence
 
 from .extract import ExtractError, Note, parse_note
 from .http import Client, HttpError
-from .links import PastedLink, extract_links, note_id_from_url
+from .links import PastedLink, explore_url, extract_links, note_id_from_url
 
 ILLEGAL_CHARS_RE = re.compile(r'[<>:"/\\|?*\x00-\x1f]')
 WHITESPACE_RE = re.compile(r"\s+")
@@ -122,13 +122,26 @@ class Downloader:
         if link.is_short_link:
             url = self.client.resolve(url)
             self._log(f"    단축 링크 해제 → {url.split('?', 1)[0]}")
-        page, final_url = self.client.get_text(url)
-        note_id = link.note_id or note_id_from_url(final_url) or note_id_from_url(url)
-        try:
-            return parse_note(page, final_url, note_id, link.fallback_title)
-        except ExtractError:
-            self._save_debug(note_id, url, final_url, page)
-            raise
+        note_id = link.note_id or note_id_from_url(url)
+        # /explore 를 먼저 시도합니다. 예전 /discovery/item 경로는 로그인
+        # 페이지로 넘겨지는 일이 있어, 실패했을 때만 원래 주소로 재시도합니다.
+        attempts = [explore_url(url, note_id)]
+        if attempts[0] != url:
+            attempts.append(url)
+
+        last_error: ExtractError | None = None
+        last_seen: tuple[str, str, str] | None = None
+        for attempt_url in attempts:
+            page, final_url = self.client.get_text(attempt_url)
+            resolved = note_id or note_id_from_url(final_url) or note_id_from_url(attempt_url)
+            try:
+                return parse_note(page, final_url, resolved, link.fallback_title)
+            except ExtractError as exc:
+                last_error, last_seen = exc, (attempt_url, final_url, page)
+
+        assert last_error is not None and last_seen is not None
+        self._save_debug(note_id, *last_seen)
+        raise last_error
 
     def _save_debug(self, note_id: str, url: str, final_url: str, page: str) -> None:
         """실패한 응답을 그대로 남겨, 원인을 나중에 확인할 수 있게 합니다."""
@@ -292,8 +305,9 @@ def failure_advice(results: Sequence[Result], cookie: str = "") -> str:
     if all(r.reason == "login" for r in failed):
         if cookie:
             return (
-                "전부 차단당했습니다. 쿠키가 만료되었을 수 있으니 "
-                "브라우저에서 다시 복사해 넣고, 동시 다운로드를 1로 낮춰 보세요."
+                "쿠키는 전달됐지만 서버가 거부했습니다. 브라우저에서 "
+                "샤오홍슈에 로그인된 상태 그대로 쿠키를 새로 복사해 넣으세요. "
+                "(로그아웃하면 그 쿠키도 함께 무효가 됩니다.)"
             )
         return (
             "전부 같은 이유로 막혔습니다 → 링크 만료가 아니라 로그인이 필요한 상태입니다. "

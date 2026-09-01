@@ -23,6 +23,16 @@ PAGE_HEADERS = {
     "Accept-Language": "ko-KR,ko;q=0.9,zh-CN;q=0.8,en;q=0.7",
     "Accept-Encoding": "gzip, deflate",
     "Upgrade-Insecure-Requests": "1",
+    # 브라우저가 보내는 값들. 빠져 있으면 봇으로 보고 로그인 페이지로 넘기는
+    # 경우가 있어 함께 보냅니다.
+    "sec-ch-ua": '"Chromium";v="125", "Not.A/Brand";v="24", "Google Chrome";v="125"',
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": '"Windows"',
+    "Sec-Fetch-Dest": "document",
+    "Sec-Fetch-Mode": "navigate",
+    "Sec-Fetch-Site": "same-origin",
+    "Sec-Fetch-User": "?1",
+    "Referer": "https://www.xiaohongshu.com/",
 }
 
 MEDIA_HEADERS = {

@@ -41,6 +41,22 @@ def token_from_url(url: str) -> str:
     return match.group(1) if match else ""
 
 
+def explore_url(url: str, note_id: str = "") -> str:
+    """공유 링크를 현재 웹에서 쓰는 `/explore/<id>` 형태로 바꿉니다.
+
+    `/discovery/item/...` 는 예전 경로라 로그인 페이지로 넘겨질 때가 있습니다.
+    쿼리(xsec_token 등)는 그대로 유지합니다.
+    """
+    note_id = note_id or note_id_from_url(url)
+    host = url.split("//", 1)[-1].split("/", 1)[0].lower()
+    # 샤오홍슈 본 도메인일 때만 손댑니다. 단축 링크는 이미 해제된 뒤에 옵니다.
+    if not note_id or not host.endswith("xiaohongshu.com"):
+        return url
+    query = url.split("?", 1)[1] if "?" in url else ""
+    base = f"https://www.xiaohongshu.com/explore/{note_id}"
+    return f"{base}?{query}" if query else base
+
+
 @dataclass
 class PastedLink:
     """붙여넣기 텍스트에서 찾아낸 링크 하나."""
