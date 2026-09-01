@@ -191,3 +191,29 @@ test("여러 노트가 섞여 오면 요청한 노트를 앞에 둔다", () => {
   assert.strictEqual(notes[0].noteId, NOTE_ID);
   assert.strictEqual(notes[0].videoUrl, "https://sns-video-bd.xhscdn.com/want.mp4");
 });
+
+// ---- 파일 이름 --------------------------------------------------------
+
+const naming = require(path.join(__dirname, "..", "extension", "naming.js"));
+
+test("윈도우에서 못 쓰는 문자를 지운다", () => {
+  assert.strictEqual(naming.safeName('a/b\\c:d*e?f"g<h>i|j', "x"), "a b c d e f g h i j");
+});
+
+test("이름이 비면 대체 이름을 쓴다", () => {
+  assert.strictEqual(naming.safeName("   ...   ", "note123"), "note123");
+  assert.strictEqual(naming.safeName(null, "note123"), "note123");
+});
+
+test("이름이 너무 길면 자르고 끝의 공백·점을 없앤다", () => {
+  const long = naming.safeName("가".repeat(200), "x");
+  assert.strictEqual(long.length, 80);
+  assert.ok(!/[\s.]$/.test(long));
+});
+
+test("주소 끝의 확장자를 살리고, 없으면 기본값을 쓴다", () => {
+  assert.strictEqual(naming.extensionFor("https://a.com/x/abc.mp4?sign=1", ".bin"), ".mp4");
+  assert.strictEqual(naming.extensionFor("https://a.com/x/abc.webp", ".jpg"), ".webp");
+  assert.strictEqual(naming.extensionFor("https://a.com/x/abc", ".mp4"), ".mp4");
+  assert.strictEqual(naming.extensionFor("https://a.com/x/abc!nd_dft_wlteh", ".jpg"), ".jpg");
+});

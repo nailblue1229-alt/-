@@ -55,8 +55,8 @@
     return open.apply(this, arguments);
   };
 
-  // 응답을 못 잡은 경우를 대비해, 화면이 다 그려진 뒤 페이지가 들고 있는
-  // 데이터도 한 번 넘겨봅니다.
+  // 응답을 놓쳤을 때를 대비해, 페이지가 들고 있는 데이터도 넘겨봅니다.
+  // 화면을 보고 있는 동안 채워지므로 여러 번 확인합니다.
   function reportState() {
     try {
       var state = window.__INITIAL_STATE__;
@@ -67,4 +67,11 @@
   }
   setTimeout(reportState, 2500);
   setTimeout(reportState, 6000);
+
+  // 버튼을 눌렀을 때 지금 당장 확인해 달라는 요청.
+  window.addEventListener("message", function (event) {
+    if (event.source !== window) return;
+    if (!event.data || event.data.__xhsdlAsk !== true) return;
+    reportState();
+  });
 })();
