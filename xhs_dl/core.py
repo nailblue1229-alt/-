@@ -76,6 +76,7 @@ class Result:
     title: str = ""
     status: str = "pending"  # ok | skipped | failed
     message: str = ""
+    reason: str = ""  # ExtractError 의 실패 종류 (login | empty | nomedia)
     files: list[Path] = field(default_factory=list)
 
     @property
@@ -123,7 +124,27 @@ class Downloader:
             self._log(f"    단축 링크 해제 → {url.split('?', 1)[0]}")
         page, final_url = self.client.get_text(url)
         note_id = link.note_id or note_id_from_url(final_url) or note_id_from_url(url)
-        return parse_note(page, final_url, note_id, link.fallback_title)
+        try:
+            return parse_note(page, final_url, note_id, link.fallback_title)
+        except ExtractError:
+            self._save_debug(note_id, url, final_url, page)
+            raise
+
+    def _save_debug(self, note_id: str, url: str, final_url: str, page: str) -> None:
+        """실패한 응답을 그대로 남겨, 원인을 나중에 확인할 수 있게 합니다."""
+        try:
+            debug_dir = self.options.output_dir / "_debug"
+            debug_dir.mkdir(parents=True, exist_ok=True)
+            path = debug_dir / f"{note_id or 'unknown'}.html"
+            header = (
+                f"<!-- 요청: {url}\n"
+                f"     최종: {final_url}\n"
+                f"     길이: {len(page)}자\n"
+                f"     쿠키: {'있음' if self.options.cookie else '없음'} -->\n"
+            )
+            path.write_text(header + page, encoding="utf-8", errors="replace")
+        except OSError:
+            pass  # 진단용이므로 저장 실패는 무시합니다.
 
     def _targets(self, note: Note) -> list[tuple[str, str]]:
         """(다운로드 주소, 기본 확장자) 목록."""
@@ -147,6 +168,7 @@ class Downloader:
         except (HttpError, ExtractError) as exc:
             result.status = "failed"
             result.message = str(exc)
+            result.reason = getattr(exc, "reason", "")
             self._log(f"{label} 실패: {exc}")
             return result
         except Exception as exc:  # 예기치 못한 오류도 한 건만 실패로 처리
@@ -260,3 +282,23 @@ def run_from_text(
     """편의 함수: 붙여넣기 텍스트 → 다운로드 결과."""
     downloader = Downloader(options, on_log=on_log)
     return downloader.run(extract_links(text))
+
+
+def failure_advice(results: Sequence[Result], cookie: str = "") -> str:
+    """실패 결과를 보고 사용자가 실제로 취할 다음 행동을 한 줄로 알려줍니다."""
+    failed = [r for r in results if r.status == "failed"]
+    if not failed:
+        return ""
+    if all(r.reason == "login" for r in failed):
+        if cookie:
+            return (
+                "전부 차단당했습니다. 쿠키가 만료되었을 수 있으니 "
+                "브라우저에서 다시 복사해 넣고, 동시 다운로드를 1로 낮춰 보세요."
+            )
+        return (
+            "전부 같은 이유로 막혔습니다 → 링크 만료가 아니라 로그인이 필요한 상태입니다. "
+            "쿠키를 넣으면 해결됩니다."
+        )
+    if all(r.reason == "empty" for r in failed):
+        return "링크의 xsec_token 이 만료되었습니다. 앱에서 다시 공유해 새 링크를 받으세요."
+    return ""

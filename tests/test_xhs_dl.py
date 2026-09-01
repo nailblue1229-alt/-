@@ -9,6 +9,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from xhs_dl import core, extract  # noqa: E402
 from xhs_dl.core import media_extension, safe_filename  # noqa: E402
 from xhs_dl.extract import ExtractError, parse_note  # noqa: E402
 from xhs_dl.links import extract_links  # noqa: E402
@@ -119,3 +120,54 @@ class NamingTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class DiagnoseFailureTests(unittest.TestCase):
+    """미디어를 못 찾았을 때 원인을 구분하는지 확인합니다."""
+
+    def _error(self, page: str, url: str = "https://www.xiaohongshu.com/discovery/item/abc"):
+        with self.assertRaises(extract.ExtractError) as ctx:
+            extract.parse_note(page, url, "abc")
+        return ctx.exception
+
+    def test_login_wall_is_reported_as_login(self):
+        error = self._error("<html><body>扫码登录后查看更多</body></html>")
+        self.assertEqual(error.reason, "login")
+        self.assertIn("쿠키", str(error))
+
+    def test_redirect_to_login_page_is_reported_as_login(self):
+        error = self._error("<html></html>", url="https://www.xiaohongshu.com/login")
+        self.assertEqual(error.reason, "login")
+
+    def test_page_without_state_is_not_blamed_on_expiry(self):
+        """차단 페이지를 '링크 만료'로 잘못 안내하던 버그."""
+        error = self._error("<html><body><div id=app></div></body></html>")
+        self.assertEqual(error.reason, "login")
+        self.assertNotIn("만료가", str(error).replace("만료가 아니라", ""))
+
+    def test_empty_note_map_is_reported_as_expired(self):
+        page = 'window.__INITIAL_STATE__ = {"note":{"noteDetailMap":{}}}'
+        error = self._error(page)
+        self.assertEqual(error.reason, "empty")
+        self.assertIn("만료", str(error))
+
+
+class FailureAdviceTests(unittest.TestCase):
+    def _failed(self, reason: str) -> core.Result:
+        return core.Result(index=1, url="u", status="failed", reason=reason)
+
+    def test_all_login_failures_without_cookie_suggest_cookie(self):
+        advice = core.failure_advice([self._failed("login")] * 3, cookie="")
+        self.assertIn("쿠키", advice)
+        self.assertIn("만료가 아니라", advice)
+
+    def test_all_login_failures_with_cookie_suggest_refresh(self):
+        advice = core.failure_advice([self._failed("login")], cookie="a=b")
+        self.assertIn("다시 복사", advice)
+
+    def test_all_empty_failures_suggest_reshare(self):
+        advice = core.failure_advice([self._failed("empty")], cookie="")
+        self.assertIn("다시 공유", advice)
+
+    def test_success_only_has_no_advice(self):
+        self.assertEqual(core.failure_advice([core.Result(index=1, url="u", status="ok")]), "")

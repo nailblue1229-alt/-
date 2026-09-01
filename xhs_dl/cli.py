@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 from . import __version__, config
-from .core import Downloader, Options
+from .core import Downloader, Options, failure_advice
 from .links import extract_links
 
 
@@ -101,6 +101,10 @@ def main(argv: list[str] | None = None) -> int:
     print(f"\n완료: 성공 {ok} · 건너뜀 {skipped} · 실패 {len(failed)}")
     for result in failed:
         print(f"  - [{result.index}] {result.url.split('?', 1)[0]} → {result.message}")
+    advice = failure_advice(results, options.cookie)
+    if advice:
+        print(f"\n※ {advice}")
+        print(f"   서버 응답 원본: {options.output_dir / '_debug'}")
     return 0 if not failed else 2
 
 

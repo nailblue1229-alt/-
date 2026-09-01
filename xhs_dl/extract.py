@@ -18,11 +18,33 @@ OG_TITLE_RE = re.compile(
     re.IGNORECASE,
 )
 CDN_VIDEO_RE = re.compile(r'"(https?://sns-video[^"]+?\.(?:mp4|m3u8)[^"]*)"')
-LOGIN_HINTS = ("登录后查看", "扫码登录", "请先登录", "captcha", "验证码")
+LOGIN_HINTS = (
+    "登录后查看",
+    "扫码登录",
+    "请先登录",
+    "登录小红书",
+    "立即登录",
+    "captcha",
+    "验证码",
+    "滑动验证",
+    "访问频次异常",
+    "当前笔记暂时无法浏览",
+    "你访问的页面不见了",
+)
 
 
 class ExtractError(RuntimeError):
-    """페이지에서 미디어 주소를 찾지 못했을 때."""
+    """페이지에서 미디어 주소를 찾지 못했을 때.
+
+    `reason` 으로 실패 종류를 구분합니다.
+      - "login"   로그인 벽 / 캡차 / 봇 차단
+      - "empty"   페이지는 받았지만 노트 데이터가 비어 있음 (토큰 만료·삭제)
+      - "nomedia" 노트는 읽었지만 미디어 주소가 없음
+    """
+
+    def __init__(self, message: str, reason: str = "nomedia") -> None:
+        super().__init__(message)
+        self.reason = reason
 
 
 @dataclass
@@ -177,10 +199,42 @@ def parse_note(page: str, url: str, note_id: str = "", fallback_title: str = "")
             note.title = html.unescape(match.group(1)).strip()
 
     if not note.video_url and not note.image_urls:
-        if any(hint in page for hint in LOGIN_HINTS):
-            raise ExtractError(
-                "로그인이 필요하거나 인증(캡차)이 걸린 노트입니다. 쿠키를 설정한 뒤 다시 시도하세요."
-            )
-        raise ExtractError("영상/이미지 주소를 찾지 못했습니다. 링크가 만료되었을 수 있습니다.")
+        raise _diagnose(page, url, state is not None, bool(payload))
 
     return note
+
+
+def _diagnose(page: str, url: str, state_found: bool, payload_found: bool) -> ExtractError:
+    """미디어를 못 찾은 이유를 응답 내용으로 구분합니다.
+
+    셋 다 "못 받았다"지만 사용자가 취해야 할 조치가 완전히 다릅니다.
+    """
+    size = f"응답 {len(page):,}자"
+
+    if "/login" in url or any(hint in page for hint in LOGIN_HINTS):
+        return ExtractError(
+            "로그인 벽에 막혔습니다. 쿠키를 넣어야 합니다. "
+            f"({size})",
+            reason="login",
+        )
+
+    if not state_found:
+        # 노트 데이터(__INITIAL_STATE__)가 아예 없음 = 서버가 내용을 안 준 것.
+        # 링크 만료가 아니라 로그인/봇 차단일 때 나타나는 모습입니다.
+        return ExtractError(
+            "페이지에 노트 데이터가 없습니다. 링크 만료가 아니라 "
+            "로그인·봇 차단일 가능성이 큽니다. 쿠키를 설정한 뒤 다시 시도하세요. "
+            f"({size})",
+            reason="login",
+        )
+
+    if not payload_found:
+        return ExtractError(
+            "노트 데이터가 비어 있습니다. xsec_token 만료이거나 "
+            f"삭제·비공개된 노트입니다. 앱에서 다시 공유해 새 링크를 받으세요. ({size})",
+            reason="empty",
+        )
+
+    return ExtractError(
+        f"노트는 읽었지만 영상·이미지 주소가 없습니다. ({size})", reason="nomedia"
+    )

@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - claude/xiaohongshu-batch-downloader-wj1a44
+      - claude/xiaohongshu-batch-downloader-ttv0u8
   workflow_dispatch:
 
 permissions:

@@ -13,7 +13,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox, scrolledtext, ttk
 
 from . import __version__, config
-from .core import Downloader, Options, Result
+from .core import Downloader, Options, Result, failure_advice
 from .links import extract_links
 
 PLACEHOLDER = (
@@ -329,6 +329,10 @@ class App:
         self._append_log(f"=== 완료: 성공 {ok} · 건너뜀 {skipped} · 실패 {len(failed)} ===")
         for result in failed:
             self._append_log(f"  실패 [{result.index}] {result.url} → {result.message}")
+        advice = failure_advice(results, self.cookie_var.get().strip())
+        if advice:
+            self._append_log(f"※ {advice}")
+            self._append_log(f"   서버 응답 원본: {self._options().output_dir / '_debug'}")
         self.status_var.set(f"완료 (성공 {ok} / 실패 {len(failed)})")
 
     def _on_close(self) -> None:
