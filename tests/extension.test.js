@@ -217,3 +217,51 @@ test("주소 끝의 확장자를 살리고, 없으면 기본값을 쓴다", () =
   assert.strictEqual(naming.extensionFor("https://a.com/x/abc", ".mp4"), ".mp4");
   assert.strictEqual(naming.extensionFor("https://a.com/x/abc!nd_dft_wlteh", ".jpg"), ".jpg");
 });
+
+test("피드 응답에서 형제 자리의 id 를 노트 번호로 살린다", () => {
+  // 목록에서 연 노트를 번호로 되찾으려면 이 번호가 꼭 필요합니다.
+  const payload = JSON.stringify({
+    data: {
+      items: [
+        {
+          id: NOTE_ID,
+          model_type: "note",
+          note_card: {
+            title: "제목",
+            user: { nickname: "작가" },
+            video: {
+              media: { stream: { h264: [{ master_url: "https://sns-video-bd.xhscdn.com/a.mp4" }] } },
+            },
+          },
+        },
+      ],
+    },
+  });
+
+  const notes = extract.extractNotes(payload, "");
+  assert.strictEqual(notes.length, 1);
+  assert.strictEqual(notes[0].noteId, NOTE_ID);
+});
+
+test("노트 번호가 아닌 id 는 번호로 쓰지 않는다", () => {
+  const payload = JSON.stringify({
+    data: {
+      items: [
+        {
+          id: "not-a-note-id",
+          note_card: {
+            title: "제목",
+            user: { nickname: "작가" },
+            video: {
+              media: { stream: { h264: [{ master_url: "https://sns-video-bd.xhscdn.com/b.mp4" }] } },
+            },
+          },
+        },
+      ],
+    },
+  });
+
+  const notes = extract.extractNotes(payload, "");
+  assert.strictEqual(notes.length, 1);
+  assert.strictEqual(notes[0].noteId, "");
+});

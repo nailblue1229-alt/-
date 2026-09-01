@@ -3,8 +3,20 @@
 "use strict";
 
 var latestNotes = [];
+var notesById = {};
 var button = null;
 var statusLabel = null;
+
+/** 목록 카드 버튼(cards.js)이 번호로 노트를 찾을 때 씁니다. */
+function noteById(id) {
+  return id && notesById[id] ? notesById[id] : null;
+}
+
+/** 다른 노트를 열기 전에, 이전 노트를 현재 노트로 착각하지 않도록 비웁니다. */
+function forgetNotes() {
+  latestNotes = [];
+  notesById = {};
+}
 
 function currentNoteId() {
   var match = /(?:explore|item)\/([0-9a-f]{24})/i.exec(location.pathname);
@@ -45,7 +57,12 @@ window.addEventListener("message", function (event) {
   if (!data || data.__xhsdl !== true || typeof data.text !== "string") return;
 
   var notes = extractNotes(data.text, currentNoteId());
-  if (notes.length > 0) latestNotes = notes;
+  if (notes.length > 0) {
+    latestNotes = notes;
+    for (var i = 0; i < notes.length; i++) {
+      if (notes[i].noteId) notesById[notes[i].noteId] = notes[i];
+    }
+  }
 
   // 일괄 작업 페이지도 이 내용을 씁니다.
   try {

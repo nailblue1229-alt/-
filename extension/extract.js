@@ -134,6 +134,19 @@ function extractNotes(text, targetId) {
     found.push(note);
   });
 
+  // 피드 응답은 {id, note_card} 처럼 번호를 형제 자리에 둡니다.
+  walk(root, function (node) {
+    if (Array.isArray(node)) return;
+    var card = node.note_card || node.noteCard;
+    if (!looksLikeNote(card)) return;
+    var id = typeof node.id === "string" && NOTE_ID_RE.test(node.id) ? node.id : "";
+    if (!id) return;
+    var note = noteFrom(card, id);
+    note.noteId = id;
+    if (!note.videoUrl && note.imageUrls.length === 0) return;
+    found.push(note);
+  });
+
   // noteDetailMap 처럼 노트 번호를 열쇠로 쓰는 구조는 번호를 되살립니다.
   walk(root, function (node) {
     if (Array.isArray(node)) return;

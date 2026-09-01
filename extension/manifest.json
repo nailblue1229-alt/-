@@ -36,7 +36,8 @@
       ],
       "js": [
         "extract.js",
-        "content.js"
+        "content.js",
+        "cards.js"
       ],
       "run_at": "document_start",
       "world": "ISOLATED"
