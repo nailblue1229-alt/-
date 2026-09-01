@@ -11,17 +11,30 @@ function currentNoteId() {
   return match ? match[1].toLowerCase() : "";
 }
 
-function isNotePage() {
-  return currentNoteId() !== "";
+/** 노트가 화면에 열려 있는지. 피드 위에 팝업으로 뜨는 경우도 포함합니다. */
+function noteIsOpen() {
+  if (currentNoteId()) return true;
+  // 팝업으로 열면 주소에 번호가 없을 수 있습니다. 영상이나 노트 상세 영역이
+  // 화면에 있으면 열린 것으로 봅니다.
+  return Boolean(
+    document.querySelector("video, #noteContainer, .note-detail-mask, .note-container")
+  );
 }
 
-/** 지금 페이지의 노트를 고릅니다. 번호가 맞는 것이 없으면 하나뿐일 때만 인정합니다. */
+function isNotePage() {
+  return noteIsOpen();
+}
+
+/** 지금 화면의 노트를 고릅니다. 주소에 번호가 있으면 그것을 우선합니다. */
 function noteForThisPage() {
   var id = currentNoteId();
-  for (var i = 0; i < latestNotes.length; i++) {
-    if (latestNotes[i].noteId === id) return latestNotes[i];
+  if (id) {
+    for (var i = 0; i < latestNotes.length; i++) {
+      if (latestNotes[i].noteId === id) return latestNotes[i];
+    }
   }
-  return latestNotes.length === 1 ? latestNotes[0] : null;
+  // 번호를 알 수 없으면 가장 최근에 받은 노트가 방금 연 노트입니다.
+  return latestNotes.length > 0 ? latestNotes[0] : null;
 }
 
 // ---- 페이지에서 넘어오는 응답 모으기 ----------------------------------
@@ -73,10 +86,12 @@ function makeButton() {
     '<div class="wrap"><button class="btn" type="button"></button><div class="msg"></div></div>',
   ].join("");
 
-  (document.body || document.documentElement).appendChild(host);
+  if (!document.body) return false;
+  document.body.appendChild(host);
   button = root.querySelector(".btn");
   statusLabel = root.querySelector(".msg");
   button.addEventListener("click", save);
+  return true;
 }
 
 function say(text) {
@@ -89,8 +104,13 @@ function refreshButton() {
     if (host) host.style.display = "none";
     return;
   }
-  if (!button) makeButton();
-  document.getElementById("xhsdl-button-host").style.display = "";
+  // 페이지가 화면을 갈아끼우면서 버튼이 사라지는 일이 있어, 없으면 다시 만듭니다.
+  if (!host) {
+    button = null;
+    if (!makeButton()) return;
+    host = document.getElementById("xhsdl-button-host");
+  }
+  host.style.display = "";
 
   var note = noteForThisPage();
   if (!note) {
@@ -102,6 +122,8 @@ function refreshButton() {
   button.textContent = note.videoUrl
     ? "⬇ 영상 저장"
     : "⬇ 이미지 " + note.imageUrls.length + "장 저장";
+  // 팝업으로 열면 주소에 번호가 없어, 어느 노트를 받는지 확인할 수 있게 합니다.
+  button.title = [note.author, note.title].filter(Boolean).join(" · ");
 }
 
 function save() {
@@ -132,7 +154,7 @@ function save() {
     function (response) {
       button.disabled = false;
       if (response && response.ok) {
-        say("저장했습니다 (" + urls.length + "개)");
+        say("저장: " + (note.title || note.noteId || "").slice(0, 24));
       } else {
         say("저장 실패: " + ((response && response.error) || "알 수 없는 오류"));
       }
@@ -145,11 +167,13 @@ function save() {
 
 var lastPath = location.pathname;
 setInterval(function () {
-  if (location.pathname === lastPath) return;
-  lastPath = location.pathname;
-  latestNotes = [];
+  if (location.pathname !== lastPath) {
+    lastPath = location.pathname;
+    latestNotes = [];
+    askPageForState();
+  }
+  // 노트를 팝업으로 열고 닫는 동안에도 상태를 따라갑니다.
   refreshButton();
-  askPageForState();
 }, 700);
 
 function start() {
