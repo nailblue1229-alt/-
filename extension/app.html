@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>샤오홍슈 일괄 다운로더</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<h1>샤오홍슈 일괄 다운로더</h1>
+<p class="note" id="loginNote">
+  이 확장은 <b>지금 로그인된 크롬</b>에서 그대로 동작합니다.
+  시작 전에 <a href="https://www.xiaohongshu.com" target="_blank">샤오홍슈</a>에 로그인되어 있는지 확인하세요.
+</p>
+
+<section>
+  <h2>1. 링크 붙여넣기</h2>
+  <textarea id="links" spellcheck="false"
+    placeholder="공유 텍스트를 통째로 붙여넣으세요. 번호와 제목이 섞여 있어도 괜찮습니다."></textarea>
+  <div class="row">
+    <button id="countBtn" type="button">링크 개수 확인</button>
+    <button id="clearBtn" type="button">지우기</button>
+    <span id="count" class="count">링크 0개</span>
+  </div>
+</section>
+
+<section>
+  <h2>2. 저장 설정</h2>
+  <div class="row">
+    <label for="folder">저장 폴더</label>
+    <input id="folder" type="text" value="xiaohongshu">
+    <span class="hint">크롬 다운로드 폴더 안에 만들어집니다</span>
+  </div>
+  <div class="row">
+    <label><input id="images" type="checkbox" checked> 이미지 노트도 받기</label>
+    <label for="delay">요청 간격</label>
+    <input id="delay" type="number" min="1" max="30" step="1" value="3">
+    <span class="hint">초 · 너무 빠르면 차단될 수 있습니다</span>
+  </div>
+</section>
+
+<section>
+  <h2>3. 다운로드</h2>
+  <div class="row">
+    <button id="startBtn" type="button" class="primary">다운로드 시작</button>
+    <button id="stopBtn" type="button" disabled>중지</button>
+    <button id="exportBtn" type="button" disabled>주소 목록 내보내기</button>
+    <span id="status" class="count">대기 중</span>
+  </div>
+  <progress id="progress" value="0" max="100"></progress>
+</section>
+
+<section>
+  <h2>진행 상황</h2>
+  <pre id="log"></pre>
+</section>
+
+<script src="links.js"></script>
+<script src="extract.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "샤오홍슈 일괄 다운로더",
+  "version": "1.0.0",
+  "description": "공유 텍스트를 붙여넣으면 로그인된 크롬 안에서 영상·이미지를 순서대로 내려받습니다.",
+  "permissions": ["tabs", "downloads", "storage"],
+  "host_permissions": [
+    "https://www.xiaohongshu.com/*",
+    "https://*.xhscdn.com/*",
+    "https://*.xiaohongshu.com/*"
+  ],
+  "background": { "service_worker": "background.js" },
+  "action": { "default_title": "샤오홍슈 일괄 다운로더 열기" },
+  "content_scripts": [
+    {
+      "matches": ["https://www.xiaohongshu.com/*"],
+      "js": ["inject.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": ["https://www.xiaohongshu.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_start",
+      "world": "ISOLATED"
+    }
+  ]
+}

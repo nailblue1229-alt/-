@@ -27,6 +27,9 @@ jobs:
       - name: Run tests
         run: python -m unittest discover -s tests -v
 
+      - name: Run extension tests
+        run: node --test tests/extension.test.js
+
       - name: Build app
         env:
           PYTHONIOENCODING: utf-8
@@ -38,12 +41,19 @@ jobs:
           mkdir -p release
           cp README.md dist/XHS-Downloader/README.md
           cd dist && 7z a -tzip ../release/XHS-Downloader-Windows.zip XHS-Downloader
-          cd .. && ls -la release
+          cd ..
+          # 압축을 풀면 manifest.json 을 담은 폴더가 그대로 나오도록 묶습니다.
+          # 크롬의 '압축해제된 확장 프로그램 로드'는 폴더를 지정해야 합니다.
+          mkdir -p pack && cp -r extension pack/xhs-extension
+          cd pack && 7z a -tzip ../release/XHS-Chrome-Extension.zip xhs-extension
+          cd ..
+          ls -la release
 
       - name: Record checksum
         shell: bash
         run: |
-          sha256sum release/XHS-Downloader-Windows.zip | tee release/SHA256.txt
+          sha256sum release/XHS-Downloader-Windows.zip release/XHS-Chrome-Extension.zip \
+            | tee release/SHA256.txt
 
       - uses: actions/upload-artifact@v4
         with:
@@ -56,16 +66,26 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
-          SUM=$(cut -d' ' -f1 release/SHA256.txt)
+          SUM=$(grep Windows release/SHA256.txt | cut -d' ' -f1)
+          EXTSUM=$(grep Extension release/SHA256.txt | cut -d' ' -f1)
           gh release delete app-latest --yes --cleanup-tag || true
-          gh release create app-latest release/XHS-Downloader-Windows.zip \
+          gh release create app-latest \
+            release/XHS-Downloader-Windows.zip \
+            release/XHS-Chrome-Extension.zip \
             --target "${{ github.sha }}" \
-            --title "샤오홍슈 일괄 다운로더 (윈도우)" \
-            --notes "zip을 풀고 폴더 안의 XHS-Downloader.exe 를 실행하세요. 파이썬 설치는 필요 없습니다.
+            --title "샤오홍슈 일괄 다운로더" \
+            --notes "## 크롬 확장 프로그램 (권장)
+
+          **XHS-Chrome-Extension.zip** — 로그인된 크롬 안에서 동작하므로 쿠키 설정이 필요 없습니다.
+          압축을 풀고 \`chrome://extensions\` → 개발자 모드 켜기 → '압축해제된 확장 프로그램을 로드합니다'
+          → 푼 폴더를 선택하세요.
+
+          ## 데스크톱 프로그램
+
+          **XHS-Downloader-Windows.zip** — zip을 풀고 폴더 안의 XHS-Downloader.exe 를 실행하세요.
+          샤오홍슈가 로그인 없는 접속을 막고 있어 현재는 대부분의 노트에서 실패합니다.
 
           커밋: ${{ github.sha }}
           빌드 로그: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          zip SHA256: \`$SUM\`
-
-          내려받은 파일이 위 해시와 같은지 확인하려면 PowerShell에서:
-          \`Get-FileHash .\\XHS-Downloader-Windows.zip -Algorithm SHA256\`"
+          SHA256 (Windows): \`$SUM\`
+          SHA256 (확장): \`$EXTSUM\`"
