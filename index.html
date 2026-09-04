@@ -1,0 +1,1527 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="단편 소설 「사이의 거리」 전 8장. 휴대폰에서 읽기 좋게 옮긴 판본.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#F3F4F6">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#111419">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="사이의 거리">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png" type="image/png">
+<style>
+*{-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<title>사이의 거리</title>
+<style>
+:root{
+  --serif:ui-serif,'Apple SD Gothic Neo','Noto Serif KR','Noto Serif CJK KR',
+    'Nanum Myeongjo',Batang,'Times New Roman',serif;
+  --sans:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Noto Sans KR',
+    'Noto Sans CJK KR','Malgun Gothic',system-ui,sans-serif;
+
+  --paper:#F3F4F6;
+  --raise:#FBFBFC;
+  --ink:#191D25;
+  --ink-2:#59606C;
+  --ink-3:#8C93A0;
+  --rule:#DCDFE5;
+  --rule-soft:#E7E9EE;
+  --accent:#2A6B72;
+  --chrome:rgba(243,244,246,.88);
+  --shadow:0 -1px 24px rgba(20,26,34,.10);
+
+  --fs:17px;
+  --lh:1.85;
+  --ff:var(--serif);
+  --p:0;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#111419;
+    --raise:#171B21;
+    --ink:#E4E2DC;
+    --ink-2:#9BA2AD;
+    --ink-3:#727984;
+    --rule:#282D35;
+    --rule-soft:#20252C;
+    --accent:#79C0C6;
+    --chrome:rgba(17,20,25,.88);
+    --shadow:0 -1px 24px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#111419;
+  --raise:#171B21;
+  --ink:#E4E2DC;
+  --ink-2:#9BA2AD;
+  --ink-3:#727984;
+  --rule:#282D35;
+  --rule-soft:#20252C;
+  --accent:#79C0C6;
+  --chrome:rgba(17,20,25,.88);
+  --shadow:0 -1px 24px rgba(0,0,0,.5);
+}
+
+html{scroll-padding-top:calc(76px + env(safe-area-inset-top));scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--ff);
+  font-size:var(--fs);
+  line-height:var(--lh);
+  overflow-wrap:break-word;
+  word-break:keep-all;
+}
+::selection{background:color-mix(in srgb,var(--accent) 26%,transparent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+
+/* ---------- top chrome ---------- */
+.topbar{
+  position:fixed;inset:0 0 auto 0;z-index:40;
+  background:var(--chrome);
+  -webkit-backdrop-filter:saturate(1.4) blur(14px);
+  backdrop-filter:saturate(1.4) blur(14px);
+  border-bottom:1px solid var(--rule-soft);
+}
+.topbar-in{
+  max-width:44rem;margin:0 auto;
+  padding-top:env(safe-area-inset-top);
+  box-sizing:content-box;
+  display:flex;align-items:center;gap:10px;
+  padding:0 8px;height:52px;
+}
+.tb-btn{
+  font-family:var(--sans);font-size:12.5px;font-weight:500;letter-spacing:.02em;
+  color:var(--ink-2);background:none;border:0;cursor:pointer;
+  padding:9px 10px;border-radius:8px;line-height:1;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.tb-btn:hover{color:var(--ink);background:var(--rule-soft)}
+.tb-now{
+  flex:1;min-width:0;text-align:center;
+  font-family:var(--sans);font-size:12px;letter-spacing:.06em;
+  color:var(--ink-3);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.tb-now b{color:var(--ink-2);font-weight:500}
+.bar{height:2px;background:var(--rule-soft)}
+.bar i{display:block;height:100%;width:calc(var(--p)*100%);background:var(--accent);transition:width .12s linear}
+
+/* ---------- page ---------- */
+.reader{max-width:34rem;margin:0 auto;
+  padding:calc(52px + env(safe-area-inset-top)) max(22px,env(safe-area-inset-left)) 0}
+
+.cover{padding:72px 0 8px;border-bottom:1px solid var(--rule-soft)}
+.cover .eyebrow{
+  font-family:var(--sans);font-size:11px;font-weight:500;
+  letter-spacing:.3em;text-transform:uppercase;color:var(--accent);
+}
+.cover h1{
+  font-size:clamp(2.6rem,13vw,3.4rem);font-weight:700;line-height:1.14;
+  letter-spacing:-.02em;margin:14px 0 0;text-wrap:balance;
+}
+.cover .meta{
+  font-family:var(--sans);font-size:12.5px;line-height:1.7;color:var(--ink-3);
+  margin:22px 0 0;display:flex;flex-wrap:wrap;gap:6px 14px;
+}
+.cover .meta span{white-space:nowrap}
+.cover .lede{
+  font-size:.95em;color:var(--ink-2);line-height:1.9;
+  margin:26px 0 40px;padding-left:14px;border-left:2px solid var(--accent);
+}
+
+/* the gap motif: two marks, the distance between them closing chapter by chapter */
+.gapmark{display:inline-flex;align-items:center;gap:var(--g,30px)}
+.gapmark i{display:block;width:16px;height:1px;background:var(--ink-3);opacity:.75}
+.gapmark.big i{width:22px;background:var(--accent);height:1.5px;opacity:1}
+
+/* ---------- table of contents ---------- */
+.toc{padding:34px 0 46px;border-bottom:1px solid var(--rule-soft)}
+.toc h2{
+  font-family:var(--sans);font-size:11px;font-weight:600;
+  letter-spacing:.28em;text-transform:uppercase;color:var(--ink-3);
+  margin:0 0 6px;
+}
+.toc-list{display:flex;flex-direction:column}
+.toc-row{
+  display:grid;grid-template-columns:1.6em 1fr auto auto;align-items:center;gap:12px;
+  padding:13px 2px;text-decoration:none;color:inherit;
+  border-bottom:1px solid var(--rule-soft);
+}
+.toc-row:last-child{border-bottom:0}
+.toc-row:hover .toc-title{color:var(--accent)}
+.toc-num{
+  font-family:var(--sans);font-variant-numeric:tabular-nums;
+  font-size:12px;color:var(--ink-3);
+}
+.toc-title{font-size:.94em;line-height:1.5;transition:color .15s}
+.toc-title.untitled{color:var(--ink-3)}
+.toc-min{
+  font-family:var(--sans);font-size:11px;color:var(--ink-3);
+  font-variant-numeric:tabular-nums;
+}
+.toc-row .gapmark{justify-self:end}
+
+/* ---------- prose ---------- */
+.chapter{padding:0 0 8px}
+.ch-head{
+  display:flex;flex-direction:column;align-items:center;gap:16px;
+  padding:76px 0 44px;text-align:center;
+}
+.ch-num{
+  font-family:var(--sans);font-size:11px;font-weight:600;
+  letter-spacing:.34em;color:var(--ink-3);
+}
+.ch-title{
+  font-size:1.32em;font-weight:700;line-height:1.4;margin:0;
+  letter-spacing:-.01em;text-wrap:balance;max-width:16em;
+}
+.chapter p{margin:0 0 1.25em}
+.chapter p.d{margin-bottom:.7em}
+.chapter p.d + p:not(.d){margin-top:.6em}
+
+.fin{
+  display:flex;flex-direction:column;align-items:center;gap:18px;
+  padding:66px 0 30px;border-top:1px solid var(--rule-soft);margin-top:64px;
+}
+.fin span{font-family:var(--sans);font-size:11px;letter-spacing:.34em;color:var(--ink-3)}
+.fin a{
+  font-family:var(--sans);font-size:12.5px;color:var(--accent);
+  text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:1px;
+}
+.credit{
+  font-family:var(--sans);font-size:11px;line-height:1.8;color:var(--ink-3);
+  text-align:center;padding:0 0 46px;
+}
+
+/* ---------- resume chip ---------- */
+.resume{
+  position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translate(-50%,0);z-index:35;
+  display:none;align-items:center;gap:4px;
+  background:var(--raise);border:1px solid var(--rule);border-radius:999px;
+  box-shadow:0 6px 22px rgba(20,26,34,.14);
+  padding:5px 6px 5px 15px;
+  font-family:var(--sans);font-size:12.5px;color:var(--ink-2);
+  max-width:calc(100vw - 40px);
+}
+.resume.on{display:flex}
+.resume b{color:var(--ink);font-weight:500}
+.resume button{
+  font-family:var(--sans);font-size:12.5px;border:0;background:none;cursor:pointer;
+  color:var(--accent);padding:6px 10px;border-radius:999px;font-weight:500;
+}
+.resume button.x{color:var(--ink-3);padding:6px 9px}
+.resume button:hover{background:var(--rule-soft)}
+
+/* ---------- sheets ---------- */
+.scrim{
+  position:fixed;inset:0;z-index:50;background:rgba(10,13,17,.34);
+  opacity:0;pointer-events:none;transition:opacity .22s ease;
+}
+.scrim.on{opacity:1;pointer-events:auto}
+
+.panel{
+  position:fixed;z-index:60;background:var(--raise);
+  box-shadow:var(--shadow);
+  transition:transform .26s cubic-bezier(.22,.61,.36,1);
+}
+.panel.toc-panel{
+  inset:0 auto 0 0;width:min(320px,84vw);
+  transform:translateX(-102%);
+  border-right:1px solid var(--rule);
+  overflow-y:auto;overscroll-behavior:contain;
+  padding:22px 20px 30px;
+}
+.panel.toc-panel.on{transform:translateX(0)}
+.panel.set-panel{
+  inset:auto 0 0 0;
+  transform:translateY(102%);
+  border-top:1px solid var(--rule);
+  border-radius:16px 16px 0 0;
+  padding:8px 20px calc(24px + env(safe-area-inset-bottom));
+}
+.panel.set-panel.on{transform:translateY(0)}
+.set-in{max-width:34rem;margin:0 auto}
+.grab{width:38px;height:4px;border-radius:2px;background:var(--rule);margin:0 auto 18px}
+
+.panel h3{
+  font-family:var(--sans);font-size:11px;font-weight:600;
+  letter-spacing:.26em;text-transform:uppercase;color:var(--ink-3);
+  margin:0 0 14px;
+}
+.row{
+  display:grid;grid-template-columns:4.6em 1fr;align-items:center;gap:12px;
+  padding:9px 0;
+}
+.row > label{font-family:var(--sans);font-size:12.5px;color:var(--ink-2)}
+.seg{display:flex;gap:6px;justify-self:stretch}
+.seg button{
+  flex:1;font-family:var(--sans);font-size:12.5px;line-height:1;
+  padding:10px 6px;border-radius:9px;cursor:pointer;
+  border:1px solid var(--rule);background:transparent;color:var(--ink-2);
+  transition:background .14s,color .14s,border-color .14s;
+}
+.seg button:hover{border-color:var(--ink-3)}
+.seg button[aria-pressed="true"]{
+  background:var(--accent);border-color:var(--accent);
+  color:var(--paper);font-weight:500;
+}
+.seg button.serif-s{font-family:var(--serif);font-size:14px}
+.seg button.sans-s{font-family:var(--sans);font-size:13px}
+.size-out{
+  font-family:var(--sans);font-variant-numeric:tabular-nums;
+  font-size:12.5px;color:var(--ink-2);min-width:3.4em;text-align:center;
+}
+.panel .toc-row{padding:11px 2px}
+.panel .toc-row.here .toc-title{color:var(--accent);font-weight:700}
+.panel .toc-row.here .toc-num{color:var(--accent)}
+
+@media (min-width:720px){
+  .reader{padding-left:0;padding-right:0}
+  .cover{padding-top:96px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition-duration:.01ms !important}
+}
+</style>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <button class="tb-btn" id="tocBtn" aria-label="목차 열기">목차</button>
+    <div class="tb-now" id="nowLabel">사이의 거리</div>
+    <button class="tb-btn" id="setBtn" aria-label="읽기 설정"><span style="font-size:11px">가</span><span style="font-size:16px;line-height:1">가</span></button>
+  </div>
+  <div class="bar"><i id="barFill"></i></div>
+</header>
+
+<main class="reader">
+
+  <div class="cover" id="top">
+    <div class="eyebrow">단편 소설</div>
+    <h1>사이의 거리</h1>
+    <div class="meta">
+      <span>전 8장</span>
+      <span>31,931자</span>
+      <span>읽는 데 약 58분</span>
+    </div>
+    <p class="lede">헤어진 날 아침, 미리는 군대에 가기로 했다. 그리고 현이가 집 앞에 와 있었다. 열한 살에 시작된 두 사람 사이의 거리가, 여덟 개의 장을 지나 조금씩 좁아진다.</p>
+  </div>
+
+  <nav class="toc" id="toc" aria-label="목차">
+    <h2>차례</h2>
+    <div class="toc-list">
+      <a class="toc-row" href="#ch1">
+        <span class="toc-num">1</span>
+        <span class="toc-title untitled">헤어졌다.</span>
+        <span class="gapmark" style="--g:40px" aria-hidden="true"><i></i><i></i></span>
+        <span class="toc-min">6분</span>
+      </a>
+      <a class="toc-row" href="#ch2">
+        <span class="toc-num">2</span>
+        <span class="toc-title untitled">10월 하늘은 굉장히 깊다.</span>
+        <span class="gapmark" style="--g:35px" aria-hidden="true"><i></i><i></i></span>
+        <span class="toc-min">5분</span>
+      </a>
+      <a class="toc-row" href="#ch3">
+        <span class="toc-num">3</span>
+        <span class="toc-title untitled">공원 벤치에 누가봐도 미리…</span>
+        <span class="gapmark" style="--g:29px" aria-hidden="true"><i></i><i></i></span>
+        <span class="toc-min">6분</span>
+      </a>
+      <a class="toc-row" href="#ch4">
+        <span class="toc-num">4</span>
+        <span class="toc-title">i fall in love too easily</span>
+        <span class="gapmark" style="--g:24px" aria-hidden="true"><i></i><i></i></span>
+        <span class="toc-min">4분</span>
+      </a>
+      <a class="toc-row" href="#ch5">
+        <span class="toc-num">5</span>
+        <span class="toc-title">손에 손 잡고</span>
+        <span class="gapmark" style="--g:19px" aria-hidden="true"><i></i><i></i></span>
+        <span class="toc-min">10분</span>
+      </a>
+      <a class="toc-row" href="#ch6">
+        <span class="toc-num">6</span>
+        <span class="toc-title">지상 최대 야한 밤</span>
+        <span class="gapmark" style="--g:14px" aria-hidden="true"><i></i><i></i></span>
+        <span class="toc-min">10분</span>
+      </a>
+      <a class="toc-row" href="#ch7">
+        <span class="toc-num">7</span>
+        <span class="toc-title">가장 가까운 거리에서 너를.</span>
+        <span class="gapmark" style="--g:8px" aria-hidden="true"><i></i><i></i></span>
+        <span class="toc-min">9분</span>
+      </a>
+      <a class="toc-row" href="#ch8">
+        <span class="toc-num">8</span>
+        <span class="toc-title">사이의 거리</span>
+        <span class="gapmark" style="--g:3px" aria-hidden="true"><i></i><i></i></span>
+        <span class="toc-min">7분</span>
+      </a>
+    </div>
+  </nav>
+
+  <section class="chapter" id="ch1" data-num="1" data-label="1장">
+    <header class="ch-head">
+      <span class="gapmark big" style="--g:54px" aria-hidden="true"><i></i><i></i></span>
+      <span class="ch-num">1</span>
+      
+    </header>
+    <p>헤어졌다.</p>
+    <p>코가 진짜 삐뚤어지지 않았을까 싶을 만큼 침대에 코를 때려 박은 채 눈을 떴다.</p>
+    <p>더 이상 숨을 쉬지 않을거란 약속을 비정하게 어기고 화장실에서 변기를 붙잡았다.</p>
+    <p>한참을 게워내다 고개를 드니 변기 보다 낮은 시선이 억울해서 우웩 거리며 울었다.</p>
+    <p>목젖이 빠지지 않았나 두리번 거리던 미리는 간단히 샤워를 하고 옥탑 옥상으로 나왔다.</p>
+    <p>문득 도시가 지겹다. 이 많은 집들 중 내가 꽤 높이 있어 다행이라고도 생각했다.</p>
+    <p>그리고 어젯밤 다 태워 재가 되어버린 여자 친구였던 사람과의 사진을 보고 담배를 꼬나물고 한숨을 깊게 쉰다.</p>
+    <p class="d">&quot;아 군대 가야겠다&quot;</p>
+    <p>담배연기를 쭉 들이마시고 더 길게 한숨을 쉰다.</p>
+    <p>집에서 무선청소기와 노트북을 가지고 나와서 재를 다 빨아들이고 노트북을 켜서 가장 빠른 입대 날짜를 누른다. 간다간다 했는데 진짜 간다.</p>
+    <p>말뚝이나 박을까봐. 하고 생각하는 차에 핸드폰이 울린다.</p>
+    <p class="d">&quot;야. 집 앞. 나와.&quot;</p>
+    <p class="d">&quot;응?&quot;</p>
+    <p>끊어졌다. 내려다보니 현이가 올려다 보고 손가락 욕을 하고 있다.</p>
+    <p>후드 집업에 반바지, 모자를 쓰고 내려가자마자 현이 한테 맞는다.</p>
+    <p class="d">&quot;옷이 바뀌었네. 바로 안 내려 오냐?&quot;</p>
+    <p class="d">&quot;와.&quot;</p>
+    <p>현이는 자기 할 말만 하고 앞장 서 가버린다.</p>
+    <p>미리는 현이를 아주 잘 알면서도 매번 놀랍다.</p>
+    <p class="d">&quot;아니 그래서 왜 왔는데.&quot;</p>
+    <p class="d">&quot;니가 어제 전화 했잖아. 헤어졌다고.</p>
+    <p>마음에 피가 고인 것 같대매.&quot;</p>
+    <p class="d">&quot;아.&quot;</p>
+    <p>굉장히 부끄럽다. 별 소리를 다 했구나.</p>
+    <p>현이는 해장국 집으로 들어가 버린다. 미리는 멍하니 뒤따라가다가 현이가 연 문에 머리를 들이받는다.</p>
+    <p class="d">&quot;지랄을 해요 으휴.&quot;</p>
+    <p>미리에게 콩나물 해장국을 시켜주고 자기는 김치를 찢어먹는다.</p>
+    <p>뜨거운 국물이 들어오자 또 눈물이 났다.</p>
+    <p class="d">&quot;현아. 나 군대 가.&quot;</p>
+    <p class="d">&quot;언제?&quot;</p>
+    <p class="d">&quot;한달 뒤에.&quot;</p>
+    <p class="d">&quot;그래.&quot;</p>
+    <p>현이는 말 없이 물잔을 비우고 한번을 더 비운다.</p>
+    <p>그리고는 미리를 한참 쳐다보다가 울어서 부은 눈이 재밌어졌다.</p>
+    <p class="d">&quot;언제가 제일 슬프디?&quot;</p>
+    <p>현이가 물어왔다.</p>
+    <p>미리가 잠시 침으로 목에 칠을 하고 나지막이.</p>
+    <p class="d">&quot;내 밥이 개밥이 된거 알았을 때.&quot;</p>
+    <p class="d">&quot;이 새끼. 기껏 밥 사주니까 개밥이라 하네.</p>
+    <p>배은망덕한 새끼.&quot;</p>
+    <p>잠깐 무언가 생각하던 미리가 또 운다. 현이는 그걸 보고 피식 웃는다.</p>
+    <p class="d">&quot;너 지금 되게 매력적인데. 그 사람이 이거 보려고 너 울렸나.&quot;</p>
+    <p class="d">&quot;아 진짜. 말 같지도 않은 소리 할거면 가 너도.&quot;</p>
+    <p>미리가 더 운다. 현이는. 뭐. 그렇다. 늘 뭐, 그랬다. 미리를 옆에서만 봐 왔으니까.</p>
+    <p>사실은 뭐 같다. 그 뭐는 아마도 세상에서 제일 심한 욕 정도면 아무거나 갖다 쓸 수 있을 것 같다. 나도 입 있는데. 시켜줬다고 지만 먹냐. 한번 물어봐주지.</p>
+    <p>입에 짠기가 돌아 물을 마시다 미리의 물 잔을 채워준다.</p>
+    <p>조금 진정이 됐는지 국밥을 열심히도 먹는다. 그릇까지 받침에 걸쳐 세우고서.</p>
+    <p>현이는 미리가 잘 먹어서 마냥 이쁘다고 생각한다.</p>
+    <p class="d">“야 건배 하자.”</p>
+    <p class="d">“물로 뭔 건배를 해”</p>
+    <p class="d">“아 하라면 그냥 좀 해”</p>
+    <p>미리 손을 잡아다 물 잔을 잡게 하고 죽일 듯이 노려본다. 미리는 당해 낼 여력이 없다.</p>
+    <p class="d">“그래. 만세” 하고는 한입에 털어 넣으며 옆으로 다 흘린다.</p>
+    <p>그리곤 굉장히 쓰다는 표정으로 현이를 바라본다.</p>
+    <p>어깨를 으쓱 해 보이는 현이를 쓰게 경멸하고, 휴지 한 장을 뽑아 닦고는 도대체 물이 왜 썼을까 되뇌며 생각에 잠긴다. 아마도 앞으로 당분간 내가 마실 모든 물은 얼굴이 짜부러질 만큼 쓰겠지라는 결론을 내며 물을 한잔 따라 털어 넣는다.</p>
+    <p>이번엔 단 한방울도 흘리지 않았다. 21살에 맛 본 진정한 인생의 쓴맛이다.</p>
+    <p>모든 과정을 보고 있던 현이는 속이 쓰다.</p>
+    <p>근린공원을 걷는다. 미리는 하늘이 높아 산책하기에 아주 적합한 날이다 하며 숨을 크게 쉬고 사래 들린다. 켁켁 대며 우스꽝스럽게 걷는 모습에 둘은 어느 순간 하늘에 가닿을 만큼 크게 웃었다.</p>
+    <p class="d">“야 너는 어떤 사람이 좋아? 잘해준다고 연애 잘 할 수 있는 거 아니잖아.”</p>
+    <p class="d">“나는 잘 모르겠어. 알았으면 인생이 이렇게 쓸까 싶어”</p>
+    <p class="d">“인생타령은 내 앞에서만 해. 어디가서 그런 소리 하다가 처 맞지 말구”</p>
+    <p class="d">“아 제발. 제발 말 좀 이쁘게 해. 어쩜 그래 매번”</p>
+    <p>이쁘게 할 때 알아봐주지. 현이는 미리를 쳐다보다 뒤통수를 때리고 앞으로 치고 나간다.</p>
+    <p>11살. 설레임이 현이에게 왔다. 항상 짧은 반삭을 하고 다녀서 별명이 빡빡이었는데 체육시간에 햇빛을 받아 유난히 반짝이는 그를 좋아했다. 그 애는 두상이 참 예뻤다.</p>
+    <p>축구를 할 때 보면 축구공이랑 머리가 헷갈릴 만큼 두상이 이뻤다.</p>
+    <p>멀리 있어도 늘 반짝거리며 빛나는 대가리를 현이는 많이 좋아했다.</p>
+    <p>그 이후로 현이의 이상형은 반짝이는 대가리이다.</p>
+    <p>친구들은 당췌 무슨 말인지 이해 하지 못했지만 현이에게 왔던 그 설레임은 늘 발목을 감싸 쥐고서 미리에게로 이끌었다. 중3때는 고백하려고도 했었다.</p>
+    <p>졸업식 당일. 미리와 마주선 채 고개를 떨구고서 손만 만지작 거리다가 용기를 냈다.</p>
+    <p class="d">“너의 반짝임이 좋아”</p>
+    <p class="d">“엉?”</p>
+    <p class="d">“너의, 반짝이..는 대가리가 좋아”</p>
+    <p class="d">“엉? 뭐?”</p>
+    <p>미리 뒤가 요란스럽더니 갑자기 반짝 대가리가 눈 앞으로 날아들었다. 그리고 눈을 뜬 곳은 양호실. 복도에서 뛰어가던 애들이 미리랑 부딪히는 바람에 미리가 나한테 박치기를 했다.</p>
+    <p>현이는 그대로 뒤로 넘어가서 코피를 질질 흘린 채 양호실로 옮겨졌다고 했다.</p>
+    <p>미리는 나를 옮겨놓고는 갔다고 했다. 갔다 미리가. 용기 내어 좁히려던 미리와의 거리가 조금도 좁혀지지 않은 채 미리가 가버렸다. 코가 아렸다. 그리고 이내 시큰거렸고 현이는 코에 피딱지가 앉은 채 조용히 눈물을 질질 흘렸다. 배게를 한껏 적시고 난 뒤에 사람들이 다 빠져나간 학교를 털레털레 걸어 나와 집으로 갔다.</p>
+    <p>눈물 때문에 얼굴에 붙은 머리카락이 간질거렸다. 이래저래 만신창이인 스스로가 안쓰러워 마음이 간질거렸다. 원하던 간질거림은 이게 아닌데. 진짜 이거 아닌데.</p>
+    <p>다시금 볼을 촉촉하게 적셨다. 현이는 첫사랑을 쟁취하지 못했다. 사랑이 다 망했다.</p>
+    <p>그래서 현재 현이는 충신 마냥 미리의 옆을 지키고 있다. 가장 가까이에서 미리를 거쳐가는 연인들을 보며 매일 속앓이를 할 수 있는. 그런 지금의 이 자리를 그 누구에도 내어줄 수가 없다. 코를 내어주고 얻은 1열 관람석을. 어쩌면 내게 다시금 찾아올 기회의 자리를.</p>
+    <p>마음에 병이 생겨 입이 좀 걸어졌지만 이정도면 싸게 먹힌거 아닌가. 그 아이는 바보라 내가 자기를 좋아하고 있는 줄은 꿈에도 모를 테지. 그리고 또 등잔 밑이 어둡다고들 하니까.</p>
+    <p>아직은 숨길 때니까. 나는 아직 용기가 없으니까.</p>
+    <p>앞으로 치고 나간 현이를 따라 잡으려 헐레벌떡 따라온 미리가 거의 다 따라왔다.</p>
+    <p>생각의 소용돌이에서 허우적이던 현이는 아주 공교롭게도 미리가 자신의 바로 뒤에 따라붙었을 때 생각 속에서 빠져나왔다. 곧 이어 느껴지는 뜨거운 숨에 미리를 인지했고 뒤돌아 미리의 앞 통수를 세게 때리고는 집으로 가버렸다.</p>
+    <p>오늘 앞뒤 머리 다 터진 미리는 괜히 억울한데 정신이 맑아졌다.</p>
+    <p class="d">“국밥 혼자 먹어서 미안. 잘 먹었어 조심히 들어가 현아”</p>
+    <p>메시지를 보내고는 뿌듯하게 잘가라 사랑! 하며 공원 한 바퀴 뛰고는 집으로 간다.</p>
+    <p>메시지를 확인한 현이는 미리가 자빠지길 간절하게 기도했다.</p>
+  </section>
+
+  <section class="chapter" id="ch2" data-num="2" data-label="2장">
+    <header class="ch-head">
+      <span class="gapmark big" style="--g:47px" aria-hidden="true"><i></i><i></i></span>
+      <span class="ch-num">2</span>
+      
+    </header>
+    <p>10월 하늘은 굉장히 깊다. 조금만 집중하면 우주도 볼 수 있을 것 같은 새파란 하늘은 스스로에게 변화를 주기에 아주 적합하다. 동기 부여는 이정도면 충분하다.</p>
+    <p>미리는 세상을 이쁘게 바라보는 편이기에 유독 맑아진 하늘에 감동을 받았을 것이다.</p>
+    <p>현이는 그렇게 생각했다.</p>
+    <p class="d">“2mm.”</p>
+    <p class="d">“응. 현아 하늘 진짜 이쁘다 봤어?”</p>
+    <p class="d">“응. 바람 쐬자. 나와. 1시 오케이?”</p>
+    <p class="d">“그래. 이따가 봐. 지금 꼭 하늘 보고 나와!”</p>
+    <p>생각하는게 진짜 현이 손바닥 안이다. 열린 창가에 기대어 미리에게서 온 메시지를 보며 잠깐 앉아있던 현이는 시계를 한번 보고는 우주를 볼 생각으로 하늘을 향해 눈을 살짝 찌푸려본다.</p>
+    <p class="d">“왜 이렇게 싱글벙글 해?”</p>
+    <p class="d">“이쁘잖아 하늘이!”</p>
+    <p>은은하게 풍겨오는 미리의 향수 냄새가 현이를 스쳐온다. 부드럽고 따뜻한.</p>
+    <p class="d">“그러게. 날이 좋네”</p>
+    <p>현이도 은은하게 미소를 머금는다. 그리고는 둘은 별 생각 없이 걷는다.</p>
+    <p>미리와 현이는 특별한 계획이 없이 걸음이 닿는 곳으로 움직인다. 오늘은 둘이 졸업한 학교 운동장이 첫 번째 경유지다.</p>
+    <p class="d">“세상이 작아진 걸까. 전에는 여기서 저기까지 뛰면 하늘이 핑핑 돌았는데.”</p>
+    <p class="d">“혹시 살쪘어? 니가 차지하고 있는 면적이 늘어난 거 아니고?”</p>
+    <p class="d">“오늘은 니가 뭐라고 해도 왠지 다 괜찮은 것 같아! 살이 좀 쪘을 수도 있지 뭐.</p>
+    <p>그만큼 내가 이 세상에 더 발 박고 서있을 수 있으니까 난 오히려 좋아!”</p>
+    <p class="d">“어지간히 기분 좋은가보다.”</p>
+    <p>미리는 운동장 중심까지 슬슬 걸어간다. 흙바닥을 차서 먼지를 조금 일으켜보기도 하면서 도착한 운동장의 중심에서 하늘을 보고 천천히 뱅글뱅글 돈다.</p>
+    <p class="d">“현아. 이렇게 하잖아? 그러면 내가 드릴 같은 게 되어서 하늘을 뚫고 우주까지 갈 수 있을 것 같아.” 몸의 중심이 흐트러진 듯 휘청거리면서도 천천히 계속 도는 미리가 땅 속으로 뚫고 들어갈 것만 같아 조금 걱정이 되어 현이는 미리와의 거리를 살짝 좁혔다. 미리는 돌기를 멈추고 그대로 눕는다.</p>
+    <p>자기가 일으킨 흙먼지에 기침을 하면서도 먼지가 다 가실 때까지 눈을 감고 가만히 숨을 쉰다. 땅을 타고 미리의 향이 퍼진다.</p>
+    <p>날아온 흙먼지 사이에서 미리의 향만을 구분해 내고는 현이도 저만치에 주저 앉아 미리와 같은 공기를 들이쉰다. 누워 있는 미리를 가만히 바라보다 눈을 감는다.</p>
+    <p class="d">“향수를 되게 많이 뿌렸나. 여기까지 나네.”</p>
+    <p>둘은 1분을 아주 잘게 나눠 그 시간을 몸과 땅에 새긴다. 잘게 나눈 시간의 틈을 각자의 생각으로 알차게 채워 나가는 중이다. 둘의 지나간 시간이 살고 있는 이 흙바닥에 새로운 시간을 새겨 넣는 중이다. 각자의 방식대로 둘은 오늘의 1분을 잊지 못할 것이다.</p>
+    <p class="d">&quot;현아&quot;</p>
+    <p class="d">&quot;왜?&quot;</p>
+    <p class="d">&quot;너는 우리 학교 다녔던 때로 다시 가라면 갈거야?&quot;</p>
+    <p class="d">&quot;가까이 와서 얘기 해 잘 안들려&quot;</p>
+    <p>미리가 일어나 대충 옷매무새를 가다듬고 다가온다.</p>
+    <p>갈거야. 가능하다면 여러 번도 가고 싶어.</p>
+    <p>아프지 않고 온전히 설레임으로 가득했던 그때의 눈으로 너를 보고 싶어.</p>
+    <p class="d">&quot;너는 우리 학교 다녔던 때로 다시 가라면 갈 거야?&quot;</p>
+    <p class="d">&quot;응 갈 거야. 꼭.&quot;</p>
+    <p>현이 일어나서 미리에게 박치기 하듯 머리를 훅 들이민다. 미리가 놀라 눈을 꽉 감는다.</p>
+    <p class="d">&quot;그 날 진짜 아팠거든.&quot;</p>
+    <p>하고는 먼저 돌아서서 정문을 향해 걷는다.</p>
+    <p class="d">&quot;학교 앞에 떡볶이 먹으러 가자!&quot;</p>
+    <p class="d">&quot;나는 달달한 떡볶이가 좋아. 그리고 밀떡이 여야 해.</p>
+    <p>그런 의미로 여기는 내 인생 최고의 분식집이다&quot;</p>
+    <p class="d">&quot;현이 너는 소화도 잘 못하면서 떡볶이를 그렇게 먹는다 항상?&quot;</p>
+    <p class="d">&quot;그래서 맵게는 안 먹잖어. 더 이상은 양보 못해.&quot;</p>
+    <p>신나게 떡볶이를 먹는 현이를 바라보다가 교복입고 앉아있던 때가 떠올랐다.</p>
+    <p>자주 왔었다 여기. 현이가 떡볶이를 시키면 미리는 주먹밥을 시켜 떡볶이 국물을 살짝 적셔 먹었다. 현이는 정말 떡볶이만을 먹었다. 왜인지 모르지만 미리 또한 주먹밥만을 먹었다. 같은 걸 먹다 한입이 남았을 때 눈치를 보지 않아도 되는 현이와의 식사가 좋았던 것 같다. 미리는 시선을 내리고 살짝 미소 짓고는 주먹밥에 떡볶이 국물을 적신다.</p>
+    <p class="d">&quot;그때 사과도 제대로 못했네. 박치기 한 거 미안해.</p>
+    <p>그리고 애들이 기다리고 있어서 끝까지 같이 못 있어줘서 미안해.&quot;</p>
+    <p>현이는 떡볶이만 쳐다보면서 잠시 오물오물하더니 떡볶이에 있는 어묵을 미리의 주먹밥 위에 얹고서 다시 오물오물 떡볶이를 먹는다.</p>
+    <p>미리도 어묵이 올려진 주먹밥을 먹기 시작한다.</p>
+    <p>미리와 현이는 지금 웃는 상이다.</p>
+    <p class="d">&quot;아! 어묵 잘 먹었다!&quot;</p>
+    <p>현이가 그런 미리를 보고 웃는다.</p>
+    <p class="d">&quot;이미리. 머리 하러 가자. 내 소원이야.&quot;</p>
+    <p>미리가 고개를 끄덕였다.</p>
+    <p>현이가 그렇게 맑게 웃는 걸 처음 보는 미리는 거절 할 생각이 조금도 들지 않았다.</p>
+    <p>미용실까지 가면서 둘은 핸드폰으로 노래를 틀고 별다른 대화 없이 강변을 따라 걸었다. 편안하다.</p>
+    <p class="d">&quot;두분 다 하실 건가요?&quot;</p>
+    <p class="d">&quot;아뇨. 얘만 할거에요. 아 그리구요. 야 너는 가서 앉아있어.&quot;</p>
+    <p class="d">&quot;응.&quot;</p>
+    <p>미리는 미용실 의자에 앉아서 미용사와 뭐라 얘기 나누는 현이를 보며 오늘 행복해보여서 다행이다 라고 생각했다.</p>
+    <p>현이가 다가온다. 현이의 이목구비가 점점 선명해지고 미리의 뒤에 선다.</p>
+    <p class="d">&quot;소원 들어준다고 해서 고마워.</p>
+    <p>나는 오늘 내가 좋아하는 너의 모습을 되찾을 거야.&quot;</p>
+    <p class="d">&quot;너 오늘 엄청 솔직하네.&quot;</p>
+    <p class="d">&quot;떡볶이 먹을 때 확신 했거든.&quot;</p>
+    <p class="d">&quot;뭘?&quot;</p>
+    <p class="d">&quot;너도 알고 나도 아는 그거. 너는 잘 모르나?</p>
+    <p>암튼 난 오늘부터 변할거야.&quot;</p>
+    <p>현이 손을 스윽 들어올린다. 바리깡이다.</p>
+    <p class="d">&quot;음?&quot;</p>
+    <p class="d">&quot;이미리. 이름 값 하자!&quot;</p>
+    <p>현이는 거침없는 움직임으로 이미리를 만들었다.</p>
+    <p>마침내 미용실 조명을 받아 반짝이는 대가리를 보며 뿌듯하게 웃는 현이의 얼굴 밑에 패잔병의 얼굴을 한 미리가 있다.</p>
+    <p>진짜 이미리가 된 미리는 지금 당장은 넋이 없다.</p>
+  </section>
+
+  <section class="chapter" id="ch3" data-num="3" data-label="3장">
+    <header class="ch-head">
+      <span class="gapmark big" style="--g:40px" aria-hidden="true"><i></i><i></i></span>
+      <span class="ch-num">3</span>
+      
+    </header>
+    <p>공원 벤치에 누가봐도 미리다. 현이는 이제 사람들 사이에서 미리만이 자기 눈에 걸린다는 사실이 좋았다. 미리의 머리가 구두 광이 나듯 반짝인다.</p>
+    <p>햇빛을 가려줄 머리카락이 없어진 미리는 맨얼굴로 해와 독대중이다.</p>
+    <p>한껏 찌푸린 얼굴을 하고 있다가  벤치 가장자리로 옮겨 몸을 돌려 등받이 쪽으로 얼굴을 묻는다. 웅크리고 있는 모양새가 된 미리가 작아 보인다. 약속 시간 10분 전이다.</p>
+    <p>앞으로 10분을 더 작아져 갈 미리 생각에 5분 늦어볼까 생각하는 현이지만, 야금야금 잡아먹히는 시간이 아까워 미리에게로 다가간다.</p>
+    <p>쓰고 있던 모자를 벗어 미리 머리에 얹어놓는다.</p>
+    <p class="d">&quot;적응기간은 좀 필요하니까. 이따가 해 좀 내려가면 다시 가져간다.&quot;</p>
+    <p class="d">&quot;으응. 고마워. 세상이 이렇게 눈부신 거였나 생각 중 이었어. 진작에 밀어버릴 걸 그랬나.</p>
+    <p>머리털 속에 숨어 산지가 좀 됐더니 갑자기 시야가 확 트이네.&quot;</p>
+    <p class="d">&quot;그럼 조금만 덜 미안해 할게.&quot;</p>
+    <p class="d">&quot;미안해 했어?&quot; 하며 씨익 웃는 미리 때문에 잠깐 심장이 멈췄다 다시 뛴다.</p>
+    <p>진짜 다 알고 저러는 건가 싶다.</p>
+    <p class="d">&quot;웃지마. 정 들어.&quot;</p>
+    <p class="d">&quot;하하 넌 속이 참 훤히 보여.&quot;</p>
+    <p>미리가 맑게 웃으며 매를 벌었다.</p>
+    <p>현이는 모자를 뺏어 쓰고 시내 방향으로 달려간다.</p>
+    <p class="d">&quot;으악 모자 줘 눈부셔!&quot;</p>
+    <p>팬시점에 들러 이어폰을 고르는 중이다.</p>
+    <p>미리는 무선 이어폰 앞에 현이는 유선 이어폰 앞에 있다.  발전한 기술에 감탄중인 미리의 옆에 현이가 다가와 선다. 미리가 현이를 쳐다보자 미리의 얼굴을 다시 앞을 보게 하고는, 잠시 쳐다보고 다시 유선 이어폰 앞으로 가서 이어팁을 바꿀 수 있는 것으로 고른다.</p>
+    <p class="d">&quot;가자 . 이미리.&quot;</p>
+    <p class="d">&quot;아날로그가 좋긴 하지. 근데 쓰던 거 놔두고 왜 또 사?&quot;</p>
+    <p class="d">&quot;다 생각이 있어. 커피 사 들고 천으로 가자.&quot;</p>
+    <p>계산하려는 현이를 슬쩍 밀어내고는 미리가 계산한다.</p>
+    <p class="d">&quot;국밥이 진짜 맛있었거든.&quot;</p>
+    <p>문을 열고 나가며 미리의 머리가 반짝인다.</p>
+    <p>그런줄도 모르고 폼 잡고 퇴장하는 미리를 보며  풉 하고 웃고는 이어폰을 손에 꼭 쥐고 나간다.</p>
+    <p>동네 천 둔치에 앉아 커피를 홀짝인다.</p>
+    <p>백색 소음에 몸이 노곤해질 때 즈음에 현이가 물어왔다.</p>
+    <p class="d">&quot;입대를 어디서 하는 거야?&quot;</p>
+    <p class="d">&quot;논산훈련소&quot;</p>
+    <p class="d">&quot;말로만 듣던 거기구나. 자대? 그거는?&quot;</p>
+    <p class="d">&quot;가봐야 알 것 같아. 좋은 사람들이 있는 곳이면 좋겠는데 갑자기 겁나고 그러네.&quot;</p>
+    <p class="d">&quot;같이 갈 거니까 너무 겁먹지 마 쫄보.&quot;</p>
+    <p>현이를 쳐다본다. 현이는 흐르는 물 밑 바닥 어딘가를 응시하고 있다.</p>
+    <p>꽤나 차분해 보이는 모습에 마음이 좀 풀린 미리는 남은 커피를 다 마셔버리고 현이와 같이 천 어딘가를 응시한다. 현이의 커피 잔 속 얼음이 달그락 거린다.</p>
+    <p class="d">&quot;군대 가기 전까지 나랑 같이 있자. 그 시간 나한테 줄 수 있냐&quot;</p>
+    <p>현이가 커피 잔을 만지작 거린다.</p>
+    <p class="d">&quot;내가 너를 좋아해 많이. 이런 말이 너에게 부담이 될 수 있을 거란 생각도 들어.</p>
+    <p>그치만 이제 고집 좀 부릴게. 너를 놓칠 수가 없어. 계속 니 옆에 있었잖아.</p>
+    <p>매일 내가 얼마나 절망했는지 알아? 니가 누구 만난다고 할 때면, 그 날부터 난 며칠 동안 잠을 못 자.</p>
+    <p>니가 너무 싫었어. 싫어죽겠는데 보고 싶어 죽겠는거야.</p>
+    <p>그러면 나는 또 말도 안되는 꼬투리 잡으면서 너한테 연락을 해. 이런 거 그만 하고 싶어.</p>
+    <p>너한테 해주고 싶은 이쁜 말이 수도 없이 많은데, 언제나 퉁명스럽게 말하는 것도 그만하고 싶어.</p>
+    <p>아마 지금까지 만난 그 누구보다도 내가 널 가장 많이 좋아하고 있을 거야.</p>
+    <p>그러니까 나 믿어도 돼.</p>
+    <p>나도 너 정면에서 바라보게 해줘. 옆에서 보는 거 그만 하게 해줘.&quot;</p>
+    <p>현이 손에 힘이 들어가 커피 잔이 거의 찌그러졌다.</p>
+    <p>가만히 듣고 있던 미리가 입을 떼려 숨을 들이 마시는데 현이가 갑자기 일어난다.</p>
+    <p class="d">&quot;나 저녁에 가족 다 같이 밥 먹어. 가야해.&quot;</p>
+    <p>미리도 따라 일어난다.</p>
+    <p>마주보고 선 미리와 현이는 잠시 서로를 응시한다.</p>
+    <p>미리의 입술이 살짝 벌어지자 그걸 본 현이는 쓰고 있던 모자를 벗어 미리에게 씌운다.</p>
+    <p class="d">&quot;돌려주러 와.&quot;</p>
+    <p>현이가 뒤돌아 걸어가 이내 사라진다.</p>
+    <p>가로등이 켜진다.</p>
+    <p class="d">&quot;해가 다 졌네.&quot;</p>
+    <p>미리는 그러고도 한참을 더 서 있다가 모자를 고쳐 쓰고 현이가 걸어간 길을 따라 걸어 둔치로부터 사라진다.</p>
+    <p>당연하게도 현이는 가족 식사 약속이 없다.</p>
+    <p>아까 미리와 대화를 나눈 그곳을 다시는 못 갈지도 모르겠다는 생각을 하고 있던 차에 핸드폰이 울린다. 발신인 2mm.</p>
+    <p class="d">&quot;잠깐 나올래?&quot;</p>
+    <p>대답도 없이 전화를 끊고는 대충 챙겨 입고 나가니 미리가 집 앞에 서있다.</p>
+    <p class="d">&quot;돌려주러왔어.&quot;</p>
+    <p>미리가 내민 현이의 모자를 현이는 받지 않는다.</p>
+    <p>왠지 받으면 안 될 것 같다. 이걸 받으면 빚진 걸 받는 것에서 끝날 것만 같다.</p>
+    <p>미리가 내게서 영영 멀어질 것만 같다. 현이는 그저 그 자리에 선 채 미리만 바라볼 뿐이다. 이미 밤이라 현이의 얼굴이 잘 보이지 않지만 한껏 그늘진 그 얼굴엔 불안감이 가득했다.</p>
+    <p>미리는 잠시 동안 모자를 내민 채 들고 있다가 현이에게 모자를 씌워준다.</p>
+    <p class="d">&quot;돌려주러 왔어. 모자 말고 앞으로 계속 돌려줄 것들에 대해 얘기하려고 왔어.</p>
+    <p>내가 많이 부족할지도 모르겠어. 지금 내가 가진 건 까까머리 뿐이라서.</p>
+    <p>이런 나도 괜찮다면 지금까지 받아온 마음보다 조금 더 돌려줘도 될까?&quot;</p>
+    <p>모자로 가려져 얼굴이 보이지 않는 현이가 미리를 팔까지 겉으로 와락 안는다.</p>
+    <p>그리고는 다시 팔 사이로 파고들어 안겨있는 모양이 된다.</p>
+    <p>미리의 심장께에 현이의 얼굴이 닿는다.</p>
+    <p>평온하게 규칙적으로 뛰고 있는 미리의 심장박동에 현이는 불안했던 마음에서 안정을 되찾는다. 미리도 현이를 안는다. 어둠속에서 둘은 자연스레 숨을 맞춘다.</p>
+    <p>새근새근 하는 둘의 숨소리만이 밤을 채운다.</p>
+    <p>움직임을 잡아내어 꺼졌다 켜졌다를 반복하던 현관 센서 등은 활동을 멈추었다.</p>
+    <p>앞으로 몇 분 간 더 이어질 것이고 센서 등이 다시 켜지면 눈 앞의 서로가 달리 보일 것이다.</p>
+    <p>두 사람은 일단 안고는 있는데 어떻게 떨어져야할지를 모르겠다. 엄청 낯 뜨겁다.</p>
+    <p>갑자기 미리의 심장박동이 빨라지기 시작하더니 미리가 움찔대기 시작한다.</p>
+    <p class="d">&quot;그래. 나도 어떻게 해야 할지 모르겠으니까 일단 좀 이러고 있자.&quot;</p>
+    <p>저지르는 것 까지 좋았는데 회수가 안 된다.</p>
+    <p>진정되지 않던 미리의 심장은 조금 있으면 터질 수도 있을 것 같다. 몸이 뜨끈하게 달궈지는 것을 느낀 미리가 크게 움찔하자 센서 등이 다시 켜지고 현이는 뒤돌아 집으로 뛰어 들어간다. 볼을 움켜쥔 미리가 말했다.</p>
+    <p class="d">&quot;으 뜨거워.&quot;</p>
+    <p>양 볼을 소리 나게 두 번 때린 뒤 미리는 종종걸음으로 집으로 향한다.</p>
+    <p>이미리. 머리에서 김 난다.</p>
+  </section>
+
+  <section class="chapter" id="ch4" data-num="4" data-label="i fall in love too easily">
+    <header class="ch-head">
+      <span class="gapmark big" style="--g:33px" aria-hidden="true"><i></i><i></i></span>
+      <span class="ch-num">4</span>
+      <h2 class="ch-title">i fall in love too easily</h2>
+    </header>
+    <p class="d">&#x27;자니&#x27;</p>
+    <p>전송 버튼 위에 손이 갔다 말았다 하다가 앓는 소리를 내던 미리는 밤이 깊었음에도 말똥말똥하다. 그 어느 때 보다 힘이 넘치는데 하필이면 남들 다 자는 새벽이다.</p>
+    <p>방안을 이리저리 돌아다니며 힘을 빼지만 몸 안의 엔진이 꺼질 생각을 않는다.</p>
+    <p>오늘 무너진 패턴이 앞으로 몇 일 간 자신을 힘들게 할 생각에 한숨이 푹푹 나오지만 그렇다고 이렇게 잠들 수는 없겠다는 생각에 캔 맥주를 꺼내 창가로 가 앉아 쳇 베이커의 음악을 튼다.</p>
+    <p>너무나 쉽게 사랑에 빠진다는 가사에 잠시 생각에 잠긴다. 난 여태 쉽게 사랑해왔나?</p>
+    <p>매번 끝엔 열심히 울어왔던 것 같은데 그러면 쉽게 한건 아니지 않나?</p>
+    <p>하다가 문득 현이 앞에서 많이도 운 것 같다는 생각을 한다. 미안해진다.</p>
+    <p>이제 와 알게 되니 그간 나를 보며 속이 얼마나 문드러졌을까 싶다.</p>
+    <p>지나가는 과거의 일들이 미리를 혼내듯 빠르고 선명하게 떠오른다.</p>
+    <p>그런 순간들에는 늘 현이가 있었다. 현이를 알고부터는 한번도 빠짐없이 현이를 찾았었다.</p>
+    <p>얼마 마시지도 않았는데 갑자기 취기가 확오른다.</p>
+    <p class="d">&quot;미쳤어. 왜 그랬니 도대체.&quot;</p>
+    <p>창틀에 머리를 연거푸 박는다.</p>
+    <p>이대로 기절해서 깨어나면 아무것도 기억나지 않았으면 좋겠다. 생각이 급하게 불어난다.</p>
+    <p>머리 속이 뒤죽박죽이 되어 감당이 안 되던 차에</p>
+    <p class="d">&quot;사랑에 빠졌나봐. 어쩜 좋아.&quot;</p>
+    <p>방언 터지듯 뱉어진 말에 놀라 입을 틀어막는다.</p>
+    <p>사랑에 빠졌나봐. 언제나 나를 감싸 안고 있던 현이가 멋있게 느껴진다.</p>
+    <p>나는 늘 망설였고 현이는 늘 행동했다. 나에게 없는 용기가 너에게는 있구나.</p>
+    <p>어쩌면 주변을 맴 돈 건 너가 아니라 나였을지도 모르겠다. 너를 중심으로 돌고 있는 우주먼지쯤 되는 내가 너에게 다가가도 되는 걸까.</p>
+    <p>너의 허락을 내가 단번에 움켜쥐어도 되나. 하다가 이 모습을 현이 봤다면 아마 현이에 의해 턱이 돌아갔을지도 모른다는 생각에 몸을 한번 부르르 떨며 생각을 떨쳐냈다.</p>
+    <p>다시금 핸드폰을 잡고는 메모장을 켜서 글을 적는다.</p>
+    <p class="d">&#x27;어른 되기&#x27;</p>
+    <p class="d">&#x27;후회 하지 않기&#x27;</p>
+    <p class="d">&#x27;눈물 보이지 않기. 눈물 짓게 하지도 말기&#x27;</p>
+    <p>그리고는 메인화면에 고정시켜놓고 다짐을 굳히며 일단은 생각이 너무 많은 것부터 어떻게 해야겠다 싶어 눈을 감고 숨을 크게 들이쉬고 훅 내뱉고는 이마를 세게 탁하고 친다.</p>
+    <p>잠시 따끔함에 허우적이다 머릿속에 고통만 남았을 때 남은 맥주를 원 샷 해 구겨버리고 새것을 꺼내어 곧장 들이키며 책상에 앉아 노트를 펼친다.</p>
+    <p class="d">&#x27;외로움이란.</p>
+    <p>늘 내 곁에 머물며 사랑을 갈구하게 했고.</p>
+    <p>무르익지 않은 것을 가장 달게 만들어 그 이의 입에 물려주었고.</p>
+    <p>베어 물려 뜯긴 상처에도 기쁨으로 눈물 짓게 했다.&#x27;</p>
+    <p>그렇게 적고서 탁상거울의 자신과 눈이 마주친다.</p>
+    <p>뭔가 감성적이고 무드 등의 빛을 받아, 잘 생겨 보이는 것 같은 자신을 보며 배시시 웃는다.</p>
+    <p>웃는다기보다는 웃음이 샌다.</p>
+    <p>취했다. 미리의 주량은 맥주 135ml 한 캔이며 현재 굉장한 용기로 자신의 주량을 미쳐 생각하지 못했다.</p>
+    <p class="d">&quot;으히히&quot;</p>
+    <p>거울 속 미리와 윙크도 하고 인상도 쓰고 하며 사진을 찍고 놀다 현이 에게 노트를 찍은 사진을 보내려다 달궈진 쇠구슬 같은 얼굴로 윙크한 채 찍은 사진을 보낸다.</p>
+    <p>본인은 잘 못 보낸 지도 모른 채 옥상으로 뛰쳐나와 도시를 향해 음량을 최대로 줄여 소리 지른다.</p>
+    <p class="d">&quot;진짜 사랑에 빠졌다!&quot;</p>
+    <p>발음도 제대로 못하면서 마냥 기분이 좋은 미리는 거듭 실실 거리다 이제는 온몸에서 느껴지는 자신의 박동에 몸을 내주었다.</p>
+    <p class="d">“으아 세상이 두근두근 하네”</p>
+    <p>쓰러지듯 옥상 난간에 기대어 한적한 도시를 내려다본다.</p>
+    <p>현이네 집까지의 동선을 눈으로 쫓으며 길에 놓여 진 둘의 잔상을 보며 웃다, 또 다른 잔상이 될 둘을 상상하며 세상 끝 어디 하나 닿지 않은 곳 없이 차근차근 너와 다 밟아나갈 것이라며 호흡을 가다듬었다.</p>
+    <p class="d">“음 앞으로는 바깥쪽으로 걷도록 신경 써야겠다. 차가 좀 막 다니는구나.”</p>
+    <p>미리는 다시 집에 들어가 노트와 펜을 가지고 나와서 생각나는 것들을 적었다.</p>
+    <p>현이를 도로 안쪽으로 걷게 하기. 내려가다 보이는 첫 번째 슈퍼에만 파는 현이가 가장 좋아하는 아이스크림 이름. 세 번째 과속 방지턱 오른 편 파인 땅 조심하기.</p>
+    <p>내일은 손 잡고 걷기.</p>
+    <p>노트를 덮고 다시금 고개를 들었을 때는 저 멀리서 푸름이 올라오기 시작했다.</p>
+    <p>하품을 크게 해서 새벽공기를 양껏 충전하고 비틀비틀 집으로 들어가 신발장 앞에 누워 중얼거리다 잠에 빠져든다.</p>
+    <p class="d">“내일은 꼭 손...에..손 잡고...벽을 넘어서..서로서로 사랑하는 한 마음 되..자...”</p>
+    <p>잘자던 현이는 갑자기 소름이 돋아 기상한다.</p>
+    <p>푸르스름한 새벽이 창을 넘어 현이를 감싸고 있었고 이상한 기분에 잠이 깬 현이는 습관적으로 핸드폰을 확인하는데 미리에게 메세지가 와있다.</p>
+    <p>4시23분에 보낸 메세지는 사진 하나가 달랑 와있었는데, 탁상 거울 속 얼굴이 무척이나 발그레한 미리가 윙크하고 있는 얼굴 사진이다.</p>
+    <p class="d">“또라이”</p>
+    <p>어찌나 흔들렸는지 누가 보면 혼이 빠져나가고 있는 중인 줄 알 것 같은 미리 얼굴을 본 현이는 눈 뜨자마자 자신을 웃게 하는 미리를 많이 사랑하게 됐다.</p>
+    <p>아주 쉽게. 그리고 빠르고 깊게 말이다.</p>
+    <p>보나마나 지금은 한참 꿈나라에서 놀고 있을 미리에게 답장을 한다.</p>
+    <p class="d">“좋은 아침. 이쁜 꿈 꿔.”</p>
+  </section>
+
+  <section class="chapter" id="ch5" data-num="5" data-label="손에 손 잡고">
+    <header class="ch-head">
+      <span class="gapmark big" style="--g:25px" aria-hidden="true"><i></i><i></i></span>
+      <span class="ch-num">5</span>
+      <h2 class="ch-title">손에 손 잡고</h2>
+    </header>
+    <p class="d">“ 네. 15일 후에요. 들어가기 전에 전화 드릴게요.</p>
+    <p>알겠어요. 아부지나 잘 챙겨 드세요. 장비 잘 챙기시구. 휴가 때 봬요.“ 통화를 종료하고 무엇인가 확인하고는 치우던 집을 마저 치운다.</p>
+    <p>한참 집 정리를 하는데 뭔가 놓친 것 같은 기분에 집 한가운데 덩그러니 놓인 채 갸우뚱하고 있는데 노크소리가 들린다.</p>
+    <p>현이는 미리 집 초인종을 누르지 않고 늘 노크를 한다.</p>
+    <p>이유는 모르지만 그것으로 현이를 구분해 낼 수 있었다.</p>
+    <p class="d">“어서와!”</p>
+    <p class="d">“네. 세수는 하고 오세요.”</p>
+    <p class="d">“앗. 네!”</p>
+    <p>후다닥 화장실로 들어가서 세안 겸 머리도 감고 나오니 이미 상이 다 차려져 있었다.</p>
+    <p class="d">“아이고야. 넌 정말.”</p>
+    <p class="d">“왜. 어서와 앉아. 혼자 살면 더 잘 먹어야 해.”</p>
+    <p>핸드폰을 재차 확인한다.</p>
+    <p class="d">“왔다.”</p>
+    <p>곧이어 초인종 소리가 울린다.</p>
+    <p class="d">“네. 문 앞에 두고 가주세요! 찜닭 좋아하잖아. 치즈 추가해서 시켰거든.</p>
+    <p>이거는 이따가 저녁에 먹자.”</p>
+    <p class="d">“내가 저녁까지 안 있으면 어쩌려구.”</p>
+    <p class="d">“과연. 두고 보지요.”</p>
+    <p>둘이 마주 앉아 현이가 집에서 가져온 음식들로 가득한 점심 식사를 한다.</p>
+    <p>맛있다를 연발하며 골고루 잘도 집어먹는 미리가 이쁘다. 밥도 한 그릇 더 퍼오며</p>
+    <p class="d">“어머니 음식은 역시 최고야! 짜릿해!”</p>
+    <p>현이는 미리를 한번 쳐다보고는 씨익 웃고 마저 먹는다.</p>
+    <p>그렇게 행복한 식사를 마친 미리는 설거지 하며 브리핑을 한다.</p>
+    <p class="d">“잘 먹었습니다 진짜 진짜로!</p>
+    <p>오늘은 데이트를 할 거에요. 같이 아이쇼핑도 해야 하구요. 지나다가 보이는 맛있는 간식을 먹어야 하구요. 노래도 많이 불러 제낄 거니까 목 좀 풀어 두시구요.</p>
+    <p>밤에는 분위기 좋은 곳에서 술 한잔이 예정되어 있는 아주 아주 알차고 바쁜 하루 되시겠습니다!“</p>
+    <p class="d">“좋네. 훌륭하다.”</p>
+    <p class="d">“칭찬 감사합니다!”</p>
+    <p>설거지를 마치고 냉장고에서 현이가 좋아하는 아이스크림을 꺼내 현이에게 하나 건내고 둘은 옥상으로 나가 잠깐 바람을 쐰다.</p>
+    <p class="d">“근데 오늘 그렇게 하면 찜닭은 언제 먹어?”</p>
+    <p class="d">“어..그건 계산하지 못했어. 내가 어떻게든 해결 하면 돼. 걱정마!”</p>
+    <p>말은 그렇게 하면서도 진짜 어쩌지 하고 있는 표정인 미리가 재미있는 현이는 짧은 순간 미리를 한참 쳐다보다 자기 아이스크림을 다 먹고는 미리 것을 뺏어 먹고 집으로 들어가며 말한다.</p>
+    <p class="d">“이제 나가자.”</p>
+    <p>걸어 다니면서 미리가 부산스럽게 뭔가 바쁘다.</p>
+    <p>코너를 돌면 왼쪽에, 또 다른 코너를 돌면 오른쪽에. 계속 왔다 갔다 한다.</p>
+    <p class="d">“뭐해?”</p>
+    <p class="d">“어 그게. 있어. 진정한 에스코트 남으로 거듭나는 과정에 있는 중이라 좀 바빠.”</p>
+    <p class="d">“어이구 딴사람이네 아주.”</p>
+    <p>현이는 미리의 손을 잡으려고 계속 기회를 보고 있지만 미리가 자꾸 자리를 바꾸는 바람에 쉽지가 않다.</p>
+    <p>아닌 척 자연스럽게 잡으려고 어제 시뮬레이션을 수도 없이 돌리고 왔는데 예상 밖의 행동에 손을 자꾸만 꼼지락 거릴 뿐이다.</p>
+    <p>이런 자신이 그 때 고백은 어떻게 한건지 알 수가 없다 생각하며 옷가게에 도착할 때까지 자신을 열심히 맴도는 미리의 손과 치열하게 눈치 싸움을 해야 했다.</p>
+    <p class="d">“완전 똑같이 입는 건 트렌디 하지 못하니까 느낌이랑 색감을 맞추면 이쁠 것 같아.”</p>
+    <p>현이는 바쁘게 이것저것 미리에게 갖다 대 보며 옷가게를 누빈다.</p>
+    <p>미리는 계획을 세운 게 자신이 맞는가 의심하며 현이를 졸졸 쫓아다닌다.</p>
+    <p>현이는 옷에 관심이 많다. 자신이 옷을 잘 입었을 때의 쾌감을 즐긴다나. 그래서 확고하다.</p>
+    <p>옷 만큼은 절대 양보하지 않을 듯 한 현이 이기에, 내심 같은 옷을 입고 싶었던 마음을 입 밖으로 뱉지 못했다.</p>
+    <p>한시간 쯤 쇼핑을 하다 보니 서로 한 벌 씩, 둘이 색감이 맞는 가을 옷이 생겼다.</p>
+    <p>그리고 미리는 혼자 좀 더 구경을 하고 있는데 현이가 다가오더니 영수증을 팔랑인다.</p>
+    <p class="d">“아주 계획대로야.”</p>
+    <p>하고 유유히 가게를 빠져 나갔다.</p>
+    <p class="d">“어?”</p>
+    <p>계산대에는 결제가 끝난 쇼핑백들이 미리를 기다리고 있었고 그걸 본 미리는 급하게 보던 옷을 집어 들고 결제를 하고는 현이가 결제한 것까지 양손에 쇼핑백을 들고 따라 나간다.</p>
+    <p class="d">“아 너가 계획한 게 아이쇼핑이었지? 사버렸네.”</p>
+    <p class="d">“원래 아이쇼핑이 쇼핑이 되는 거지. 그건 불변의 법칙이야.</p>
+    <p>옷가게에 발을 들인 순간 우리의 운명은 정해져 있던 거지.”</p>
+    <p class="d">“말을 아무리 멋있게 해도 그냥 눈 돌아 간 거지 뭐.”</p>
+    <p class="d">“으응. 그게 맞지. 왜 이렇게 이쁜게 많지?”</p>
+    <p class="d">“근데 왜 쇼핑백이 하나 더 있어?”</p>
+    <p class="d">“너가 이만큼 산거야. 사실 알바비 들어와서 너 어울리는거 있으면 선물하려고 데려온건데.</p>
+    <p>되려 선물을 받아버렸네.” 하며 손을 살짝 뒤로 빼 감춘다.</p>
+    <p>미리의 손에 들린 또 하나의 쇼핑백 안에는 같은 디자인의 후드 티 두 장이 숨죽이고 있었다.</p>
+    <p class="d">“마음만 받을게. 그리고 나 좋자고 산거야.&quot;</p>
+    <p>현이는 큰 계획을 차근차근 하나씩 준비하고 이뤄나가는 중이다.</p>
+    <p>그리운 미리의 모습을 다시 되찾는 것. 미리와 만나는 것.</p>
+    <p>매일 평범하게 입고 다니는 미리와 이쁘게 차려입고 데이트 하는 것.</p>
+    <p>그 외 여러 가지들이 있지만 자신의 생각과는 다르게 돌발 행동을 하는 미리 때문에 난이도가 조금 올라갔다.</p>
+    <p>입대 전까지 생각 한 대로 되어 준다면 참 좋을 텐데. 계획에 갇히는 것이 싫었지만, 얼마 남지 않은 시간에 압박 당해 자꾸만 계획에 집착하게 되는 스스로를 약간 미워했다.</p>
+    <p>급하게 하면 더 틀어질 뿐인데.</p>
+    <p class="d">“흠. 그래. 원래 계획은 틀어지라고 있는 거야. 우리가 언제 뭐 계획대로 했나.</p>
+    <p>다 지나고 나니까 그 시간이 완벽했던 적이 많을 뿐이야. 단 한번도 안 좋았던 적이 없었어.</p>
+    <p>이게 우리고 이대로가 좋다고 생각해. 이쁜 옷 생겨서 좋다!”</p>
+    <p class="d">“너 초능력자야?”</p>
+    <p class="d">“갑자기? 와 쇼핑 너무 열심히 했어. 역 앞에 닭꼬치 먹자.”</p>
+    <p>미리가 조금 앞서 걷고 현이는 미리를 보며 ‘돌아봐라. 돌아봐라.’ 하고 되뇌었지만 닭꼬치 포장마차 아주머니께 신나게 인사를 건내는 모습에, 그럼 그렇지 하며 푸- 하고 살짝 호흡을 털어냈다.</p>
+    <p class="d">“들킨 줄 알았네. 음 초능력자였어도.. 좀 섹시했겠다.”</p>
+    <p>현이가 고음을 깔끔하게 질러낸다.</p>
+    <p>옆에서 듣는데 가사도 잘 들리고 노래 자체를 맛깔나게 하는 것 같다 생각하며 입 벌린 채 감상하던 미리는 듣고 싶은 노래를 계속 예약한다.</p>
+    <p class="d">“어이 빡빡이. 도대체 뭐하는 거지? 오늘 내 성대를 뽑아 갈 생각인거야?”</p>
+    <p class="d">“미쳤다. 진짜. 여기 목 좀 축이고 마저 불러줘.”</p>
+    <p>물개 박수 치면서 물병을 열어 현이 턱 밑에 대령한다.</p>
+    <p>현이는 그런 미리를 째려보는데 미리가 눈으로 애원을 하고 있어서 거절 할 수가 없었다.</p>
+    <p>말하지 않아도 들리는 미리의 애원에 독심술이 있는 건 자신이지 않을까 하며 미리의 신청곡을 하나하나 격파 해 나갔다. 그 사이 미리가 나가서 노래방 주인을 졸라 서비스 시간을 타 왔다. 끝나고 나면 세게 꼬집어 주리라 다짐하고, 그렇게 모든 시간을 소진하고 마지막 1분이 남은 때에 미리가 또 신청곡을 예약하자 현이는 미리에게 바짝 다가가 멱살을 잡고 눈으로 욕을 했다.</p>
+    <p>입술을 조금만 삐죽이면 닿을 것 같다.</p>
+    <p class="d">“알겠어 알겠어. 나도 하나 할게. 아 자신 없는데.”</p>
+    <p class="d">“최선을 다하지 않으면 이번엔 면도기로 밀어 버릴 거야.”</p>
+    <p>미리가 망설임 없이 리모콘으로 번호를 누르고 시작 버튼을 누른다.</p>
+    <p>간주가 흘러 나오는데 어디선가 들어본 노래다.</p>
+    <p>슬슬 걸어 나가 앞에 서서 약간의 율동과 함께 코리아나의 ‘손에 손 잡고‘를 부르기 시작한다.</p>
+    <p>가사에 충실한 율동을 하며 눈감고 심취한 채 노래 하는 미리를 보며 현이는 지금 무슨 일이 일어나는 건지 파악하는 중인데 2절이 시작되고 미리는 영어 버전으로 바꿔 부른다.</p>
+    <p>율동이 조금 더 격해지고 커졌다. 왠지 목소리도 살짝 벅찬 듯한 느낌이 나는 것을 보고 손으로 입을 틀어막았다. 그렇게 벙 쪄 있는데, 행복한 미리의 얼굴이 눈에 들어왔다.</p>
+    <p>그리고 계속해서 들려오는 손이라는 단어. 현이는 자리에 앉은 채 손을 들어 노래 하고 있는 미리와 나란히 한눈에 들어오도록 하고는 잠시 쳐다보다가 다시 손을 내리고 미리의 노래를 경청한다.</p>
+    <p>매우 뿌듯한 표정으로 목이 간 상태의 미리가 말을 노래방을 나오며 말했다.</p>
+    <p class="d">“잠시 동안 88올림픽 체험 했다. 눈물 날 뻔 했어.”</p>
+    <p class="d">“공감 잘해서 좋겠다. 너 최고. 노래는 내가 다했는데 목은 왜 니가 나간거야.”</p>
+    <p class="d">“집중력과 진심의 차이이지 않겠어?”</p>
+    <p class="d">“어. 응.”</p>
+    <p class="d">“이제 술 한잔 하러가자.”</p>
+    <p class="d">“집으로 가자. 집에서 마시자.”</p>
+    <p class="d">“왜? 진짜 분위기 좋은 곳 찾아 놨는데?”</p>
+    <p class="d">“집에서 찜닭이 나 기다려. 술 사들고 찜닭에 술 먹자.”</p>
+    <p>하고 ‘손에 손잡고’를 흥얼거리며 쇼핑백 하나를 가져가 든다.</p>
+    <p>하필이면 미리가 몰래 산 커플 후드 티가 든 쇼핑백을 가져가는 바람에 미리는 놀라 눈이 휘둥그레 해져 얼른 현이 옆에 따라 붙어 걷는다.</p>
+    <p>집에 오는 동안 들키지 않고 잘 와서 현이가 눈치 못 채게 한 쪽에 쇼핑백들을 몰아 둔 뒤 둘은 찜닭을 데워 술 상을 차린다.</p>
+    <p class="d">“잘 먹을게 찜닭. 아까 지나고 나니까 완벽했었다고 말해줘서도 고맙고.”</p>
+    <p class="d">“술집 가는 게 오늘 나의 계획 중에 야심차게 준비한 메인 이벤트였는데 목소리 쉬는 건 계획에 없었거든. 아주 큰 차질이 생겼어.</p>
+    <p>쉰 목소리로 분위기 잡으면 좀 깨잖아.”</p>
+    <p class="d">“넌 아무래도 바보인가봐.”</p>
+    <p class="d">“나도 그렇게 생각해. 너한테 계획 가지고 그렇게 말해 놓구 나는 이러고 있네. 하하.”</p>
+    <p class="d">“틀어지니까 더 좋네. 새로워서.”</p>
+    <p>둘은 와인을 따라 잔을 부딪히고 찜닭을 먹으며 시간을 보낸다.</p>
+    <p>많이 늦지 않은 시간임에도 깊은 밤 같았고, 끊임 없이 흐르는 시간이지만 이 집만 그 흐름에서 벗어난 것 같았다.</p>
+    <p>시간의 파수꾼에게 들키지 않았으면 하는 마음이 절실해 점점 속삭이듯 말하는 현이를 보며 미리는 갸우뚱했다.</p>
+    <p>그리고는 문득 드는 생각에 속삭여 말한다.</p>
+    <p class="d">“현아. 내가 맥주를 조금 밖에 못 마시잖아. 소주는 아예 못 먹고.</p>
+    <p>와인은 체크 해본 적이 없는데. 지금 벌써 세잔 째잖아?”</p>
+    <p class="d">“두번 째 잔 먹기 시작할 때부터 얼굴 터질 것 같던데.”</p>
+    <p class="d">“오 큰일 났다. 너 데려다 줘야 하는데.”</p>
+    <p>말하고 나니 앞에 있는 현이가 아지랑이처럼 일렁거린다.</p>
+    <p class="d">“하. 취했다네-” 나지막이 뱉고는 그대로 쓰러져 잔다.</p>
+    <p class="d">“에너지 소비가 많은 건 나였던 것 같은데.”</p>
+    <p>남은 와인을 마셔 버리고. 미리 와인 까지 모두 마시고는 미리를 한쪽으로 밀어놓고 정리를 시작한다. 술 상을 정리 하고 설거지도 마치고 아까 산 옷을 하나하나 옷걸이에 걸어 정리하는데 같은 디자인의 후드 티 두 장이 나온다.</p>
+    <p class="d">“하하. 진짜 귀여워죽겠네.”</p>
+    <p>현이는 미리를 침대 위로 끌어다 올려놓고 이불을 덮어준 뒤 후드티를 구경 하다가 입은 옷 위에 후드 티를 입는다. 그리고 미리 사이즈의 옷은 누워있는 미리 위에 펼쳐 놓는다.</p>
+    <p>침대 가에 걸터 앉아 새근거리며 자는 미리를 잠시 바라본다.</p>
+    <p>창을 통해 달빛이 들어와 스민다.</p>
+    <p>현이는 가지런히 포개져 있는 미리의 손에 자신의 손을 얹고 흥얼거린다.</p>
+    <p class="d">“손에 손 잡고..벽을 넘어서...서로서로 사랑하는..한 마음 되자. 꼭”</p>
+    <p>시간이 멈춘 방 안의 두 사람은 단단히 손깍지를 낀 채. 숨을 속삭였다.</p>
+    <p>그날의 달빛은 시원한 정도의 온도였던 것으로 기억된다.</p>
+    <p>-챕터 에필로그 약 28시간 전.</p>
+    <p>새벽 5시. 어제 준비해 놓은 재료들. 엄마가 적어 준 레시피 노트를 펴 놓고 요리를 하고 있는 현이는 첫 요리에 긴장 한 탓인지 이른 새벽임에도 전혀 졸리지 않다.</p>
+    <p>조리대와 싱크대는 이미 초토화 상태. 정리하면서 해야 하는 걸 자꾸 깜빡하는데 애초에 거기까지 신경 쓸 정신은 없었다.</p>
+    <p class="d">“다진 마늘 세 숟갈 하고..그 다음에... 엄마의 손맛. 응? 엄마의 손맛?”</p>
+    <p>엄마의 손맛 옆에 작게 웃는 얼굴이 그려져 있다.</p>
+    <p>맛의 비밀이 엄마의 손맛이라는 사실에 현이는 약한 절망을 하며 한참 깊은 잠을 자고 있는 엄마 방으로 원망의 눈초리를 보내고 고민에 빠진다.</p>
+    <p class="d">“나도 엄마 딸이니까 손맛이 좀 있지 않을까? 없으면 입양 된 걸로.”</p>
+    <p>지지고 볶고 태우고 하면서 얼추 구색이 맞춰지고 나니 점심시간이 다가 온다.</p>
+    <p class="d">“세이프.”</p>
+    <p>싱크대에 기대어 잠깐 앉아 쉬는데 피로가 몰려 온다.</p>
+    <p>간을 보니 다행히 입양된 건 아닌 것 같아 안심 하며 냉장고에서 에너지 음료를 벌컥벌컥 마시고 반찬들을 챙겨 미리네로 향한다.</p>
+    <p>조리대는 여전히 초토화 되어 있고 노트가 펼쳐져 있다.</p>
+    <p class="d">‘미안 엄마. 이런 나를 용서해..’</p>
+  </section>
+
+  <section class="chapter" id="ch6" data-num="6" data-label="지상 최대 야한 밤">
+    <header class="ch-head">
+      <span class="gapmark big" style="--g:18px" aria-hidden="true"><i></i><i></i></span>
+      <span class="ch-num">6</span>
+      <h2 class="ch-title">지상 최대 야한 밤</h2>
+    </header>
+    <p>속옷 가게 문이 열리고 미리가 들어와서 곧장 카운터로 간다.</p>
+    <p class="d">“여기서 제일 세 보이는 거로 주세요!”</p>
+    <p>비장한 미리의 표정을 보고 잠시 멈칫한 점원이 미리와 같은 표정으로 고개를 끄덕인 뒤 새빨간 팬티를 가져온다.</p>
+    <p class="d">“어..어우...”</p>
+    <p class="d">“강해지세요. 손님. 이 정도에 압도 당할거에요?”</p>
+    <p class="d">“그럴 수 없죠. 전 오늘 부터 앙칼진 녀석이 되겠어요.”</p>
+    <p class="d">“아주 좋아요. 아 근데 이거 커플 세트거든요.”</p>
+    <p>잠시 뒤 속옷 가게 문이 열리며 미리는 두 개의 쇼핑백을 가지고 나온다, 문 앞에 서서 뒤돌아 가게 안을 보는데 점원이 입모양으로 파이팅을 외치며 팔을 들어 주먹을 쥐어 보인다.</p>
+    <p class="d">“호구 잡힌 것 같은데..?”</p>
+    <p>갸우뚱하고는 털레털레 집으로 걸어간다.</p>
+    <p class="d">“어이 빡빡이 준비 다 했나!”</p>
+    <p class="d">“네!”</p>
+    <p>렌트카 안에 보이는 두 사람은 같은 디자인의 후드 티를 입고 있다.</p>
+    <p class="d">“브리핑 해봐.”</p>
+    <p class="d">“네! 오늘은 무계획 입니다!”</p>
+    <p class="d">“좋다. 훌륭하다! 출발!</p>
+    <p>둘은 춘천으로 출발 한다. 날씨가 매우 좋고 도로에는 차가 그리 많지 않아 여유롭다.</p>
+    <p>달리며 보이는 강 위로 햇살이 눈 부시다.</p>
+    <p>현이는 손을 내밀어 손가락 사이로 스치는 바람의 감촉을 만끽 하며 강 위로 비치는 빛의 무리를 잡을 듯이 뻗어 보는데 알 수 없는 감동이 밀려와 벅차오른다.</p>
+    <p>차가 달리는 중이 아니었다면 중력을 이기지 못했을 눈물이 바람에 날려 흔적을 감추었다.</p>
+    <p>그렇게 벅참을 느끼다 신호에 걸려 차가 잠시 멈추었을 때 미리의 머리를 쓰다듬는다.</p>
+    <p class="d">“반짝 반짝.”</p>
+    <p class="d">“어?”</p>
+    <p>아련한 눈을 하고서 머리를 쓰다듬는 현이를 보며 미리는 파안대소 한다.</p>
+    <p class="d">“뭐지. 약간 수치심 느껴.”</p>
+    <p class="d">“아냐 그런거. 동글 동글.”</p>
+    <p class="d">“가끔 널 이해 할 수 없을 때가 있어. 나한테 뭐라고 하기엔 너도 나랑 똑같아.”</p>
+    <p class="d">“다행이네. 닮아보려고 애 많이 썼는데 똑같다니.”</p>
+    <p class="d">“멘트 죽이네.”</p>
+    <p>신호가 바뀌고 미리는 자신의 머리를 만지는 현이의 손을 잡아 손에 살짝 입을 맞추고는 다시 두 손으로 운전대를 잡는다.</p>
+    <p class="d">“솔직히 멋있게 너 손 잡고서 다른 한 손으로 운전하고 싶은데 그러기엔 너가 너무 소중하다.   이해해.”</p>
+    <p class="d">“뻐꾸기 좀 날린다 너?”</p>
+    <p class="d">“아이 참. 부끄럽게 왜 그러세요. 저도 알아요. 뻐꾹 뻐꾹.”</p>
+    <p>현이는 당장 달려 들어 입술 박치기를 해버리고 싶었지만 퉁명스럽게 손을 제자리로 가져오며 왼다리를 꼬아 미리를 살짝 등진다. 괘씸한 빡빡이 같으니라고.</p>
+    <p>핸드폰으로 춘천에 가볼 만한 곳을 검색해본다. 그리고는 얼마 지나지 않아 결정을 한다.</p>
+    <p class="d">“목장 가자.”</p>
+    <p class="d">“메에에-”</p>
+    <p>미리가 아기 양 앞에 앉아 눈싸움 중이다. 근처에서 다른 양이랑 놀던 현이는 동그란 두 머리를 보고 다가온다.</p>
+    <p class="d">“뭐 하는 거야?”</p>
+    <p class="d">“눈을 안 피해. 조그만 한 게 눈빛이 살아있네.”</p>
+    <p class="d">“그 조그만 한 애 이겨서 뭐 하려고 눈높이까지 맞추고 그러고 있냐.”</p>
+    <p class="d">“물러서지 않는 게 바로 젊은이의 특권이지. 솔직히 이제 한계야. 눈을 진짜 안 감네.”</p>
+    <p>눈을 크게 깜빡이고는 양을 끌어 안고 간지럽힌다.</p>
+    <p class="d">“니가 이겼다. 넌 아주 멋진 양이 될 거야.”</p>
+    <p>현이가 마주앉아 양 배를 콕하고 찔러 본다.</p>
+    <p>살짝 꼬물거리며 얌전히도 안겨 있는 양 보며 미소 짓는다.</p>
+    <p class="d">“벌써 친해졌네. 너가 마음에 드나봐.”</p>
+    <p class="d">“그럼 그럼. 교감했다구. 눈은 마음의 창이랬어.”</p>
+    <p class="d">“이따가 친구 두고 가야하는데 어쩌냐.”</p>
+    <p class="d">“그건 나중 일이니까 생각 안 할래. 지금은 그냥 얘랑 뒹굴면 되는 거야.”</p>
+    <p>가만히 안겨 있던 양이 크게 꼬물대더니 현이 앞으로 가서 잠깐 올려다 보고는 품 속으로 들어가 안긴다.</p>
+    <p class="d">“하하. 알아들었나봐. 우리 집에 가긴 글렀다. 나 반했어 지금.”</p>
+    <p>현이가 살짝 놀라 고개를 들어 미리를 쳐다본다. 넌 누구에게 반했을까.</p>
+    <p>고개를 드는 찰나의 순간 둘의 시선이 엇갈린다. 미리는 양에게 현이는 미리에게로.</p>
+    <p>미리는 현이를 바라보고 있었다.</p>
+    <p>참 신비한 아이다. 대상의 마음에 닿는 방법을 알고 있는 것만 같은.</p>
+    <p>얇은 손목. 긴 손가락을 가지고서 좁은 내 마음 문을 비집고 들어와 저 안쪽까지 위로해 줄 수 있는 따뜻함의 현신임을.</p>
+    <p>작은 동물에게 마저도 호감을 사는 현이에게 반해버렸다.</p>
+    <p>양을 보기 위해 살짝 내려 깐 눈길에 아름다움을 느껴, 나는 더욱 빠져들겠구나.</p>
+    <p>결국 나는 나를 내어 주고야 말겠구나 하고 생각 했다.</p>
+    <p class="d">“몇 시지?” 현이가 물었다.</p>
+    <p class="d">“지금? 3시30분 좀 넘었어 왜?”</p>
+    <p class="d">“혹시 이따가 배 많이 고플 예정이야?”</p>
+    <p class="d">“그게 뭐야 하하. 너가 뭘 하자고 하던 나는 같이 할 거야.</p>
+    <p>그러니까 진짜 하고 싶은 거 편하게 말해 봐.”</p>
+    <p class="d">“간단한 거 싸들고 강가로 가자. 보여주고 싶은 게 있어.”</p>
+    <p class="d">“좋아. 그럼 친구랑 인사하고 슬슬 출발 하자!”</p>
+    <p>미리가 현이의 품 안에 있던 친구에게 악수를 청하며 눈 인사를 건내고 현이도 양 친구의 머리를 만지며 다음을 기약 했다.</p>
+    <p>먼저 인사를 마친 미리가 일어나 현이에게 손을 내밀었다.</p>
+    <p class="d">“안 놓을 생각으로 뻗은 손이라면 잡을게.”</p>
+    <p class="d">“그럼 놓으려고 뻗었을까?”</p>
+    <p>생긋 웃는 미리 너머로 뻐꾹뻐꾹하는 소리가 들리는 것만 같아 손을 잡고 일어나 미리와 나란히 서서 걷다가 어깨에 살짝 머리로 콩 한다.</p>
+    <p class="d">“다른데서 뻐꾸기 날리면 그 날 세상 등 지는 거야 알지?”</p>
+    <p class="d">“어? 친구 따라온다.”</p>
+    <p>현이는 아기 양을 보기 위해 안쪽으로 고개를 돌리는데 미리가 볼에 입을 맞춘다.</p>
+    <p class="d">“나는 뻐꾸기가 아니야. 파랑새이니라.”</p>
+    <p>하고는 도망치듯 앞으로 걸어간다.</p>
+    <p class="d">“으 저 주둥이. 주둥이!!”</p>
+    <p>미리와 현이는 강가에 앉아 샌드위치랑 음료를 먹고 있다.</p>
+    <p>곧 해가 질 듯 하게 하늘이 주황빛으로 물 들어간다.</p>
+    <p class="d">“이제 곧이야. 조금만 더 있자.”</p>
+    <p class="d">“급 할 거 하나도 없어. 천천히 있고 싶을 만큼 있다가 가자. 그러려고 그냥 온 거잖아 우리.”</p>
+    <p class="d">“배 안차지 않았어?”</p>
+    <p class="d">“야식 먹을 거 아냐?”</p>
+    <p class="d">“그렇긴 하지.”</p>
+    <p class="d">“이래봬도 10년 차다. 너랑 보내온 시간을 무시하지 말라구.”</p>
+    <p class="d">“오늘 안에 내가 그 주둥이랑 결판 짓는다 진짜.”</p>
+    <p>말하던 차에 강에 노을 빛이 한껏 묻기 시작한다.</p>
+    <p class="d">“아 됐다. 저거야. 보여주려던 거.”</p>
+    <p class="d">“뭐? 뭐가 있어?”</p>
+    <p class="d">“저 강 위에 반짝거리는 그 자체.”</p>
+    <p>둘은 잠깐 동안 말 없이 강을 바라본다.</p>
+    <p>그렇게 별이 흐르는 것 같은 강을 보며 미리에게 말을 건낸다.</p>
+    <p class="d">“넌 이렇게 해가 질 때 즈음의 일렁이는 저 빛을 가장 많이 닮았어.</p>
+    <p>나는 꼭, 이렇게 해가 질 때가 되면 세상 어느 곳에서든 너를 볼 수 있을 거야.</p>
+    <p>그러니까 내가 보고 싶을 때 너도 지금을 기억해줬음 좋겠어.</p>
+    <p>잘 지내자. 잘 부탁해.”</p>
+    <p>현이가 손을 내민다. 미리가 손을 잡고 둘은 작게 흔들며 장난스럽게 악수 한다.</p>
+    <p class="d">“저건 윤슬이라고 해. 우리 말 이쁘지.”</p>
+    <p class="d">“너만 할까.”</p>
+    <p class="d">“가만 보면 뻐꾸기는 너야.”</p>
+    <p>두 사람은 그렇게 반짝이는 강 앞에 앉아 손을 맞잡은 채, 서로를 바라보며 말 없이. 정말 많은 말을 주고 받았다.</p>
+    <p>그렇게나 수다스러운 저녁은 미리와 현 둘 모두에게 처음이었기에 둘은 끊임 없이 서로에게 마음을 건냈다.</p>
+    <p>시끄러운 저녁을 마음에 품고 두 사람은 가로등 켜진 도로를 달려 막걸리와 닭발을 포장해 모텔에 들어왔다.</p>
+    <p>미리가 너무 쑥맥처럼 보이지 않으려 익숙한 척 앞서 들어가는데 처음 들어와 보는 모텔에 여기저기 바쁘게 돌아가는 눈은 감춰지지가 않았다.</p>
+    <p>먼저 들어가지 않았더라면 아주 바보 같았겠다 하며 안심하고 있는데 뒤를 돌아보니 따라 들어온 현이도 아닌 척 하려는 듯 고개는 정면에 고정되어 있는데 눈이 바쁘다.</p>
+    <p>미리는 짐을 구석에 대충 두고는 곧장 화장실로 가서 수도꼭지를 다 열고 변기 물을 내려 보고는 나오며 말한다.</p>
+    <p class="d">“음. 수압은 괜찮네.”</p>
+    <p class="d">“...너 모텔 처음오지.”</p>
+    <p class="d">“...”</p>
+    <p>미리는 괜히 코를 한번 만진다.</p>
+    <p class="d">“먼저 씻어. 수압 완벽해.”</p>
+    <p class="d">“나도 처음이야. 그냥 편하게 생각해.”</p>
+    <p>현이는 미리의 팔을 가볍게 툭 치고는 씻으러 간다.</p>
+    <p>빨개진 귀를 잡고 침대에 걸터 앉아 있는데 현이가 화장실 문을 열고 고개를 빼꼼 내민다.</p>
+    <p class="d">“다음에 제주 가자. 비행기 탈 때 신발 벗는거 알지?”</p>
+    <p class="d">“으악! 그래 나 처음이다! 빨리 씻어!!”</p>
+    <p>현이가 생긋 웃고는 다시 들어가서 씻는다.</p>
+    <p>미리는 현이가 씻는 동안 침대에 코 박은 채로 열을 식혔다.</p>
+    <p class="d">“짠!”</p>
+    <p>둘은 막걸리 한잔을 들이킨다. 소박한 술상은 약간 귀여워 보이기까지 한다.</p>
+    <p>방에는 새벽에 듣기 좋을 듯한 팝송이 얕게 깔리고 있다.</p>
+    <p class="d">“빡빡아. 왜 1박2일로 오자고 했어?”</p>
+    <p class="d">“더 오래 같이 있고 싶어서 그런거지 뭐.”</p>
+    <p class="d">“너무 뻔한 전개인 것 같은데”</p>
+    <p class="d">“뻔하긴. 원래 아는 맛이 제일 맛있는거야.”</p>
+    <p class="d">“아는 맛? 너 계획 세우고 왔지. 말 하는게 수상한데.”</p>
+    <p class="d">“내가? 내가 감히 너한테? 그럴리가!”</p>
+    <p>미리가 멋쩍은 듯 막걸리를 살짝 홀짝이다 짐 가방 쪽으로 시선을 돌린다.</p>
+    <p class="d">“잠시만.”</p>
+    <p>미리가 쇼핑백을 꺼내와 현이 앞에 두고 종이컵에 남은 막걸리를 원 샷 한다.</p>
+    <p class="d">“아! 모르겠다. 봐봐 그냥”</p>
+    <p>접시의 닭발을 젓가락으로 툭툭 치며 굴리는 미리를 보며 의아해 하지만 곧 이어 들어온 속옷 브랜드 상표에 얼굴이 화끈거린다.</p>
+    <p>무슨 말을 해야 할지 몰라 일단 포장을 뜯고 속옷을 마주하는데 새빨간 여자 속옷 세트이다.</p>
+    <p>색도 색인데 사이즈를 어떻게 알았을지 생각하니 더욱 할 말이 없어진 현이는 미리를 바라본 채 잠시 방황하다 막걸리 두 잔을 연거푸 원 샷하고 다시 빤히 쳐다본다.</p>
+    <p class="d">“너 주려고 샀다기 보다는. 너 주려고 샀는데. 이게 내가 사고자 했던 건 아니야.”</p>
+    <p class="d">“무슨 말이지. 안 맞으면 어쩌려고?”</p>
+    <p class="d">“아 포인트가 그쪽인가요? 내가 그냥 이렇게 저렇게 얘기 좀 한참 하니까 주던데..</p>
+    <p>안 맞으면 교환해준대.”</p>
+    <p class="d">“환불은 선택지에 없나보구나.”</p>
+    <p class="d">“...원래 내거 사러간건데..커플 세트라길래..”</p>
+    <p class="d">“혹시 입고 있니?”</p>
+    <p>미리는 잠시 머뭇하더니 고개를 끄덕인다.</p>
+    <p>둘 사이에 약간의 정적이 흐르고 현이가 입을 연다.</p>
+    <p class="d">“취했어?”</p>
+    <p class="d">“알딸딸 해.”</p>
+    <p class="d">“알았어. 나 양치하고 올게. 이거 대충만 정리 해줘.”</p>
+    <p>곧장 일어나 화장실로 가는 현이를 보며 실수 한건가 하는 생각에 사로잡힌 채 술상을 치우고나니 현이가 나온다.</p>
+    <p class="d">“다녀와.”</p>
+    <p>미리는 고개를 끄덕이고 멋쩍어하며 화장실로 들어가 수도꼭지를 열고 양치를 하고도 가글까지 하며 시간을 벌었다. 나가서 무슨 말을 해야할지. 괜히 자신 때문에 어색해지면 어쩌지라는 생각에 가글을 계속 반복했다.</p>
+    <p>그렇게 얼마간의 시간을 보내고 나오니 약한 조명 하나만 켜진 채로 현이가 침대 위에서 벽에 기댄 채 앉아 있었다.</p>
+    <p>미리는 느껴지는 무언가에 의해 얼어붙었다.</p>
+    <p>자신이 화장실에 있는 동안 무슨 일이 일어난건지 파악하고는 천천히 침대로 가는데 가까워질수록 선명해지는 현이의 얼굴은 조금 변해있었다.</p>
+    <p>알 듯 말듯하게 살짝 꼬리가 빠져있는 눈 화장과 유독 새 빨간 입술.</p>
+    <p>살면서 그렇게나 생기 있는 빨간 색은 처음 보는 미리는 피가 빠르게 돌기 시작한다.</p>
+    <p>미리는 침대에 걸터 앉았다.</p>
+    <p class="d">“뭐해? 누워.”</p>
+    <p class="d">“아까.. 저..”</p>
+    <p class="d">“현이가 일어나서 미리를 돌려 자신을 보게 하고는 티를 살짝 내려 새 빨간 브라 끈을 보여준다.</p>
+    <p class="d">“누워.”</p>
+    <p>그렇게 말하고는 미리를 당겨 자신의 위로 올라오게 만든다.</p>
+    <p>미리가 덮친 듯한 자세가 된 둘은 서로를 바라보고 있다. 가깝다.</p>
+    <p>미리에게서 약간의 당황을 목격한 현이는 손을 뻗어 무드등을 끄고 미리에게 살짝 입을 맞춘다.</p>
+    <p>현이의 새빨간 입술에 정신이 모두 뺏긴 미리를 현이가 눈에 힘을 빼고 지긋이 바라본다.</p>
+    <p class="d">“이놈의 주둥이. 내가 이겼다.”</p>
+    <p class="d">“싫은거 아니었어?”</p>
+    <p class="d">“내가 싫다고 한 적이 있어?”</p>
+    <p class="d">“없지.”</p>
+    <p class="d">“마저 해.”</p>
+    <p>현이는 미리의 볼을 감싸고 끌어당겨 길게 입을 맞춘다.</p>
+    <p>어둑하여 둘의 실루엣만이 보이는 상태에서 미리가 말한다.</p>
+    <p class="d">&quot;나 혹시 입냄새 나? 가글 진짜 백만번 한 것 같은데&quot;</p>
+    <p class="d">&quot;어쩐지.&quot;</p>
+    <p>최소한의 미리 수를 유지 하던 둘은 더 이상 거리가 없다.</p>
+    <p>현이 눈 앞의 빡빡이는 생의 최대치로 야하다.</p>
+    <p>고요하다.</p>
+    <p>무척 야한 밤이 될 것 같다.</p>
+  </section>
+
+  <section class="chapter" id="ch7" data-num="7" data-label="가장 가까운 거리에서 너를.">
+    <header class="ch-head">
+      <span class="gapmark big" style="--g:11px" aria-hidden="true"><i></i><i></i></span>
+      <span class="ch-num">7</span>
+      <h2 class="ch-title">가장 가까운 거리에서 너를.</h2>
+    </header>
+    <p>옥상에서 전화 통화를 하고 있는 미리를 보러 현이가 나온다.</p>
+    <p>아직 통화중인 미리를 멀찍이 떨어져 지켜본다.</p>
+    <p>뺨을 식힐 정도의 약한 바람이 불어오는데 흩날리는 머리칼을 쓸어 넘기며 미리의 표정에 집중한다.</p>
+    <p>늘 맑은 미리가 유독 자신의 모습이 감춰질 때가 있는데, 바로 지금 아버지와의 통화이다.</p>
+    <p>겉으로는 크게 다르지 않다. 잘 웃고 농담도 던지고. 화기애애하게 통화를 하지만 그 맑은 모습에서 어딘가 처연한 느낌이 묻어 나오는 유일한 때이다.</p>
+    <p>살짝 올라간 기분 좋은 입꼬리를 비집고 나오는 그리움과 정처 없이 먼 곳을 바라보는 눈은 무언가를 찾고 있는 듯 하다.</p>
+    <p>그리고 화제를 전환 하기 전 찰나의 순간 떨리는 아랫 입술까지.</p>
+    <p>현이는 그런 미리를 알기에 지금처럼 거리를 둔 채 미리만의 시간을 지켜준다.</p>
+    <p>가만히 있지 못하고 왔다 갔다 하며 통화 하는 발에서 아버지에게 닿고 싶은 마음을 막고 있는 미리의 노력의 보인다.</p>
+    <p>찾아가려면 갈 수 있겠지만 미리는 아버지를 잘 찾아가지 않는다.</p>
+    <p>아마도 지금 저 표정을 아버지 앞에서 보이게 될까봐 겁을 먹은 듯하다.</p>
+    <p>그래서 늘 먼 거리에서 전화로만 안부를 전하고자 한다.</p>
+    <p>그렇게 조금 더 이어가다 통화를 끝내고 핸드폰을 꼭 쥐고서 어딘가를 응시하며 공허에 빠진다.</p>
+    <p>더 깊이 들어가기 전에 현이는 미리에게 다가가 뒤에서 안아주며 핸드폰을 쥔 미리의 손을 감싸 쥔다.</p>
+    <p class="d">“들어가자.”</p>
+    <p class="d">“응!”</p>
+    <p>미리의 목 언저리에 입을 맞추고 먼저 돌아 들어간다.</p>
+    <p>핸드폰을 너무 꼭 쥐고 있어서 붉게 자국이 남은 손바닥을 잠시 쳐다보다 바지 주머니에 손을 넣고 천천히 걸어 집으로 들어간다.</p>
+    <p>미리는 그렇게, 또 밖으로 드러난 자신의 마음을 감추듯 넣은 손을 집에 들어가는 짧은 몇 걸음 동안 그토록 미워했다.</p>
+    <p class="d">“식사 잘하고 계신대?”</p>
+    <p class="d">“응! 아주 좋대. 아픈데도 없고. 아저씨들하고도 잘 지내고.</p>
+    <p>공사장이라 늘 걱정이 돼. 감독이라지만 아빠성격에 가만히 있을 사람도 아니고 어떻게든 도우면서 같이 할테니까.”</p>
+    <p class="d">“그래서 아저씨들하고 더 돈독하게 지내시는 거니까 너무 많이 걱정하지는 말자.”</p>
+    <p class="d">“그럴게. 우리도 좀 더 돈독해져 볼까. 야한 녀석아?”</p>
+    <p class="d">“주둥이.”</p>
+    <p>미리는 맑게 웃어 보인다. 다시 돌아온 미리의 모습에 현이는 안심을 하고 미소로 화답한다.</p>
+    <p class="d">“나는 니가 지금처럼 맑게 살아갔으면 해.</p>
+    <p>세상이 꽤나 얼룩져 있잖아. 너라도 맑아야 옆에 있는 내가 숨 쉴 맛이 나지.”</p>
+    <p class="d">“걱정마시게. 나는 언제나 어디까지나 이대로일 것이니.</p>
+    <p>내가 옆에서 얼룩을 다 지워드리리다.”</p>
+    <p class="d">“그래. 계면활성재야. 믿는다. 이제 진짜 금방이네.”</p>
+    <p class="d">“그러게. 너가 옆에 있어줘서 불안하진 않은 것 같아.</p>
+    <p>그냥 현실 감각이 없는 건가.”</p>
+    <p class="d">“이왕이면 내가 한 몫 한 게 좋으니까 전자로 해. 우쭐하게.”</p>
+    <p class="d">“말장난이 늘었구만.”</p>
+    <p class="d">“어떤 주둥이랑 뽀뽀를 하도 했더니 옮았나봐.”</p>
+    <p class="d">“그럼 아예 불치병으로 만들어주지.”</p>
+    <p>미리는 현이에게 다가가 길게 입을 맞추고 둘은 이마를 맞댄 채로 잠시 있는다.</p>
+    <p>현이는 미세하게 호흡이 거칠어져 말한다.</p>
+    <p class="d">“너무 좋다.”</p>
+    <p class="d">“그러게.”</p>
+    <p class="d">“더 해줘.”</p>
+    <p>미리의 목을 끌어 안으며 또다시 길게 입을 맞춘다.</p>
+    <p class="d">“미리야.”</p>
+    <p class="d">“...”</p>
+    <p class="d">“다 괜찮아.”</p>
+    <p>미리는 긍정도 부정도 하지 않는다. 그저 현이를 더 가까이 끌어 안았다.</p>
+    <p class="d">“가기 전에 하고 싶은 거 있어? 아무거나.”</p>
+    <p class="d">“나 계란 프라이 한번만 해주라.”</p>
+    <p class="d">“계란 프라이? 왜?”</p>
+    <p class="d">“나 계란 프라이 진짜 좋아해.”</p>
+    <p class="d">“아 진짜? 먹는 걸 본 적이 한번도 없는 것 같은데.”</p>
+    <p class="d">“원하는 맛이 있거든. 아빠랑 진짜 많이 노력해 봤는데도 그 맛이 안나.</p>
+    <p>그래서 그 이후로는 먹은 적이 없어.</p>
+    <p>근데 얼마 전에 현이 너가 반찬 해 와서 밥 차려줬잖아.</p>
+    <p>너라면 할 수 있을 것 같아서.”</p>
+    <p class="d">“알고 있었어?”</p>
+    <p class="d">“먹을 땐 몰랐어. 혼자 생각 하다 보니까 반찬 용기에 김이 서려 있었더라구.</p>
+    <p>어머님이 그 새벽부터 일어나셨을 것 같진 않은데 하다가 알게 됐어.</p>
+    <p>요리 잘하더라. 어머님을 꼭 빼닮았던데.”</p>
+    <p class="d">“맛있었어?”</p>
+    <p class="d">“응. 그립더라구.”</p>
+    <p class="d">“응?”</p>
+    <p class="d">“아냐. 그러니까 계란 프라이 해주라. 부탁해!”</p>
+    <p class="d">“그래. 지금 해줄게 잠깐만 있어.”</p>
+    <p class="d">“좋아!”</p>
+    <p>현이는 일어나 냉장고에 가 계란을 꺼내어 프라이팬 앞에 섰다.</p>
+    <p>그리고는 곧장 얼어 붙어버렸다. 계란 프라이가 원래 이렇게 어려웠던거였나.</p>
+    <p>평소에 잘 만 해먹던 간단한 음식이었는데, 지금 이 순간 그 어떤 요리 보다 어렵게 느낀다.</p>
+    <p>혹시나 탈까. 혹시나 밍밍한 맛이 날까봐.</p>
+    <p>노심초사하며 겨우겨우 만든 계란 프라이는 생각보다 더 투박한 모습이다.</p>
+    <p>망했다고 생각하며 미리에게 내어주는데 미리가 오묘한 표정으로 계란프라이를 먹지 않고 바라만 보고 있다.</p>
+    <p class="d">“...역시 너무 못생겼지..? 다시 해줄게.”</p>
+    <p>현이가 계란 프라이를 가져가려 접시를 잡는데 미리가 현이 손을 잡고 약하게 고개를 젓는다. 여전히 오묘한 표정인 미리를 보며 무슨 생각을 하고 있는지 감을 잡지 못한 현이가 마주 앉는다.</p>
+    <p>아무래도 다시 해야겠다 생각을 하던 차에 미리가 젓가락으로 조금 찢어 먹고 잠깐 오물거리더니 고개를 푹 숙인다.</p>
+    <p class="d">“어때? 괜찮아?”</p>
+    <p>너무 맛이 없어서 실망 했다면 당장 갖다버릴 준비로 긴장 하던 현이에게 눈이 빨개진 미리가 현이를 바라보며 미소 짓는다.</p>
+    <p class="d">“진짜 맛있다. 헤헤.”</p>
+    <p>미리는 또 다시 계란 프라이를 조금 찢어 아껴 먹는다.</p>
+    <p>그걸 바라보던 현이는 일어나서 계란 프라이를 더 만들기 시작한다.</p>
+    <p class="d">“아버님도 계란프라이 좋아하셔?”</p>
+    <p class="d">“응. 아침마다 먹었거든 같이.</p>
+    <p>아빠가 정말 많이 좋아했었어. 유전인지 나도 그렇더라구.</p>
+    <p>엄마가 해주는 계란 프라이는 좀. 뭐라고 해야하지. 고기 구워먹는 맛이 나.</p>
+    <p>그래서 잊지를 못해. 그 맛도. 엄마도.”</p>
+    <p class="d">“괜찮으신거지?”</p>
+    <p class="d">“안쓰럽지 뭐. 나는 줄곧 너가 내 옆에 있었지만 우리 아빠는 정말 혼자 지냈으니까.</p>
+    <p>우리 아빠는 가여운 사람이야. 가여워 우리 아빠.”</p>
+    <p>치이익. 익어가는 소리와 고소한 향.</p>
+    <p>그 앞에 서있는 현이의 뒷모습을 보던 미리는 현이에게서 엄마를 본다.</p>
+    <p>이른 아침 잠이 덜 깬 채 거실로 나오면 볼 수 있었던 커다란 우리 엄마.</p>
+    <p>집 안을 가득 매운 계란 프라이의 고소한 향에 자꾸만 숨을 들이마시게 되었던 7살의 언젠가.</p>
+    <p>다가가 끌어안으면 허리 쯤 어딘가에 위치하던 나의 얼굴.</p>
+    <p>나중에 내가 더 자라 엄마 보다 커지면 내가 안아줘야지.</p>
+    <p>우리 엄마 내가 지켜줘야지.</p>
+    <p>얼른 엄마를 안아주기 위해 계란 프라이를 조르던 어린 시절의 미리는 다짐을 지킬 수가 없었다.</p>
+    <p>미리 엄마는 커다랗던 그 모습 그대로 시간이 멈춰 버렸기에 이제 막 자라기 시작하던 미리는 작은 아이인 채로 자신의 다짐을 묻어야만 했다.</p>
+    <p>그렇게 마음 한켠에 엄마를 품은 채 지금을 살고 있던 미리에게 현이가 나타나 그때 그 기억을 불러왔다.</p>
+    <p>미리는 입을 꾸준히 오물거리며 북받치는 것을 잘게 쪼갠다.</p>
+    <p>현이는 이미 요리가 끝났지만 계란 프라이가 식지 않도록 가장 낮은 온도로 인덕션을 맞추고 요리 하는 척을 하며 시간을 벌어준다.</p>
+    <p>약간의 시간이 지나고 현이가 내온 두 번째 계란 프라이를 보았을 때, 겨우 참던 그리움이 터진다.</p>
+    <p class="d">“...너무 보고싶어.”</p>
+    <p>현이는 조용히 흐느끼는 미리를 품안에 안고 머리를 쓰다듬는다.</p>
+    <p class="d">“많이 먹어. 더 해줄게.”</p>
+    <p>그 말에 미리는 7살 아이로 돌아가 운다.</p>
+    <p>유난히 작게 느껴지는 미리를 보며 마음이 많이 아파왔다.</p>
+    <p class="d">“내가 끝까지 옆에 있을게. 언제까지나 널 안아줄게.”</p>
+    <p>가장 가까운 거리에서 널 행복하게 해줄거야.</p>
+    <p class="d">“그래줘. 너무 멀지 않은 곳에 머물러줘.”</p>
+    <p>미리는 자신을 안고 있던 현이의 팔에 손가락으로 무어라고 쓰고는 그 곳에 손을 얹는다.</p>
+    <p class="d">“좋은 말이지?”</p>
+    <p class="d">“응. 주문이야. 주문 걸었어.”</p>
+    <p class="d">“그럼 더 묻지 않을게.”</p>
+    <p>현이는 미리의 머리를 쓰다듬으며 둘은 어느 때 보다 가까워진 채로 편안한 정적을 만끽한다.</p>
+    <p class="d">“나는 더 자라날거야. 무럭무럭.”</p>
+    <p class="d">“그래”</p>
+    <p class="d">“그렇게 다 자라고 나면 내가 지켜줄게.</p>
+    <p>아직 미쳐 다 자라지 못해 작은 바람만 불어도 휘청이지만 그리 멀지 않은 때에 난 아주 커다래 질거야.</p>
+    <p>그 때가 오면 언제든 쉬어갈 수 있게.</p>
+    <p>언제든 기대어 마음을 달랠 수 있게.</p>
+    <p>내가 늘 옆에서 지켜줄게.”</p>
+    <p class="d">“벌써 조금 또 자랐네. 이쁘다.”</p>
+    <p>둘은 눈을 감은 채 정적을 마저 이어간다.</p>
+    <p>해가 완전히 떨어지고 한참이 지났지만 현이가 집에 갈 생각이 없어 보인다.</p>
+    <p>미리가 계속 힐끔힐끔 쳐다보자 현이가 먼저 말을 한다.</p>
+    <p class="d">“오늘 친구네서 자고 들어간다고 했으니까 걱정마. 두고 안갈게.”</p>
+    <p class="d">“휴. 오늘 만큼은 다리 붙잡고 매달릴까 생각했지 뭐야.”</p>
+    <p class="d">“그래?”</p>
+    <p class="d">“응. 그리움이 방안에 가득이야.</p>
+    <p>너로 인해 찾아 온 내 그리움이 너를 따라 나가 흩어져 버릴까봐서 혹시나 하구.”</p>
+    <p class="d">“무거운 친구들이라 그리 쉽게 사라지지 않을 거야. 살이 많이 오른 그리움은 쉽게 사라지지 않아.</p>
+    <p>그래도 앞으로는 조금 다이어트 할 필요는 있겠어!”</p>
+    <p class="d">“...맞지.”</p>
+    <p class="d">“혹시 지금 내 말이 상처가 되었을까?”</p>
+    <p class="d">“아냐. 난 더 자라나기로 했으니까. 그게 맞아.”</p>
+    <p class="d">“그럼 환기 한번 싹 해볼까?”</p>
+    <p class="d">“그래.”</p>
+    <p>미리는 일어나 천천히 창문으로 다가간다.</p>
+    <p>그리고 창문을 잡고서 멈춰있다.</p>
+    <p>현이는 미리의 결심을 가만히 기다린다.</p>
+    <p>미리가 저 창문을 열게 된다면, 밀려 들어오는 공기가 소용돌이 치며 마음을 거칠게 휘저을테니.</p>
+    <p>이미 등 떠밀어 버린 현이는 그저 가만히 미리의 결심을 기다릴 수밖에 없는 것이다.</p>
+    <p>미리가 크게 한숨 들이마시더니 창문을 확 열어젖힌다.</p>
+    <p>그렇게 선선한 공기가 방안을 채우기 시작했고 현이는 그런 미리를 바라보다 현관문을 열어두고 나간다.</p>
+    <p class="d">“나 나가 있을게.”</p>
+    <p class="d">“고마워.”</p>
+    <p>혼자 남은 방안에서 미리는 멍하니 도시 전경을 바라보고 있다.</p>
+    <p>미리를 스치며 도는 약간의 바람이 그리움을 식힌다.</p>
+    <p>마음이 점점 잔잔한 호수의 모습을 한다.</p>
+    <p>미리는 천천히 눈을 감는다.</p>
+    <p class="d">“아브라 카다브라. 아브라 카다브라.”</p>
+    <p>창가에 기대어 거듭 읊조린다.</p>
+    <p class="d">“아브라 카다브라. 내가 널 지킬 수 있게 더 자라나길.</p>
+    <p>니가 너무 멀지 않은 곳에서 나와 함께 하길.”</p>
+    <p>옥상 난간에 기대어 도시 전경을 바라보는 현이는 아까 미리가 글을 적은 팔을 만지작거린다.</p>
+    <p class="d">“주문..”</p>
+    <p>미리가 건 주문이 무척이나 궁금해졌다.</p>
+    <p>이 주문이 효력이 있다면 우린 반드시 행복해질까.</p>
+    <p>가장 솔직한 모습으로 적어준 진심이니까 깊이도 각인 되지 않았을까.</p>
+    <p>부디 이루어지기를 바란다.</p>
+    <p>간절하고 진실된 너의 마음만큼이나 절박하게.</p>
+    <p>그때 옥상 문이 열리며 미리가 나온다.</p>
+    <p>현이가 미리 쪽을 돌아보자 서로 마주 보고 선 자세가 된다.</p>
+    <p>두사람은 서로의 눈을 통해 더 깊은 곳을 바라본다.</p>
+    <p class="d">“이미리. 하쿠나 마타타.”</p>
+    <p class="d">“응. 아브라 카다브라.”</p>
+    <p>마법사는 실존한다. 두사람 만큼은 확실하게.</p>
+  </section>
+
+  <section class="chapter" id="ch8" data-num="8" data-label="사이의 거리">
+    <header class="ch-head">
+      <span class="gapmark big" style="--g:4px" aria-hidden="true"><i></i><i></i></span>
+      <span class="ch-num">8</span>
+      <h2 class="ch-title">사이의 거리</h2>
+    </header>
+    <p>논산행 열차가 들어온다. 그걸 바라보는 미리의 옆얼굴을 현이가 빤히 쳐다보고 있다.</p>
+    <p>생각보다 안정 되어 보이는 미리의 얼굴을 보니 덩달아 마음이 고요해진다.</p>
+    <p class="d">“약속 지켜줬네.”</p>
+    <p class="d">“뭐가?”</p>
+    <p class="d">“입대 날 함께 해주겠다는 거. 내가 지금까지 혼자 시간을 보내다가 이 자리에 서있었다면 중얼거리면서 욕을 계속 하고 있지 않았을까 생각 중이었어.”</p>
+    <p class="d">“그래서 어떤데?”</p>
+    <p class="d">“솔직히 좋다고는 절대 못하겠어. 하하.”</p>
+    <p class="d">“욕은?”</p>
+    <p class="d">“너 앞에서 욕을 왜 해 내가. 옛날에 엄마랑 손잡고 치과 가는 기분이야.</p>
+    <p>너무 싫지만 엄마가 있어서 조금 나은 그런 기분!”</p>
+    <p class="d">“손 잡아줄까?”</p>
+    <p class="d">“우리 그러고 타면 문에 끼어.”</p>
+    <p class="d">“어련히 알아서 놓겠지 내가!”</p>
+    <p class="d">“타격감이 아주 좋아 김 현.”</p>
+    <p>열차가 완전히 들어와 서고 미리는 자신을 째려보는 현이에게서 도망치듯 올라탄다.</p>
+    <p>현이는 선뜻 따라 타지 못한다.</p>
+    <p>그렇게 잠시 멈칫하다 마지못해 뒤따라 오른다.</p>
+    <p>미리가 창가 쪽에 현이가 복도 쪽에 앉았다.</p>
+    <p>현이가 가방에서 미리와 함께 산 유선이어폰을 꺼내어 노래를 틀고 미리에게 한쪽을 준다.</p>
+    <p class="d">“입대 하는 것만 아니었으면 내가 정말 좋아하는 아날로그 여행인데.”</p>
+    <p>건내 받으며 미리가 하는 말에 현이는 말 없이 쳐다보다 볼을 콕 찌르고 앞을 본다.</p>
+    <p>두사람은 나란히 앞을 보고 앉아서 노래를 듣는다.</p>
+    <p>각자의 생각에 빠진 채 말 없이.</p>
+    <p>누구 하나 먼저 서로의 생각에 침범 할 여유 없이 아주 바쁘게 생각 한다.</p>
+    <p>미리와 함께 팬시점에 간 날.</p>
+    <p>현이는 이어폰 앞에서 미리를 바라보다 입대 날이 되면 미리에게 손도 대지 못할 것 같다는 생각이 스쳤다.</p>
+    <p>닿을 때, 미리의 그 온기가 자신에게 넘어와 집에 가는 동안 그리움으로 뜨겁게 타올라 열병을 앓겠다는 확신에 빠졌기 때문이다.</p>
+    <p>그렇다고 눈으로만 담을 수도 없는 일이기에 쫓기듯 해결책을 찾았다.</p>
+    <p>그때 눈에 들어온 것이 유선 이어폰이었고 지금 이렇게나마 미리와 연결된 채 애타는 자신의 마음을 달래는 중이다. 웃으며 보내줄 수 있을 것 같았지만 남겨진 이의 불안은 두 사람의 시간에서 이 헤어짐을 통째로 들어내는게 아니라면 잠재울 수 없다는 걸 알기에 현이는 갖은 수를 써가며 남은 시간에 진심을 다할 뿐이다.</p>
+    <p>너무나도 잡고 싶은 미리의 손을 애써 외면하면서.</p>
+    <p>미리는 현이 와의 시간을 상기한다.</p>
+    <p>오래 생각할 것도 없이 너무나도 위태위태한 모습으로 현이를 만나온 것 같아서 부끄러움에 화끈 거렸다. 의지할 수 있는 부분이라고는 조금도 보이지 않았는데 이만큼이나 자신을 사랑해주는 현이가 그저 고마웠고, 갖가지 이유로 많이도 울었는데 늘 별다른 이유를 묻지 않아준 것도 설레었다.</p>
+    <p>참 멋진 사람이다.</p>
+    <p>스쳐가는 생각들 포함 모든 행동이 자신에게 향해 있었음을 안 미리는 현이를 사랑하지 않을 방법이 없음을 아프게 새겨 넣었다.</p>
+    <p>앞으로 어떤 일이 있을지 모르지만 현명하게 헤쳐 나가겠다고.</p>
+    <p>어떤 일에 직면하더라도 피하지 않고 포기 않겠다고.</p>
+    <p>서로의 마음이 맞닿은 것을 소중히 지켜내겠다고.</p>
+    <p>미리는 현이를 바라본다.</p>
+    <p>현이의 낯빛이 어두워지는 중이다. 눈물이 영글어 가는 것 같기도 하다.</p>
+    <p>미리가 현이의 손을 잡자 현이가 바라보는데 눈빛이 흔들리고 있다.</p>
+    <p>말없이 바라보던 미리는 얕게 미소 지어보이며 현이의 머리를 안아 자신의 어깨에 기대게 한다.</p>
+    <p>미리는 잡은 손을 더 단단히 고쳐 잡는다.</p>
+    <p>무너진 현이의 다짐은 미리의 다짐으로 지켜진다.</p>
+    <p>두 사람은 남은 시간을 이대로 보내기로 했다.</p>
+    <p>어떠한 말도 하지 않은 채, 깊이 맞닿은 채.</p>
+    <p>당분간 느끼지 못할 온기를 맘껏 담아두고 금방 다시 만나기로 암묵적으로 합의를 봤다.</p>
+    <p>그리고는 지나가는 시간을 잊기 위해 둘은 눈을 감았다.</p>
+    <p>빠르게 달리는 기차는 멈출 생각이 전혀 없어 보인다.</p>
+    <p>부대 앞에 도착하니 잡고 있는 두 사람의 손에 더욱 힘이 들어간다.</p>
+    <p>현이는 미리보다 살짝 뒤처져있다. 곧이어 점점 더 뒤처지더니 완전히 멈춰 선다.</p>
+    <p class="d">“안아줘볼래?”</p>
+    <p>미리는 현이를 안고 머리를 쓰다듬는다.</p>
+    <p>현이는 고개를 묻은 채 미리의 심장 뛰는 소리를 잠시 듣는다.</p>
+    <p>그리고 서로 마주보고 선다.</p>
+    <p class="d">&quot;미안해. 그리고 시간 내줘서 정말 고마워.</p>
+    <p>금방은 아니지만 열심히 해서 많이 나올게.&quot;</p>
+    <p class="d">&quot;괜찮으니까 아프지만 마.&quot;</p>
+    <p class="d">&quot;미안해 정말.&quot;</p>
+    <p class="d">&quot;이제 가. 다녀와. 얼른.&quot;</p>
+    <p class="d">&quot;응. 현아. 나 다녀올게. 미안해&quot;</p>
+    <p>미리는 맑게 웃으며 마지막을 미안해로 맺었다.</p>
+    <p>앞으로 다시는 현이에게 미안하지 않으리라 하며 마지막으로 미안해를 맺었다.</p>
+    <p>미리는 대여섯 걸음 정도 뒷걸음질로 걸으며 현이를 눈으로 담았다.</p>
+    <p>현이가 손을 흔든다. 미리는 그 자리에서 웃어보이고는 뒤 돌아 걷기 시작한다.</p>
+    <p>걸음이 무겁다.</p>
+    <p>당장 돌아서서 울어제끼고 싶지만 꿋꿋이 걸어 나가 현이의 시야에서 사라져갔다.</p>
+    <p>부대 앞은 각자의 인사를 나누고 돌아가는 사람들로 북적거린다.</p>
+    <p>현이는 아직 미리가 사라진 길을 바라보고 서있다.</p>
+    <p>한참을 그렇게 서 있다 보니 현이를 빼고는 사람들이 하나도 없다.</p>
+    <p>현이 뒤로 해가 넘어가고 있고 현이는 그제서야 조금씩 뒷걸음질 친다.</p>
+    <p>한발 한발 떼면서도 계속 미리가 간 방향에서 눈을 떼지 못한다.</p>
+    <p>더는 뒷걸음질 치지 못하게 될 때까지 그렇게 걷다가 다시 멈춰선 후 이내 휙 돌아서 빠른 걸음으로 사라졌다.</p>
+    <p>현이는 돌아오는 기차에서도 복도 쪽에 앉았다.</p>
+    <p>그리고 이어폰을 꺼내어 한쪽만 착용하고는 창 밖 너머 어딘가를 바라보고 있다.</p>
+    <p>손을 꼼지락 거리면서 계속 멍하니 창 밖을 응시한다.</p>
+    <p>있어야 할 미리가 없어 길을 잃은 시선은 옆자리에서 멈추지 못하고 자꾸만 창 밖으로 흩어진다.</p>
+    <p>현이에게는 흩어지는 시선을 붙잡을 여력이 없다.</p>
+    <p>흩어진 시선이 흘러가 미리를 꿈에서라도 볼 수 있기를 바라며 끝도 없이 시선을 보낸다.</p>
+    <p>돌아가는 기차는 더욱 빠르게 달렸고 두 사람은 서로에게서 멀어져갔다.</p>
+    <p>가까워지는 것은 그렇게나 힘들었는데 멀어지는 건 한순간에 이렇게나 쉽고 빠르다는 것을 현이는 돌아가는 내내 아파했다.</p>
+    <p>기차에서 내려 사람들이 북적이는 거리를 통과하고 있는데 현이가 갑자기 우뚝 멈춰선다.</p>
+    <p>현이는 인파 속에 홀로 서 있다.</p>
+    <p>어쩌면 현이만 요동치고 있는 것일지도 모른다.</p>
+    <p>머리를 한번 쓸어 넘긴다.</p>
+    <p>그리고는 잠시 뒤 머리가 훅 하고 내려가더니, 주저 앉아서 한참을 아무것도 하지 못했다.</p>
+    <p class="d">&quot;어떻게 좁힌 거린데.</p>
+    <p>어떻게 줄였는데 1년 반이나 늘어나.&quot;</p>
+    <p>서러움이 몰아친다. 휘감고 돌아 마음을 후빈다.</p>
+    <p>아프다. 무섭다.</p>
+    <p>겨우 좁힌 거리가 다시 늘어날까봐.</p>
+    <p>겨우 2mm로 뭐 해먹고 살거냐고 놀려댔지만 지금은 2mm가 너무나도 절실해서 아프다.</p>
+    <p>아 나는 왜 이렇게까지 널 사랑하게 된 걸까.</p>
+    <p>에필로그 -1년8개월 후.</p>
+    <p>기차 창 밖으로 시간이 스친다.</p>
+    <p>현이가 보고싶어 내달린 시간은 정속으로 흘렀다.</p>
+    <p>그 모든 시간이 창을 치고 지나간다.</p>
+    <p>잠시 눈을 감는다.</p>
+    <p>현이가 아른거린다. 익숙하다.</p>
+    <p>단 한순간도 현이가 보이지 않은 적이 없기에 눈두덩이 안쪽에 분명히 현이 얼굴이 붙어 있을 것이라며 매일 밤을 꿈틀거리며 보냈다.</p>
+    <p>늘 해왔던 것처럼 어둠 속에서 너를 본다.</p>
+    <p>그리고는 눈을 감은 채 한번 더 꾸욱 감아 별 같은 것으로 현이를 덮어버리고는 눈을 뜬다.</p>
+    <p>도착이다.</p>
+    <p>더 이상은 어둠 속에 너를 홀로 세워두지 않을거다.</p>
+    <p>나는 너를 만나러 고집스런 시간에서 내려 걸음을 내딛는다.</p>
+    <p>미리를 만나러 가는 길.</p>
+    <p>차창 밖으로 오늘따라 유난히 햇살을 머금어 별 같은 것이 아른거리는 한강에 매료 되어 잠시간 생각한다.</p>
+    <p>나는 왜 이쁜 것만 보면 니가 떠오를까.</p>
+    <p>빛이 나는 건 내가 밀어버린 너의 2mm 빡빡머리인데.</p>
+    <p>무슨 흙 묻은 돌멩이 같이 생겼는데 온갖 이쁘고 반짝거리는 것만 보면 나는 왜 자꾸만 니가 떠오를까.</p>
+    <p class="d">&quot;아 너무 사랑하나&quot;</p>
+    <p>조용히 읊조리고는 피식 웃는다.</p>
+    <p>오늘 한강은 너로 가득해 미리야.</p>
+    <p>열차에서 사람들이 내린다.</p>
+    <p>두 사람은 다시 가까워지고 있다.</p>
+    <p>애초에 멀어진 적이 없지만 물리적 거리를 이겨내기 위에 분투하던 시간은 이제 끝났다.</p>
+    <p>곧 만난다.</p>
+    <p>그토록 바라던 끊임 없는 서로의 온기를 느낄 시간만이 기다리고 있다.</p>
+    <p>미리와 현은 각자 눈을 바쁘게 돌려가며 서로를 찾는다.</p>
+    <p>그리고 마침내 서로를 발견하고 꽤 먼 거리를 두고 마주 서 있다.</p>
+    <p>저만치 니가 보여.</p>
+    <p>사실은 사람이 너무 많아 너를 놓칠만 한데 너를 발견하고부터 단 한순간도 널 놓치지 않았어.</p>
+    <p>걸음이 무거워. 설레임이 발목에 쌓여서.</p>
+    <p>그 많던 사람이 다 흐릿해지고 너만 더 선명해져.</p>
+    <p>눈이 멀고 있나봐. 아니 뭔 생각이 이렇게 많지.</p>
+    <p>그래. 미쳐버린거지.</p>
+    <p>단단히 미쳐버린거야. 미쳤어. 어떡해 정말 미쳤나봐.</p>
+    <p>원래 심장이 온몸에서 뛰고 그러나?</p>
+    <p>아. 너의 눈에 내가 담겼어.</p>
+    <p>그래 내가 너의 눈에 들어앉았어. 드디어 말이야.</p>
+    <p>그리고 우린 조금 더 다가설거야.</p>
+    <p>그리고 기다렸다는 듯 말을 건내.</p>
+    <p>오늘 이쁘네. 사랑해.</p>
+  </section>
+
+  <div class="fin">
+    <span>끝</span>
+    <a href="#top">처음으로 돌아가기</a>
+  </div>
+  <p class="credit">원본 한글 문서(.hwp)를 휴대폰에서 읽기 좋게 옮긴 판본입니다.<br>글자 크기·줄 간격·서체는 오른쪽 위 <b>가가</b> 버튼에서 바꿀 수 있어요.</p>
+</main>
+
+<div class="resume" id="resume">
+  <span>이어읽기 · <b id="resumeAt"></b></span>
+  <button id="resumeGo">이동</button>
+  <button class="x" id="resumeX" aria-label="닫기">✕</button>
+</div>
+
+<div class="scrim" id="scrim"></div>
+
+<aside class="panel toc-panel" id="tocPanel" aria-label="목차">
+  <h3>차례</h3>
+  <div class="toc-list" id="tocPanelList"></div>
+</aside>
+
+<aside class="panel set-panel" id="setPanel" aria-label="읽기 설정">
+  <div class="set-in">
+    <div class="grab"></div>
+    <h3>읽기 설정</h3>
+    <div class="row">
+      <label>글자 크기</label>
+      <div class="seg">
+        <button id="fsDown" aria-label="글자 작게">작게 −</button>
+        <span class="size-out" id="fsOut">17px</span>
+        <button id="fsUp" aria-label="글자 크게">+ 크게</button>
+      </div>
+    </div>
+    <div class="row">
+      <label>줄 간격</label>
+      <div class="seg" id="lhSeg">
+        <button data-v="1.68">좁게</button>
+        <button data-v="1.85">보통</button>
+        <button data-v="2.1">넓게</button>
+      </div>
+    </div>
+    <div class="row">
+      <label>서체</label>
+      <div class="seg" id="ffSeg">
+        <button class="serif-s" data-v="serif">명조</button>
+        <button class="sans-s" data-v="sans">고딕</button>
+      </div>
+    </div>
+    <div class="row" id="installRow" style="display:none">
+      <label>앱 설치</label>
+      <div class="seg"><button id="installBtn">홈 화면에 추가</button></div>
+    </div>
+    <div class="row">
+      <label>화면</label>
+      <div class="seg" id="thSeg">
+        <button data-v="auto">자동</button>
+        <button data-v="light">밝게</button>
+        <button data-v="dark">어둡게</button>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<script>
+(function(){
+  var root=document.documentElement, KEY='sai.prefs', POS='sai.pos';
+  var prefs={fs:17,lh:1.85,ff:'serif',th:'auto'};
+  function load(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
+  function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+
+  var saved=load(KEY,null);
+  if(saved&&typeof saved==='object'){for(var k in prefs){if(saved[k]!=null)prefs[k]=saved[k]}}
+
+  function press(seg,val){
+    var bs=seg.querySelectorAll('button');
+    for(var i=0;i<bs.length;i++){bs[i].setAttribute('aria-pressed',String(bs[i].dataset.v===String(val)))}
+  }
+  var lhSeg=document.getElementById('lhSeg'),ffSeg=document.getElementById('ffSeg'),thSeg=document.getElementById('thSeg');
+  var fsOut=document.getElementById('fsOut');
+
+  function apply(){
+    prefs.fs=Math.min(24,Math.max(14,prefs.fs));
+    root.style.setProperty('--fs',prefs.fs+'px');
+    root.style.setProperty('--lh',prefs.lh);
+    root.style.setProperty('--ff','var(--'+prefs.ff+')');
+    if(prefs.th==='auto'){root.removeAttribute('data-theme')}else{root.setAttribute('data-theme',prefs.th)}
+    fsOut.textContent=prefs.fs+'px';
+    press(lhSeg,prefs.lh);press(ffSeg,prefs.ff);press(thSeg,prefs.th);
+    save(KEY,prefs);
+  }
+  document.getElementById('fsUp').onclick=function(){prefs.fs+=1;apply()};
+  document.getElementById('fsDown').onclick=function(){prefs.fs-=1;apply()};
+  [[lhSeg,'lh',parseFloat],[ffSeg,'ff',String],[thSeg,'th',String]].forEach(function(t){
+    t[0].addEventListener('click',function(e){
+      var b=e.target.closest('button'); if(!b)return;
+      prefs[t[1]]=t[2](b.dataset.v); apply();
+    });
+  });
+  apply();
+
+  /* ---- drawer + sheet ---- */
+  var scrim=document.getElementById('scrim'),tocP=document.getElementById('tocPanel'),setP=document.getElementById('setPanel');
+  function close(){scrim.classList.remove('on');tocP.classList.remove('on');setP.classList.remove('on')}
+  function open(p){close();scrim.classList.add('on');p.classList.add('on')}
+  document.getElementById('tocBtn').onclick=function(){open(tocP)};
+  document.getElementById('setBtn').onclick=function(){open(setP)};
+  scrim.onclick=close;
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close()});
+
+  var panelList=document.getElementById('tocPanelList');
+  panelList.innerHTML=document.querySelector('#toc .toc-list').innerHTML;
+  panelList.addEventListener('click',function(e){if(e.target.closest('a'))setTimeout(close,120)});
+
+  /* ---- progress + current chapter ---- */
+  var chs=[].slice.call(document.querySelectorAll('.chapter'));
+  var rows=[].slice.call(panelList.querySelectorAll('.toc-row'));
+  var fill=document.getElementById('barFill'),nowL=document.getElementById('nowLabel');
+  var ticking=false,cur=-1;
+
+  function update(){
+    ticking=false;
+    var h=document.documentElement.scrollHeight-window.innerHeight;
+    var r=h>0?Math.min(1,Math.max(0,window.scrollY/h)):0;
+    root.style.setProperty('--p',r);
+    var i=-1;
+    for(var j=0;j<chs.length;j++){if(chs[j].getBoundingClientRect().top<=90)i=j}
+    if(i!==cur){
+      cur=i;
+      if(i<0){nowL.textContent='사이의 거리'}
+      else{nowL.innerHTML=chs[i].dataset.num+' &nbsp;<b>'+chs[i].dataset.label+'</b>'}
+      rows.forEach(function(el,n){el.classList.toggle('here',n===i)});
+    }
+    save(POS,{y:Math.round(window.scrollY),r:Math.round(r*100),c:i});
+  }
+  function onScroll(){if(!ticking){ticking=true;requestAnimationFrame(update)}}
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',onScroll);
+
+  /* ---- resume ---- */
+  var pos=load(POS,null),chip=document.getElementById('resume');
+  if(pos&&pos.y>600&&pos.r<98){
+    document.getElementById('resumeAt').textContent=(pos.c>=0?(pos.c+1)+'장 · ':'')+pos.r+'%';
+    chip.classList.add('on');
+    document.getElementById('resumeGo').onclick=function(){window.scrollTo({top:pos.y});chip.classList.remove('on')};
+    document.getElementById('resumeX').onclick=function(){chip.classList.remove('on')};
+    setTimeout(function(){chip.classList.remove('on')},9000);
+  }
+  update();
+
+  /* ---- home-screen install (Chrome / Edge on Android) ---- */
+  var deferred=null,iRow=document.getElementById('installRow'),iBtn=document.getElementById('installBtn');
+  window.addEventListener('beforeinstallprompt',function(e){
+    e.preventDefault();deferred=e;iRow.style.display='grid';
+  });
+  iBtn.onclick=function(){
+    if(!deferred)return;
+    var d=deferred;deferred=null;iRow.style.display='none';
+    d.prompt();
+  };
+  window.addEventListener('appinstalled',function(){iRow.style.display='none'});
+})();
+</script>
+
+<script>
+if('serviceWorker' in navigator){
+  addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})});
+}
+</script>
+</body>
+</html>
