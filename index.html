@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="단편 소설 「사이의 거리」 전 8장. 휴대폰에서 읽기 좋게 옮긴 판본.">
+<meta name="description" content="단편 소설 「사이의 거리」 · 작가 김기수">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F3F4F6">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#111419">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -122,7 +122,7 @@ body{
 .reader{max-width:34rem;margin:0 auto;
   padding:calc(52px + env(safe-area-inset-top)) max(22px,env(safe-area-inset-left)) 0}
 
-.cover{padding:72px 0 8px;border-bottom:1px solid var(--rule-soft)}
+.cover{padding:72px 0 46px;border-bottom:1px solid var(--rule-soft)}
 .cover .eyebrow{
   font-family:var(--sans);font-size:11px;font-weight:500;
   letter-spacing:.3em;text-transform:uppercase;color:var(--accent);
@@ -131,14 +131,13 @@ body{
   font-size:clamp(2.6rem,13vw,3.4rem);font-weight:700;line-height:1.14;
   letter-spacing:-.02em;margin:14px 0 0;text-wrap:balance;
 }
-.cover .meta{
-  font-family:var(--sans);font-size:12.5px;line-height:1.7;color:var(--ink-3);
-  margin:22px 0 0;display:flex;flex-wrap:wrap;gap:6px 14px;
+.cover .by{
+  font-family:var(--sans);font-size:13.5px;color:var(--ink);
+  margin:26px 0 0;display:flex;align-items:baseline;gap:12px;
 }
-.cover .meta span{white-space:nowrap}
-.cover .lede{
-  font-size:.95em;color:var(--ink-2);line-height:1.9;
-  margin:26px 0 40px;padding-left:14px;border-left:2px solid var(--accent);
+.cover .by span{
+  font-size:11px;font-weight:600;letter-spacing:.24em;
+  color:var(--ink-3);text-transform:none;
 }
 
 /* the gap motif: two marks, the distance between them closing chapter by chapter */
@@ -155,7 +154,7 @@ body{
 }
 .toc-list{display:flex;flex-direction:column}
 .toc-row{
-  display:grid;grid-template-columns:1.6em 1fr auto auto;align-items:center;gap:12px;
+  display:grid;grid-template-columns:1.6em 1fr auto;align-items:center;gap:14px;
   padding:13px 2px;text-decoration:none;color:inherit;
   border-bottom:1px solid var(--rule-soft);
 }
@@ -167,10 +166,6 @@ body{
 }
 .toc-title{font-size:.94em;line-height:1.5;transition:color .15s}
 .toc-title.untitled{color:var(--ink-3)}
-.toc-min{
-  font-family:var(--sans);font-size:11px;color:var(--ink-3);
-  font-variant-numeric:tabular-nums;
-}
 .toc-row .gapmark{justify-self:end}
 
 /* ---------- prose ---------- */
@@ -311,12 +306,7 @@ body{
   <div class="cover" id="top">
     <div class="eyebrow">단편 소설</div>
     <h1>사이의 거리</h1>
-    <div class="meta">
-      <span>전 8장</span>
-      <span>31,931자</span>
-      <span>읽는 데 약 58분</span>
-    </div>
-    <p class="lede">헤어진 날 아침, 미리는 군대에 가기로 했다. 그리고 현이가 집 앞에 와 있었다. 열한 살에 시작된 두 사람 사이의 거리가, 여덟 개의 장을 지나 조금씩 좁아진다.</p>
+    <p class="by"><span>작가</span>김기수</p>
   </div>
 
   <nav class="toc" id="toc" aria-label="목차">
@@ -326,49 +316,41 @@ body{
         <span class="toc-num">1</span>
         <span class="toc-title untitled">헤어졌다.</span>
         <span class="gapmark" style="--g:40px" aria-hidden="true"><i></i><i></i></span>
-        <span class="toc-min">6분</span>
       </a>
       <a class="toc-row" href="#ch2">
         <span class="toc-num">2</span>
         <span class="toc-title untitled">10월 하늘은 굉장히 깊다.</span>
         <span class="gapmark" style="--g:35px" aria-hidden="true"><i></i><i></i></span>
-        <span class="toc-min">5분</span>
       </a>
       <a class="toc-row" href="#ch3">
         <span class="toc-num">3</span>
         <span class="toc-title untitled">공원 벤치에 누가봐도 미리…</span>
         <span class="gapmark" style="--g:29px" aria-hidden="true"><i></i><i></i></span>
-        <span class="toc-min">6분</span>
       </a>
       <a class="toc-row" href="#ch4">
         <span class="toc-num">4</span>
         <span class="toc-title">i fall in love too easily</span>
         <span class="gapmark" style="--g:24px" aria-hidden="true"><i></i><i></i></span>
-        <span class="toc-min">4분</span>
       </a>
       <a class="toc-row" href="#ch5">
         <span class="toc-num">5</span>
         <span class="toc-title">손에 손 잡고</span>
         <span class="gapmark" style="--g:19px" aria-hidden="true"><i></i><i></i></span>
-        <span class="toc-min">10분</span>
       </a>
       <a class="toc-row" href="#ch6">
         <span class="toc-num">6</span>
         <span class="toc-title">지상 최대 야한 밤</span>
         <span class="gapmark" style="--g:14px" aria-hidden="true"><i></i><i></i></span>
-        <span class="toc-min">10분</span>
       </a>
       <a class="toc-row" href="#ch7">
         <span class="toc-num">7</span>
         <span class="toc-title">가장 가까운 거리에서 너를.</span>
         <span class="gapmark" style="--g:8px" aria-hidden="true"><i></i><i></i></span>
-        <span class="toc-min">9분</span>
       </a>
       <a class="toc-row" href="#ch8">
         <span class="toc-num">8</span>
         <span class="toc-title">사이의 거리</span>
         <span class="gapmark" style="--g:3px" aria-hidden="true"><i></i><i></i></span>
-        <span class="toc-min">7분</span>
       </a>
     </div>
   </nav>

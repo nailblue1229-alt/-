@@ -1,5 +1,5 @@
 /* 사이의 거리 - offline cache */
-var CACHE = 'sai-v1';
+var CACHE = 'sai-v2';
 var ASSETS = ['./', './index.html', './manifest.webmanifest',
               './icon-192.png', './icon-512.png', './icon-maskable-512.png', './icon-180.png'];
 
@@ -17,6 +17,21 @@ self.addEventListener('activate', function (e) {
 
 self.addEventListener('fetch', function (e) {
   if (e.request.method !== 'GET') return;
+
+  /* the page itself: network first, so an updated text lands right away */
+  if (e.request.mode === 'navigate') {
+    e.respondWith(
+      fetch(e.request).then(function (res) {
+        var copy = res.clone();
+        caches.open(CACHE).then(function (c) { c.put('./index.html', copy); });
+        return res;
+      }).catch(function () {
+        return caches.match('./index.html').then(function (hit) { return hit || caches.match('./'); });
+      })
+    );
+    return;
+  }
+
   e.respondWith(
     caches.match(e.request).then(function (hit) {
       if (hit) return hit;
