@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>쇼츠 인기영상 찾기</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #fff; --text: #1a1d21; --muted: #6b7280;
+    --line: #e5e7eb; --accent: #e11d48; --accent-text: #fff; --chip: #f1f5f9;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1115; --card: #181b21; --text: #e8eaed; --muted: #9aa0a6;
+      --line: #2a2e36; --accent: #f43f5e; --accent-text: #fff; --chip: #232731;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 15px/1.5 system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; }
+  main { max-width: 1200px; margin: 0 auto; padding: 20px 16px 60px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 16px; font-size: 13px; }
+  form { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px;
+         display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+  label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted); }
+  input, select { font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--line);
+                  border-radius: 8px; padding: 8px 10px; min-width: 0; }
+  .wide { grid-column: 1 / -1; }
+  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .row label.check { flex-direction: row; align-items: center; gap: 6px; color: var(--text); font-size: 13px; }
+  button { font: inherit; border: 0; border-radius: 8px; padding: 10px 18px; cursor: pointer;
+           background: var(--accent); color: var(--accent-text); font-weight: 600; }
+  button.ghost { background: var(--chip); color: var(--text); font-weight: 500; }
+  button:disabled { opacity: .5; cursor: wait; }
+  #status { margin: 14px 0; color: var(--muted); font-size: 13px; min-height: 20px; }
+  #status.err { color: var(--accent); }
+  .toolbar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+  .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+          display: flex; flex-direction: column; }
+  .thumb { position: relative; display: block; aspect-ratio: 9 / 16; background: #000; }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .rank { position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,.75); color: #fff;
+          font-weight: 700; font-size: 13px; padding: 2px 8px; border-radius: 6px; }
+  .dur { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,.75); color: #fff;
+         font-size: 12px; padding: 1px 6px; border-radius: 4px; }
+  .body { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .title { font-weight: 600; font-size: 14px; color: var(--text); text-decoration: none;
+           display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .ch { font-size: 12px; color: var(--muted); text-decoration: none; }
+  .stats { display: flex; flex-wrap: wrap; gap: 4px; }
+  .stat { background: var(--chip); border-radius: 6px; padding: 1px 7px; font-size: 12px; }
+  .stat.hot { background: var(--accent); color: var(--accent-text); }
+  .muted { color: var(--muted); font-size: 12px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>🔥 유튜브 쇼츠 인기영상 찾기</h1>
+  <p class="sub">검색어를 넣으면 최근 올라온 쇼츠 중 조회수가 높은 영상을 찾아줍니다. (YouTube Data API v3 키 필요)</p>
+
+  <form id="f">
+    <label class="wide">YouTube API 키
+      <input id="key" type="password" placeholder="AIza..." autocomplete="off" required>
+    </label>
+    <label class="wide">검색어
+      <input id="q" placeholder="예: 노후 준비, 다이어트 레시피, 강아지" required>
+    </label>
+    <label>기간
+      <select id="days">
+        <option value="1">최근 24시간</option>
+        <option value="3">최근 3일</option>
+        <option value="7" selected>최근 7일</option>
+        <option value="30">최근 30일</option>
+        <option value="90">최근 90일</option>
+        <option value="365">최근 1년</option>
+      </select>
+    </label>
+    <label>국가
+      <select id="region">
+        <option value="KR" selected>한국</option>
+        <option value="US">미국</option>
+        <option value="JP">일본</option>
+        <option value="">전체</option>
+      </select>
+    </label>
+    <label>언어
+      <select id="lang">
+        <option value="ko" selected>한국어</option>
+        <option value="en">영어</option>
+        <option value="ja">일본어</option>
+        <option value="">전체</option>
+      </select>
+    </label>
+    <label>최소 조회수
+      <input id="minViews" type="number" min="0" step="1000" value="10000">
+    </label>
+    <label>가져올 개수
+      <select id="pages">
+        <option value="1">50개 (API 100 단위)</option>
+        <option value="2" selected>100개 (API 200 단위)</option>
+        <option value="4">200개 (API 400 단위)</option>
+      </select>
+    </label>
+    <div class="wide row">
+      <label class="check"><input id="addShorts" type="checkbox" checked> 검색어에 #shorts 붙이기</label>
+      <label class="check"><input id="remember" type="checkbox" checked> API 키 이 브라우저에 저장</label>
+      <span style="flex:1"></span>
+      <button id="go" type="submit">검색</button>
+    </div>
+  </form>
+
+  <div id="status"></div>
+
+  <div class="toolbar" id="toolbar" hidden>
+    <label style="flex-direction:row;align-items:center;gap:6px">정렬
+      <select id="sort">
+        <option value="vpd" selected>하루당 조회수 (급상승)</option>
+        <option value="views">총 조회수</option>
+        <option value="likes">좋아요</option>
+        <option value="comments">댓글</option>
+        <option value="engage">좋아요율</option>
+        <option value="new">최신순</option>
+      </select>
+    </label>
+    <span class="muted" id="count"></span>
+    <span style="flex:1"></span>
+    <button class="ghost" id="csv" type="button">CSV 저장</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</main>
+
+<script>
+const API = 'https://www.googleapis.com/youtube/v3';
+const SHORTS_MAX_SEC = 180; // 쇼츠 최대 길이 3분
+const $ = id => document.getElementById(id);
+let results = [];
+
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch {} },
+  del(k) { try { localStorage.removeItem(k); } catch {} },
+};
+$('key').value = store.get('yt_api_key') || '';
+
+function status(msg, isErr) {
+  $('status').textContent = msg;
+  $('status').className = isErr ? 'err' : '';
+}
+
+async function call(path, params) {
+  const url = new URL(API + '/' + path);
+  Object.entries(params).forEach(([k, v]) => { if (v !== '' && v != null) url.searchParams.set(k, v); });
+  const res = await fetch(url);
+  const data = await res.json();
+  if (!res.ok) {
+    const reason = data?.error?.errors?.[0]?.reason || '';
+    if (reason === 'quotaExceeded') throw new Error('오늘 API 할당량을 다 썼어요. 내일(태평양 시간 자정) 다시 시도하세요.');
+    if (reason === 'keyInvalid' || res.status === 400 && /API key/i.test(data?.error?.message || ''))
+      throw new Error('API 키가 올바르지 않아요.');
+    throw new Error(data?.error?.message || ('HTTP ' + res.status));
+  }
+  return data;
+}
+
+function parseDuration(iso) {
+  const m = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/.exec(iso || '') || [];
+  return (+m[1] || 0) * 3600 + (+m[2] || 0) * 60 + (+m[3] || 0);
+}
+const fmt = n => n >= 1e8 ? (n / 1e8).toFixed(1) + '억' : n >= 1e4 ? (n / 1e4).toFixed(1).replace(/\.0$/, '') + '만' : n.toLocaleString('ko-KR');
+function ago(date) {
+  const h = (Date.now() - date) / 36e5;
+  if (h < 1) return Math.max(1, Math.round(h * 60)) + '분 전';
+  if (h < 24) return Math.round(h) + '시간 전';
+  return Math.round(h / 24) + '일 전';
+}
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+async function search(e) {
+  e.preventDefault();
+  const key = $('key').value.trim();
+  const qRaw = $('q').value.trim();
+  if (!key || !qRaw) return;
+  $('remember').checked ? store.set('yt_api_key', key) : store.del('yt_api_key');
+
+  const q = $('addShorts').checked && !/#shorts/i.test(qRaw) ? qRaw + ' #shorts' : qRaw;
+  const after = new Date(Date.now() - +$('days').value * 864e5).toISOString();
+  const pages = +$('pages').value;
+  const minViews = +$('minViews').value || 0;
+
+  $('go').disabled = true;
+  $('grid').innerHTML = '';
+  $('toolbar').hidden = true;
+  try {
+    // 1) 검색: 짧은 영상(4분 미만)을 조회수순으로
+    const ids = [];
+    let pageToken, calls = 0;
+    for (let p = 0; p < pages; p++) {
+      status(`검색 중… (${p + 1}/${pages})`);
+      const data = await call('search', {
+        key, q, part: 'id', type: 'video', videoDuration: 'short', order: 'viewCount',
+        publishedAfter: after, regionCode: $('region').value, relevanceLanguage: $('lang').value,
+        maxResults: 50, pageToken,
+      });
+      calls++;
+      data.items.forEach(it => it.id?.videoId && ids.push(it.id.videoId));
+      pageToken = data.nextPageToken;
+      if (!pageToken) break;
+    }
+    const unique = [...new Set(ids)];
+
+    // 2) 상세 정보: 조회수·좋아요·길이 (50개씩)
+    status('영상 정보 불러오는 중…');
+    const videos = [];
+    for (let i = 0; i < unique.length; i += 50) {
+      const data = await call('videos', { key, part: 'snippet,statistics,contentDetails', id: unique.slice(i, i + 50).join(',') });
+      videos.push(...data.items);
+    }
+
+    results = videos.map(v => {
+      const published = new Date(v.snippet.publishedAt);
+      const views = +v.statistics.viewCount || 0;
+      const likes = +v.statistics.likeCount || 0;
+      const days = Math.max((Date.now() - published) / 864e5, 1 / 24);
+      return {
+        id: v.id, title: v.snippet.title, channel: v.snippet.channelTitle, channelId: v.snippet.channelId,
+        published, sec: parseDuration(v.contentDetails.duration), views, likes,
+        comments: +v.statistics.commentCount || 0, vpd: views / days, engage: views ? likes / views : 0,
+        thumb: v.snippet.thumbnails?.high?.url || v.snippet.thumbnails?.medium?.url || '',
+      };
+    }).filter(r => r.sec > 0 && r.sec <= SHORTS_MAX_SEC && r.views >= minViews);
+
+    if (!results.length) {
+      status('조건에 맞는 쇼츠가 없어요. 기간을 늘리거나 최소 조회수를 낮춰보세요.');
+      return;
+    }
+    status(`"${qRaw}" — API 약 ${calls * 100 + Math.ceil(unique.length / 50)} 단위 사용`);
+    $('toolbar').hidden = false;
+    render();
+  } catch (err) {
+    status('⚠️ ' + err.message, true);
+  } finally {
+    $('go').disabled = false;
+  }
+}
+
+function render() {
+  const key = $('sort').value;
+  const sorted = [...results].sort((a, b) => key === 'new' ? b.published - a.published : b[key] - a[key]);
+  $('count').textContent = `쇼츠 ${sorted.length}개`;
+  $('grid').innerHTML = sorted.map((r, i) => `
+    <div class="card">
+      <a class="thumb" href="https://www.youtube.com/shorts/${r.id}" target="_blank" rel="noopener">
+        <img src="${esc(r.thumb)}" alt="" loading="lazy">
+        <span class="rank">${i + 1}</span>
+        <span class="dur">${Math.floor(r.sec / 60)}:${String(r.sec % 60).padStart(2, '0')}</span>
+      </a>
+      <div class="body">
+        <a class="title" href="https://www.youtube.com/shorts/${r.id}" target="_blank" rel="noopener">${esc(r.title)}</a>
+        <a class="ch" href="https://www.youtube.com/channel/${r.channelId}" target="_blank" rel="noopener">${esc(r.channel)} · ${ago(r.published)}</a>
+        <div class="stats">
+          <span class="stat">👁 ${fmt(r.views)}</span>
+          <span class="stat ${r.vpd >= 100000 ? 'hot' : ''}">📈 하루 ${fmt(Math.round(r.vpd))}</span>
+          <span class="stat">👍 ${fmt(r.likes)}</span>
+          <span class="stat">💬 ${fmt(r.comments)}</span>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function downloadCsv() {
+  const head = ['제목', '채널', '업로드', '길이(초)', '조회수', '하루당조회수', '좋아요', '댓글', '링크'];
+  const rows = results.map(r => [r.title, r.channel, r.published.toISOString().slice(0, 16).replace('T', ' '), r.sec,
+    r.views, Math.round(r.vpd), r.likes, r.comments, 'https://www.youtube.com/shorts/' + r.id]);
+  const csv = [head, ...rows].map(row => row.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }));
+  a.download = `shorts_${$('q').value.trim().replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+$('f').addEventListener('submit', search);
+$('sort').addEventListener('change', render);
+$('csv').addEventListener('click', downloadCsv);
+</script>
+</body>
+</html>
